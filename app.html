@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <title>
+        </title>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+        <link rel="stylesheet" href="my.css" />
+
+
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+        <script src="jquery.json-2.3.min.js"></script>
+        <script src="jstorage.min.js"></script>
+        <script src="md5.js"></script>
+        <script src="app.js"></script>
+        <script src="behavior.js"></script>
+
+        
+        <!-- User-generated js -->
+        <script>
+$(document).ready(function() {
+start();
+});
+
+        </script>
+    </head>
+    <body>
+        <!-- Home -->
+        <div data-role="page" id="page1">
+            <div data-theme="a" data-role="header" data-position="fixed">
+                <h3 id="fmjs-header">
+                    Fever
+                </h3>
+            </div>
+            <div data-role="content">
+<h1>System Groups</h1>
+                <ul data-role="listview" data-divider-theme="d" data-inset="true">
+
+                    <li data-theme="c">
+                        <a href="#page-hot" data-transition="slide" onclick="showHot();">
+                            Hot
+                        </a>
+                    </li>
+                    <li data-theme="c">
+                        <a href="#page-kindling" data-transition="slide">
+                            Kindling
+                        </a>
+                    </li>
+                    <li data-theme="c">
+                        <a href="#page-sparks" data-transition="slide">
+                            Sparks
+                        </a>
+                    </li>
+                    <li data-theme="c">
+                        <a href="#page-saved" data-transition="slide">
+                            Saved
+                        </a>
+                    </li>
+                </ul>
+                <h1>Custom Groups</h1>
+                <ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-groups">
+
+                    
+                </ul>
+                <h1>Settings</h1>
+                <ul data-role="listview" data-divider-theme="d" data-inset="true">
+                    <li data-theme="c">
+                        <a href="#page-settings" data-transition="slide">
+                            Settings
+                        </a>
+                    </li>
+                    <li data-theme="c">
+                        <a href="#page-restart" data-transition="slide">
+                            Restart App
+                        </a>
+                    </li>
+                </ul>
+            
+            </div>
+            <div data-theme="a" data-role="footer">
+                <h3>
+                    Fever Mobile
+                </h3>
+            </div>
+        </div>
+        
+        <!-- Hot-view -->
+        <div data-role="page" id="page-hot" data-add-back-btn="true" data-back-btn-text="Main">
+            <div data-theme="a" data-role="header">
+                <h3 id="fmjs-header">
+                    Fever Hot Feeds
+                </h3>
+            </div>
+            <div data-role="content">
+            
+                <ul data-role="listview" data-divider-theme="d" data-inset="false" id="fmjs-hot">
+
+                    
+                </ul>
+         
+            </div>
+            <div data-theme="a" data-role="footer">
+                <h3>
+                    Fever Mobile
+                </h3>
+            </div>
+        </div>
+        <!-- Kindling -->
+        <div data-role="page" id="page-kindling" data-add-back-btn="true" data-back-btn-text="Main">
+            <div data-theme="a" data-role="header">
+                <h3 id="fmjs-header">
+                    Fever Kindling Feeds
+                </h3>   </div>
+            <div data-role="content">
+            
+            
+         
+            </div>
+            <div data-theme="a" data-role="footer">
+                <h3>
+                    Fever Mobile
+                </h3>
+            </div>
+        </div>
+        
+        <!-- Saved -->
+        <div data-role="page" id="page-saved" data-add-back-btn="true" data-back-btn-text="Main">
+            <div data-theme="a" data-role="header">
+                <h3 id="fmjs-header">
+                    Saved Items
+                </h3>   </div>
+            <div data-role="content">
+
+            </div>
+            <div data-theme="a" data-role="footer">
+                <h3>
+                    Fever Mobile
+                </h3>
+            </div>
+        </div>
+        
+        <!-- Sparks -->
+        <div data-role="page" id="page-sparks" data-add-back-btn="true" data-back-btn-text="Main">
+            <div data-theme="a" data-role="header">
+                <h3 id="fmjs-header">
+                    Fever Sparks
+                </h3>   </div>
+            <div data-role="content">
+            
+            
+         
+            </div>
+            <div data-theme="a" data-role="footer">
+                <h3>
+                    Fever Mobile
+                </h3>
+            </div>
+        </div>
+         <!--A Group -->
+        <div data-role="page" id="page-restart" data-add-back-btn="true" data-back-btn-text="Main">
+            <div data-theme="a" data-role="header">
+                <h3 id="fmjs-header">
+                    Fever
+                </h3>
+            </div>
+            <div data-role="content">
+  
+                <a id="fmjs-save-settings" data-role="button" data-icon="check" href="#page1">
+                    Restart
+                </a>
+
+         
+            </div>
+            <div data-theme="a" data-role="footer">
+                <h3>
+                    Fever Mobile
+                </h3>
+            </div>
+        </div>
+        
+        <!-- Settings -->
+        <div data-role="page" id="page-settings" data-add-back-btn="true" data-back-btn-text="Main">
+                    <div data-theme="a" data-role="header" data-position="fixed">
+                <h3 id="fmjs-header">
+                    Fever Settings
+                </h3>
+            </div>
+            <div data-role="content">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="fmjs-fever-url">
+                            Fever-URL
+                        </label>
+                        <input name="fmjs-fever-url" id="fmjs-fever-url" placeholder="" value="" type="text" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="fmjs-e-mail">
+                            E-Mail
+                        </label>
+                        <input name="fmjs-e-mail" id="fmjs-e-mail" placeholder="" value="" type="email" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="fmjs-password">
+                            Password
+                        </label>
+                        <input name="fmjs-password" id="fmjs-password" placeholder="" value="" type="password" />
+                    </fieldset>
+                </div>
+                
+                <a data-role="button" data-icon="check" href="javascript:saveSettings()">
+                    Save Settings
+                </a>
+
+                <a id="fmjs-cancel-settings" data-role="button" data-icon="delete" href="#page1">
+                    Cancel
+                </a>               
+                 <p><strong>Please note</strong>: In order to change your e-mail, you must also provide your password, because your login changes with your e-mail. Your password is <strong>not stored</strong> on your device.</p>
+                 
+                 <h1>Settings</h1>
+       <div data-role="fieldcontain" id="fmjs-cache-favicon">
+            <fieldset data-role="controlgroup">
+                <label for="fmjs-cache-favicon">
+                    Cache Favicons
+                </label>
+                <select name="toggleswitch1" id="fmjs-cache-favicon" data-theme="" data-role="slider">
+                    <option value="off">
+                        Off
+                    </option>
+                    <option value="on">
+                        On
+                    </option>
+                </select>
+            </fieldset>
+        </div>
+            </div>
+                        <div data-theme="a" data-role="footer">
+                <h3>
+                    Fever Mobile
+                </h3>
+            </div>
+        </div>   
+        
+<!-- Single Entry -->
+<div data-role="page" id="page-single">
+    <div data-theme="a" data-role="header" data-position="fixed" data-add-back-btn="true" data-back-btn-text="Back">
+        <h3 id="fmjs-feed-title">
+            Feed-Name
+        </h3>
+    </div>
+    <div data-role="content">
+        <h2 id="fmjs-single-title">
+            Title
+        </h2>
+        <a href="#" data-icon="check" data-theme="b">Save</a>
+        <div id="fmjs-single-content"></div>
+        <div>
+            <a id="fmjs-single-feed-name" href="" data-transition="slide">
+                (Feed-Name)
+            </a>
+        </div>
+        <div>
+            <a id="fmjs-single-author" href="" data-transition="fade">
+                (Autor)
+            </a>
+        </div>
+        <a data-role="button" target="_blank" href="http://www.spiegel.de/" data-icon="forward"
+        data-iconpos="left" id="fmjs-single-url">
+            Open URL
+        </a>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h3>
+            Footer
+        </h3>
+    </div>
+</div>   
+    </body>
+</html>
