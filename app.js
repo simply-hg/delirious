@@ -4,7 +4,7 @@ var groups = {};
 var feeds = {};
 var feeds_groups = {};
 var favicons = {};
-var items = {};
+var items = [];
 
 function start() {
 	// Load Config, if any
@@ -20,7 +20,7 @@ function start() {
 		}
 	});
 	
-	
+
 	// Get groups and build them
 	$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
 		if (data.auth != 1 ) {
@@ -35,6 +35,49 @@ function start() {
 	$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
 		feeds = data.feeds;
 	});
+	
+	refreshItems();
+}
+
+function refreshItems() {
+	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
+		var ids = data.unread_item_ids.split(',');
+		//console.log(ids);
+		items = [];
+		loadItems(ids);
+	});
+}
+
+function loadItems(ids) {
+
+	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
+	//console.log(placeholder_ids.length);
+	if ( ids.length > 20 ) {
+		var first = _.first(ids, 20);
+		var rest  = _.rest(ids, 20);
+	} else {
+		var first = ids;
+		var rest = [];
+	}
+	var get_ids = first.join(",");
+	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
+		$.each(data.items, function(index, value) {
+			// Save each item in
+			//console.log(value);
+			items.push(value);
+		});
+		
+	});
+	
+	if ( rest.length > 0 ) {
+		//console.log(rest.length + " to go");
+		loadItems(rest);
+	} else {
+		// finished
+		//console.log(items);
+		
+	}
+	
 }
 
 function createGroups(refresh) {	
@@ -45,12 +88,12 @@ function createGroups(refresh) {
 				return;
 			}
 			groups = _.sortBy(data.groups, "title");
-			feeds_groups = data.feeds_groups;
+			feeds_groups = data.feeds_groups.split(",");
 			createGroups(false);	
 		});
 	} else {
 		$.each( groups, function(index, value) {
-			var item = '<li data-theme="c" id="fmjs-group-'+value.id+'"><a href="javascript:showGroup('+value.id+')" data-transition="slide">'+ _.escape(value.title) +'</a></li>';
+			var item = '<li data-theme="c" id="fmjs-group-'+value.id+'"><a href="#page-group" onclick="showGroup('+value.id+');" data-transition="slide">'+ _.escape(value.title) +'</a></li>';
 			$("#fmjs-groups").append(item);
 		});
 	
@@ -100,9 +143,6 @@ function saveSettings() {
 	return;
 }
 
-function refreshGroupSelector() {
-
-}
 
 function showSaved() {
 	//$("#fmjs-saved-content").html("");
@@ -147,6 +187,7 @@ function showHot() {
 		$.each(data.links, function(index, value) {
 			//console.log("Link: "+value.id);
 			var item = '';
+			var id_list = '';
 			load_ids += value.item_ids + ',';
 			item += '<div>';
 			item += '<h2>';
@@ -171,10 +212,11 @@ function showHot() {
 				// item is "some", then "example", then "array"
 				// i is the index of item in the array
 				item += '<li><p><a href="#page-single" class="fmjs-link-'+link_id+'" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname">Feed</span></p></li>';
-				
+				id_list += link_id + ",";
 			}	
 			item += '</ul>';
 			//
+			item += '<div style="text-align:right"><a href="" data-role="button" onclick="markItemsRead(\''+id_list+'\');">Mark Links as read</a></div>';
 			//
 			item += '</div>';
 			$("#fmjs-hot-content").append(item);
@@ -212,7 +254,7 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 			//$("#fmjs-link-"+link_id).attr("href",_.escape(data.url));
 			var feedname = _.where(feeds, {id: value.feed_id});
 			//items.push(value);
-			$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html(_.escape(feedname[0].title));
+			$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#page-feed" onclick="showFeed('+$.trim(feedname[0].id)+');">'+_.escape(feedname[0].title)+'</a>');
 		});
 		
 	});
@@ -222,11 +264,58 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 	}
 }
 
-function showGroup(id) {}
+function showGroup(id) {
+	//var entries = _.where(items, {feed_id: id});
+	//console.log(items);
+	$("#fmjs-group").empty();
+	var feeds_to_show = feeds_groups;
+	//console.log(feeds_to_show);
+	var ids_to_show = _.where(feeds_groups, {group_id: id});
+	
+	feeds_to_show = ids_to_show[0].feed_ids.split(",");
+	//console.log(feeds_to_show);
+	$.each(items, function(index, value) {
+		console.log(feeds_to_show);
+		if ( $.inArray(value.feed_id, feeds_to_show ) !== false ) {
+		
+			var item = "";
+			item += '<li data-theme="c">';
+			item += '<a href="#page-single" onclick="showSingleItem('+value.id+')">' + value.title + '</a>';
+			item += '</li>';
+			$("#fmjs-group").append(item);
+		}
+	});
+	
+	$("#fmjs-group").listview("refresh");
+}
 
-function getItem(id) {
+function showFeed(id) {
+	//$("#fmjs-feed-view").listview();
+	//$("#fmjs-feed-view").empty();
+	var feed_info = _.where(feeds, {id: id});
+	
+	//console.log(items);
+	$("#fmjs-feed-header").html(feed_info[0].title);
+	
+	//$("#fmjs-feed-content").append('');
+		
+	var items_to_show = _.where(items, {feed_id: id});
+	//console.log(items_to_show);
+	$.each(items_to_show, function(index, value) {
+		//console.log(value.feed_id);
+		if ( value.is_read == "0" ) {
+			var item = "";
+			item += '<li data-theme="c">';
+			item += '<a href="#page-single" onclick="showSingleItem('+value.id+');">' + value.title + '</a>';
+			item += '</li>';
+			$("#fmjs-feed-view").append(item);
+		}
+	});
+
+	$("#fmjs-feed-view").listview("refresh");
 
 }
+
 
 function refreshFavicons() {
 	$.post(fm_url + "?api&favicons", { api_key: fm_key }).done(function(data) {
@@ -248,13 +337,31 @@ function showSingleItem(id) {
 		//console.log(feedname[0].favicon_id);
 		$("#fmjs-feed-title").html(_.escape(feedname[0].title));
 		$("#fmjs-single-feedname").html(_.escape(feedname[0].title));
-
-		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "read", id: _.escape(id)  }).done(function(data) {
-			console.log("Marked as read");
-		});
+		markItemRead(id);
 
 	});
-	
+}
 
-	
+function markItemsRead(ids) {
+	if ( _.isArray(ids) ) {
+		// An array of ids
+		$.each(ids, function(index, value) {
+			markItemRead(value);
+		});
+	} else {
+		// a comma seperated string
+		var ids_split = ids.split(",");
+		//console.log(ids_split);
+		$.each(ids_split, function(index, value) {
+			markItemRead(value);
+		});
+	}
+}
+
+function markItemRead(id) {
+	if ( $.trim(id) != "") {
+		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "read", id: $.trim(_.escape(id))  }).done(function(data) {
+			console.log("Marked as read");
+		});
+	}
 }
