@@ -1,9 +1,9 @@
 fever-js
 ========
 
-This project aims to create a Javascript client for the feed reader Fever by Shaun Inman. It is started, because a mobile interface is not coming to Android any time soon.
+This project aims to create a Javascript client for the feed reader Fever by Shaun Inman. It is started, because a mobile interface is not coming to Android any time soon. While there is Meltdown, an excellent Client on Android, it currently does not show Hot items. And what about all those other plattforms like Windows Phone, BB10, Firefox OS? If this project gets it right, they all benefit from a nice and usable fever-client.
 
-There is a working prototype. I will upload my code in the coming days. This code currently has several major flaws and I hope to find help within the community to fix them.
+This is a working prototype. This code currently has several major flaws and I hope to find help within the community to fix them.
 
 My code currently uses jQuery Mobile, undescore.js and some jQuery plugins.
 
@@ -16,7 +16,9 @@ How to run it
 
 Call app.html on your server. Now check out the settings-screen. There you can fill in your server info, username and password. Save it. Now return to the home screen and reload (this is a rough prototype after all).
 
-You should now see your custom groups. They will be empty for the moment. The only part really working is the hot group. Check them out and enjoy.
+You should now see your custom groups. They currently do not show any items. As Hot-Item-View was my priority, this view is working to some extend. It shows you hot items with their respective links. Currently this view is hardcoded to show only the first page and only links from the current day. This can and will be fixed, so, let's say, this is a good start.
+
+Of course the usual warnings apply: This software comes with no guarantees. It might fry your phone, server and everything else. Please report any bugs you encounter. I add this as well: While Fevers very own api should take care of user authentification and not return anything, when an unauthorised user tries to access your content, my protoype does not do very well in ensuring it. So, until this is fixed, use it with caution. Some tests without proper username and password didn't fire up any issues (the app just wasn't very useful), but as I said: This is a prototype so anything can happen.
 
 Still to do
 ===========
