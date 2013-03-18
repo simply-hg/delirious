@@ -21,9 +21,11 @@ You should now see your custom groups. They will be empty for the moment. The on
 Still to do
 ===========
 
-- [ ] Show items in feeds
-- [ ] Show saved items
+- [ ] Show items in feed groups
+- [X] Show saved items
 - [ ] Show Favicons
-- [ ] Links look ugly. That should be fixed
+- [X] Links look ugly. Somewhat fixed.
 - [ ] Implement a login workflow, i.e. alert when user is not logged in and stuff.
 - [ ] Implement a smart cache for items.
+- [X] Mark single items as read when you open them
+- [ ] Mark all items in feed as read
