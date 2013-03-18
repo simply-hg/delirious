@@ -23,10 +23,9 @@
         
         <!-- User-generated js -->
         <script>
-$(document).ready(function() {
-start();
-});
-
+    		$(document).ready(function() {
+				start();
+			});
         </script>
     </head>
     <body>
@@ -98,10 +97,9 @@ start();
             </div>
             <div data-role="content">
             
-                <ul data-role="listview" data-divider-theme="d" data-inset="false" id="fmjs-hot">
-
-                    
-                </ul>
+				<div id="fmjs-hot-content">
+				
+				</div>
          
             </div>
             <div data-theme="a" data-role="footer">
@@ -215,7 +213,9 @@ start();
                         <input name="fmjs-password" id="fmjs-password" placeholder="" value="" type="password" />
                     </fieldset>
                 </div>
-                
+                <a data-role="button" data-icon="check" href="javascript:refreshFavicons()">
+                    Refresh Favicons
+                </a>
                 <a data-role="button" data-icon="check" href="javascript:saveSettings()">
                     Save Settings
                 </a>
@@ -250,8 +250,8 @@ start();
         </div>   
         
 <!-- Single Entry -->
-<div data-role="page" id="page-single">
-    <div data-theme="a" data-role="header" data-position="fixed" data-add-back-btn="true" data-back-btn-text="Back">
+<div data-role="page" id="page-single" data-add-back-btn="true" data-back-btn-text="Back">
+    <div data-theme="a" data-role="header" data-position="fixed">
         <h3 id="fmjs-feed-title">
             Feed-Name
         </h3>
@@ -263,7 +263,7 @@ start();
         <a href="#" data-icon="check" data-theme="b">Save</a>
         <div id="fmjs-single-content"></div>
         <div>
-            <a id="fmjs-single-feed-name" href="" data-transition="slide">
+            <a id="fmjs-single-feedname" href="" data-transition="slide">
                 (Feed-Name)
             </a>
         </div>
