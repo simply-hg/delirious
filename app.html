@@ -44,7 +44,7 @@
                             Hot
                         </a>
                     </li>
-                    <li data-theme="c">
+                    <!--<li data-theme="c">
                         <a href="#page-kindling" data-transition="slide">
                             Kindling
                         </a>
@@ -53,7 +53,7 @@
                         <a href="#page-sparks" data-transition="slide">
                             Sparks
                         </a>
-                    </li>
+                    </li>-->
                     <li data-theme="c">
                         <a href="#page-saved" data-transition="slide" onclick="showSaved();">
                             Saved
@@ -80,11 +80,7 @@
                 </ul>
             
             </div>
-            <div data-theme="a" data-role="footer">
-                <h3>
-                    Fever Mobile
-                </h3>
-            </div>
+
         </div>
         
         <!-- Hot-view -->
@@ -103,35 +99,45 @@
 				</div>
          
             </div>
-<!--            <div data-theme="a" data-role="footer">
-                <h3>
-                    Fever Mobile
-                </h3>
-            </div>-->
+
         </div>
-        <!-- Kindling -->
-        <div data-role="page" id="page-kindling" data-add-back-btn="true" data-back-btn-text="Main">
+        <!-- A Group -->
+        <div data-role="page" id="page-group" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
                 <h3 id="fmjs-header">
-                    Fever Kindling Feeds
-                </h3>   </div>
-            <div data-role="content">
-            
-            
-         
-            </div>
-            <div data-theme="a" data-role="footer">
-                <h3>
-                    Fever Mobile
+                    Fever Custom Group
                 </h3>
             </div>
+            <div data-role="content">
+            
+                  <ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group">
+
+                    
+                </ul>          
+         
+            </div>
+
+        </div>
+
+        <!-- A Feed -->
+        <div data-role="page" id="page-feed" data-add-back-btn="true" data-back-btn-text="Back">
+            <div data-theme="a" data-role="header">
+                <h3 id="fmjs-feed-header">
+                    Fever View Feed
+                </h3>
+            </div>
+            <div data-role="content" id="fmjs-feed-content">
+            	
+<ul data-divider-theme="d" data-inset="false" data-filter="true" id="fmjs-feed-view"></ul>
+            </div>
+
         </div>
         
         <!-- Saved -->
         <div data-role="page" id="page-saved" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
             	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
-                <h3 id="fmjs-header">
+                <h3 id="fmjs-saved-header">
                     Saved Items
                 </h3>
                 <a href="#" data-icon="refresh" onclick="showSaved();">Refresh</a>
@@ -147,7 +153,7 @@
         <!-- Sparks -->
         <div data-role="page" id="page-sparks" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
-                <h3 id="fmjs-header">
+                <h3 id="fmjs-sparks-header">
                     Fever Sparks
                 </h3>   </div>
             <div data-role="content">
@@ -155,13 +161,9 @@
             
          
             </div>
-            <div data-theme="a" data-role="footer">
-                <h3>
-                    Fever Mobile
-                </h3>
-            </div>
+
         </div>
-         <!--A Group -->
+         <!--Restart page -->
         <div data-role="page" id="page-restart" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
                 <h3 id="fmjs-header">
@@ -176,11 +178,7 @@
 
          
             </div>
-            <div data-theme="a" data-role="footer">
-                <h3>
-                    Fever Mobile
-                </h3>
-            </div>
+
         </div>
         
         <!-- Settings -->
@@ -244,11 +242,7 @@
             </fieldset>
         </div>
             </div>
-                        <div data-theme="a" data-role="footer">
-                <h3>
-                    Fever Mobile
-                </h3>
-            </div>
+
         </div>   
         
 <!-- Single Entry -->
@@ -279,11 +273,7 @@
             Open URL
         </a>
     </div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h3>
-            Footer
-        </h3>
-    </div>
+
 </div>   
     </body>
 </html>
