@@ -29,7 +29,7 @@
     </head>
     <body>
         <!-- Home -->
-        <div data-role="page" id="page1">
+        <div data-role="page" id="page-home">
             <div data-theme="a" data-role="header" data-position="fixed">
                 <h3 id="fmjs-header">
                     Fever<span style="color:red">°</span> Mobile
@@ -139,9 +139,12 @@
         <!-- A Group -->
         <div data-role="page" id="page-group" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
-                <h3 id="fmjs-header">
+            	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
+                <h3 id="fmjs-group-header">
                     Fever<span style="color:red">°</span> Custom Group
                 </h3>
+            	<a href="#" data-icon="check" onclick="markGroupAsRead();">Mark Read</a>
+
             </div>
             <div data-role="content">
             
