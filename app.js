@@ -1,5 +1,4 @@
 var fm_key, fm_url, fm_user;
-var state_auth = 0;
 var groups = {};
 var feeds = {};
 var feeds_groups = {};
@@ -14,8 +13,7 @@ function start() {
 	// test-auth
 	$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
 		
-		if ( data.auth && data.auth == 1 ) {
-			state_auth = data.auth;
+		if ( checkAuth(data.auth) ) {
 			// Get groups and build them
 			$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
 				if (data.auth != 1 ) {
@@ -33,26 +31,21 @@ function start() {
 	
 			refreshItems();
 			
-		} else {
-			console.log("Forbidden");
-			$.mobile.navigate("#page-settings");
-			alert("Forbidden!");
 		}
-	
-	}).fail(function(){
-		console.log("Forbidden");
-		$.mobile.navigate("#page-settings");
-	});
+			
+	}).fail(function(){ checkAuth(0); });
 	
 }
 
 function refreshItems() {
 	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
-		var ids = data.unread_item_ids.split(',');
-		//console.log(ids);
-		items = [];
-		loadItems(ids);
-	});
+		if ( checkAuth(data.auth) ) {
+			var ids = data.unread_item_ids.split(',');
+			//console.log(ids);
+			items = [];
+			loadItems(ids);
+		}
+	}).fail(function(){ checkAuth(0); });
 }
 
 function loadItems(ids) {
@@ -68,16 +61,17 @@ function loadItems(ids) {
 	}
 	var get_ids = first.join(",");
 	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
-		$.each(data.items, function(index, value) {
-			// Save each item in
-			//console.log(value);
-			var group_id = getGroupID(value.feed_id);
-			value.group_id = group_id;
-			value.favicon_id = 0;
-			items.push(value);
-		});
-		
-	});
+		if ( checkAuth(data.auth) ) {
+			$.each(data.items, function(index, value) {
+				// Save each item in
+				//console.log(value);
+				var group_id = getGroupID(value.feed_id);
+				value.group_id = group_id;
+				value.favicon_id = 0;
+				items.push(value);
+			});
+		}
+	}).fail(function(){ checkAuth(0); });
 	
 	if ( rest.length > 0 ) {
 		//console.log(rest.length + " to go");
@@ -96,14 +90,12 @@ function getGroupID(feed_id) {
 function createGroups(refresh) {	
 	if ( refresh == true ) {
 		$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
-			if (data.auth != 1 ) {
-				console.log("Auth-Error");
-				return;
+			if ( checkAuth(data.auth) ) {
+				groups = _.sortBy(data.groups, "title");
+				feeds_groups = data.feeds_groups.split(",");
+				createGroups(false);
 			}
-			groups = _.sortBy(data.groups, "title");
-			feeds_groups = data.feeds_groups.split(",");
-			createGroups(false);	
-		});
+		}).fail(function(){ checkAuth(0); });
 	} else {
 		$("#fmjs-groups").empty();
 		$("#fmjs-groups").listview( "refresh" );
@@ -163,36 +155,38 @@ function showSaved() {
 	//$("#fmjs-saved-content").html("");
 	//$("#fmjs-saved-content").listview();
 	$.post(fm_url + "?api&saved_item_ids", { api_key: fm_key }).done(function(data) {
-		if (data.auth != 1 ) {
-			console.log("Auth-Error");
-			return;
-		}
-		$("#fmjs-saved-content").empty();
-		$("#fmjs-saved-content").listview("refresh");
-		if ( data.saved_item_ids != "") {
-			//console.log(data.saved_item_ids);
-			$.post(fm_url + "?api&items&with_ids=" + data.saved_item_ids, { api_key: fm_key }).done(function(data) {
-				var sorted = _.sortBy(data.items, "created_on_time");
-				$.each(sorted, function(index, value) {
-					if ( value.is_saved == "1" ) {
-						var item = "";
-						item += '<li data-theme="c">';
-						item += '<a href="#page-single" onclick="showSingleItem('+value.id+')">' + value.title + '</a>';
-						item += '</li>';
-						$("#fmjs-saved-content").append(item);
-					}
-				});
+		if ( checkAuth(data.auth) ) {
+
+		
+			$("#fmjs-saved-content").empty();
+			$("#fmjs-saved-content").listview("refresh");
+			if ( data.saved_item_ids != "") {
+				//console.log(data.saved_item_ids);
+				$.post(fm_url + "?api&items&with_ids=" + data.saved_item_ids, { api_key: fm_key }).done(function(data) {
+					if ( checkAuth(data.auth) ) {
+						var sorted = _.sortBy(data.items, "created_on_time");
+						$.each(sorted, function(index, value) {
+							if ( value.is_saved == "1" ) {
+								var item = "";
+								item += '<li data-theme="c">';
+								item += '<a href="#page-single" onclick="showSingleItem('+value.id+')">' + value.title + '</a>';
+								item += '</li>';
+								$("#fmjs-saved-content").append(item);
+							}
+						});
 				
-				$("#fmjs-saved-content").listview("refresh");
-			});
+						$("#fmjs-saved-content").listview("refresh");
+					}
+				}).fail(function(){ checkAuth(0); });
 			
 			
+			}
 		}
-	});
+	}).fail(function(){ checkAuth(0); });
 }
 
 function showHot(page) {
-	console.log("Requested hot page: "+page);
+	//console.log("Requested hot page: "+page);
 	if ( page == 1 ) {
 		// First page has been called, so do a complete refresh
 		$("#fmjs-hot-content").empty();
@@ -209,64 +203,72 @@ function showHot(page) {
 	var range  = $("#fmjs-hot-range :selected").attr("value");
 	var offset = $("#fmjs-hot-offset :selected").attr("value");
 	
-	console.log("Range: "+range);
-	console.log("Offset: "+offset);
+	//console.log("Range: "+range);
+	//console.log("Offset: "+offset);
 	
 	$.post(fm_url + "?api&links&offset="+offset+"&range="+range+"&page="+page, { api_key: fm_key }).done(function(data) {
-		if (data.auth != 1 ) {
-			console.log("Auth-Error");
-			return;
-		}
-		load_ids = '';
-		//$("#fmjs-hot-content").html("");
-		$.each(data.links, function(index, value) {
-			//console.log("Link: "+value.id);
-			var item = '';
-			var id_list = '';
-			load_ids += value.item_ids + ',';
-			item += '<div>';
-			item += '<h2>';
-			item += _.escape( value.temperature ) + '<span style="color:red">°</span>&nbsp;';
-			item += '<a href="'+value.url+'" target="_blank">'+_.escape(value.title)+'</a>';
-			item += '</h2>';
+		if ( checkAuth(data.auth) ) {
+		
+			load_ids = '';
+			//$("#fmjs-hot-content").html("");
+			$.each(data.links, function(index, value) {
+				//console.log("Link: "+value.id);
+				var item = '';
+				var id_list = '';
+				load_ids += value.item_ids + ',';
+				item += '<div>';
+				item += '<h2>';
+				item += _.escape( value.temperature ) + '<span style="color:red">°</span>&nbsp;';
+				if (value.is_local == 1 && value.is_item == 1) {
+					load_ids += value.item_id + ",";
+					item += '<a href="#page-single" class="fmjs-link-'+value.item_id+'" onclick="showSingleItem('+value.item_id+');">'+_.escape(value.title)+'</a>';
+				} else {
+					item += '<a href="'+value.url+'" target="_blank">'+_.escape(value.title)+'</a>';
+				}
+				
+				item += '</h2>';
 			
-			if (value.is_local == 1 ) {
-				// Add local stuff here, like excerpt an feed name.
-				// We'll add that later for now.
-				// Special aspect here: We might add a link to fever mobile single item view
-				// Not tricky, but ui should be ok for that
-				//console.log("Local item");
-			}
+				if (value.is_local == 1 && value.is_item == 1) {
+					// Add local stuff here, like excerpt an feed name.
+					// We'll add that later for now.
+					// Special aspect here: We might add a link to fever mobile single item view
+					// Not tricky, but ui should be ok for that
+					console.log("Local item");
+					
+					item +='<p style="max-height:2.5em;overflow:hidden;" class="fmjs-link-'+value.item_id+'-content"></p>';
+					item += '<p style="text-align:right;">by <img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+value.item_id+'-favicon fmjs-favicon"/> <span class="fmjs-link-'+value.item_id+'-feedname">Feed</span> (<a href="'+value.url+'" target="_blank">Open URL</a>)</p>';
+				}
 			
-			// Now we show a list of all those items, linking to this hot item...
-			//item += '<p>' + value.item_ids+'</p>'; // we remove this line later
-			item += '<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-hot-content-link-'+value.id+'" class="fmjs-hot-linkbox">';
-			//console.log(value.item_ids);
-			var links = value.item_ids.split(',');
-			for (var i=0, link_id; link_id=links[i]; i++) {
-				// item is "some", then "example", then "array"
-				// i is the index of item in the array
-				item += '<li><p><a href="#page-single" class="fmjs-link-'+link_id+'" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname">Feed</span></p></li>';
-				id_list += link_id + ",";
-			}	
-			item += '</ul>';
-			//
-			item += '<div style="text-align:right"><a href="" data-role="button" onclick="markItemsRead(\''+id_list+'\');">Mark Links as read</a></div>';
-			//
-			item += '</div>';
-			$("#fmjs-hot-content").append(item);
-			$("#fmjs-hot-content-link-"+value.id).listview();
+				// Now we show a list of all those items, linking to this hot item...
+				//item += '<p>' + value.item_ids+'</p>'; // we remove this line later
+				item += '<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-hot-content-link-'+value.id+'" class="fmjs-hot-linkbox">';
+				//console.log(value.item_ids);
+				var links = value.item_ids.split(',');
+				for (var i=0, link_id; link_id=links[i]; i++) {
+					// item is "some", then "example", then "array"
+					// i is the index of item in the array
+					item += '<li><p><img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+link_id+'-favicon fmjs-favicon"/><a href="#page-single" class="fmjs-link-'+link_id+'" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname">Feed</span></p></li>';
+					id_list += link_id + ",";
+				}	
+				item += '</ul>';
+				//
+				item += '<div style="text-align:right"><a href="" data-role="button" onclick="markItemsRead(\''+id_list+'\');">Mark Links as read</a></div>';
+				//
+				item += '</div>';
+				$("#fmjs-hot-content").append(item);
+				$("#fmjs-hot-content-link-"+value.id).listview();
 
-		});	
+			});	
 		
 		
-		var ids_to_get = load_ids.split(',');
-		//console.log(ids_to_get.length);
-		ids_to_get = _.uniq(ids_to_get);
-		//console.log(ids_to_get.length);
-		fillLinkPlaceholder(ids_to_get, 'link' );
-		$(".fmjs-hot-linkbox").listview("refresh");
-	});
+			var ids_to_get = load_ids.split(',');
+			//console.log(ids_to_get.length);
+			ids_to_get = _.uniq(ids_to_get);
+			//console.log(ids_to_get.length);
+			fillLinkPlaceholder(ids_to_get, 'link' );
+			$(".fmjs-hot-linkbox").listview("refresh");
+		}
+	}).fail(function(){ checkAuth(0); });
 }
 
 function fillLinkPlaceholder(placeholder_ids, class_prefix) {
@@ -281,18 +283,26 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 	}
 	var get_ids = first.join(",");
 	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
-		$.each(data.items, function(index, value) {
-			$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
-			if ( value.is_read == 0 ) {
-				$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-unread");
-			}
-			//$("#fmjs-link-"+link_id).attr("href",_.escape(data.url));
-			var feedname = _.where(feeds, {id: value.feed_id});
-			//items.push(value);
-			$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#page-feed" onclick="showFeed('+$.trim(feedname[0].id)+');">'+_.escape(feedname[0].title)+'</a>');
-		});
+		if (checkAuth(data.auth) ) {
+			$.each(data.items, function(index, value) {
+				$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
+				if ( value.is_read == 0 ) {
+					$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-unread");
+				}
+				$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
+				//$("#fmjs-link-"+link_id).attr("href",_.escape(data.url));
+				var feedname = _.where(feeds, {id: value.feed_id});
+				//items.push(value);
+				$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#page-feed" onclick="showFeed('+$.trim(feedname[0].id)+');">'+_.escape(feedname[0].title)+'</a>');
+			
+				var favicon = _.where(favicons, {id: feedname[0].favicon_id});
+				if (favicon[0]) {
+					$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").attr("src", "data:"+favicon[0].data);
+				}
+			});
 		
-	});
+		}
+	}).fail(function(){ checkAuth(0); });
 	
 	if ( rest.length > 0 ) {
 		fillLinkPlaceholder(rest, class_prefix);
@@ -310,7 +320,7 @@ function showGroup(id) {
 	feeds_to_show = ids_to_show[0].feed_ids.split(",");
 	//console.log(feeds_to_show);
 	$.each(items, function(index, value) {
-		console.log(feeds_to_show);
+		//console.log(feeds_to_show);
 		if ( $.inArray(value.feed_id, feeds_to_show ) !== false ) {
 		
 			var item = "";
@@ -354,27 +364,31 @@ function showFeed(id) {
 
 function refreshFavicons() {
 	$.post(fm_url + "?api&favicons", { api_key: fm_key }).done(function(data) {
-		favicons = data.favicons;
-		favicons = $.jStorage.set("fmjs-favicons", favicons);
-		console.log("Favicons refreshed");
+		if ( checkAuth(data.auth) ) {
+			favicons = data.favicons;
+			favicons = $.jStorage.set("fmjs-favicons", favicons);
+			console.log("Favicons refreshed");
+		}
 	});
 }
 
 function showSingleItem(id) {
 	$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
-		//console.log(data.items);
-		$("#fmjs-single-content").html(data.items[0].html);
-		$("#fmjs-single-title").html(_.escape(data.items[0].title));
-		$("#fmjs-single-author").html(_.escape(data.items[0].author));
-		$("#fmjs-single-url").attr("href", data.items[0].url);
+		if ( checkAuth(data.auth) ) {
+			//console.log(data.items);
+			$("#fmjs-single-content").html(data.items[0].html);
+			$("#fmjs-single-title").html(_.escape(data.items[0].title));
+			$("#fmjs-single-author").html(_.escape(data.items[0].author));
+			$("#fmjs-single-url").attr("href", data.items[0].url);
 		
-		var feedname = _.where(feeds, {id: data.items[0].feed_id});
-		//console.log(feedname[0].favicon_id);
-		$("#fmjs-feed-title").html(_.escape(feedname[0].title));
-		$("#fmjs-single-feedname").html(_.escape(feedname[0].title));
-		markItemRead(id);
+			var feedname = _.where(feeds, {id: data.items[0].feed_id});
+			//console.log(feedname[0].favicon_id);
+			$("#fmjs-feed-title").html(_.escape(feedname[0].title));
+			$("#fmjs-single-feedname").html(_.escape(feedname[0].title));
+			markItemRead(id);
+		}
 
-	});
+	}).fail(function(){ checkAuth(0); });
 }
 
 function markItemsRead(ids) {
@@ -398,5 +412,16 @@ function markItemRead(id) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "read", id: $.trim(_.escape(id))  }).done(function(data) {
 			console.log("Marked as read");
 		});
+	}
+}
+
+function checkAuth(auth) {
+	if ( auth == 1 ) {
+		return true;
+	} else {
+		console.log("Forbidden");
+		alert("Please check your Login-credentials. This could also mean, that your internet connection is lost.");	
+		$.mobile.navigate("#page-settings");
+		return false;
 	}
 }
