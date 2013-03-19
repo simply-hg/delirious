@@ -15,7 +15,7 @@ How to run it
 - add md5.js from http://www.webtoolkit.info/javascript-md5.html to your directory
 - find a nice looking generic rss-icon in the size of 16x16 pixel and upload it as feed-icon-generic.png to your directory.
 
-Please note: I intend to add all these required files into a nice package, but currently do not have time for it. I'm not sure about the redistribution rights either.
+Please note: I intend to add all these required files into a nice package, but currently do not have time for it. I'm not sure about the redistribution rights either. All files offered in this repository are considered open source, license details are to follow.
 
 Call app.html on your server. You should now see a dialog screen, which leads you to your settings. There you can fill in your server and your user credentials. Upon saving you are redirected to home base of this web app. To show favicons please return to settings screen and refresh favicons. They are cached and survive a restart of the app.
 
