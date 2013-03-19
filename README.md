@@ -1,7 +1,7 @@
 fever-js
 ========
 
-This project aims to create a Javascript client for the feed reader Fever by Shaun Inman. It is started, because a mobile interface is not coming to Android any time soon. While there is Meltdown, an excellent Client on Android, it currently does not show Hot items. And what about all those other plattforms like Windows Phone, BB10, Firefox OS? If this project gets it right, they all benefit from a nice and usable fever-client.
+This project aims to create a Javascript client for the feed reader [Fever](http://www.feedafever.com/) by Shaun Inman. It is started, because a mobile interface is not coming to Android any time soon. While there is [Meltdown](https://github.com/phubbard/Meltdown), an excellent client on Android, it currently does not show Hot items. And what about all those other plattforms like Windows Phone, BB10, Firefox OS? If this project gets it right, they all benefit from a nice and usable fever-client.
 
 This is a working prototype. This code currently has several major flaws and I hope to find help within the community to fix them.
 
