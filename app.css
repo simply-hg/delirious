@@ -1,7 +1,14 @@
 .fmjs-item-is-unread {
-  font-weight:bold;
+	font-weight:bold;
 }
 #fmjs-hot-content :link, #fmjs-hot-content :visited {
 	text-decoration:none;
 	color:steelblue;
+}
+
+img.fmjs-favicon {
+	padding:1px;
+	border:1px solid #ddd;
+	margin-right: 5px;
+	vertical-align:middle;
 }
