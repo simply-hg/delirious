@@ -17,7 +17,9 @@ How to run it
 
 Please note: I intend to add all these required files into a nice package, but currently do not have time for it. I'm not sure about the redistribution rights either. All files offered in this repository are considered open source, license details are to follow.
 
-Call app.html on your server. You should now see a dialog screen, which leads you to your settings. There you can fill in your server and user credentials. Upon saving you are redirected to home base of this web app. To show favicons please return to settings screen and refresh favicons. They are cached and survive a restart of the app.
+Call app.html on your server. You should now see a dialog screen, which leads you to your settings. There you can fill in your server and user credentials. Upon saving you are redirected to home base of this web app. To show favicons please return to settings screen and refresh favicons. They are cached and survive a restart of the app. 
+
+fever-js has to load a good amount of data (unread items) from your server. This is happening in chunks, but leads to the phenomenon that not all items are available at first. Depending on how many items are being loaded you will have to wait some moments before all items are shown in your groups. Hot link items get loaded seperately and on demand. Due to restriction of the [Fever API](http://www.feedafever.com/api), we have to load at least all unread items.
 
 You should now see your custom groups. As Hot-Item-View was my priority, this view is working quite well. It shows you hot items with their respective links. You can adjust the range of your hot links and you can also load more. Items that are also in your Fever database do show a bit more of their content. You can see unread items in your group and you can mark a whole group as read.
 
@@ -31,7 +33,7 @@ Todo and feature list
 - [X] Show saved items
 - [X] Show a single item
 - [X] Show Favicons
-- [ ] Show unread items of a feed. This works, but there is an optical glitch due to an odd behaviour of jquery mobile.
+- [ ] Show unread items of a single feed. This works, but there is an optical glitch due to an odd behaviour of jquery mobile.
 - [X] Show more info on local hot links
 - [X] Links look ugly. Somewhat fixed.
 - [X] Implement a login workflow, i.e. alert when user is not logged in and stuff. Partly finished.
