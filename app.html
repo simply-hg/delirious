@@ -40,7 +40,7 @@
                 <ul data-role="listview" data-divider-theme="d" data-inset="true">
 
                     <li data-theme="c">
-                        <a href="#page-hot" data-transition="slide" onclick="showHot();">
+                        <a href="#page-hot" data-transition="slide" onclick="showHot(1);">
                             Hot
                         </a>
                     </li>
@@ -73,7 +73,7 @@
                         </a>
                     </li>
                     <li data-theme="c">
-                        <a href="#page-restart" data-transition="slide">
+                        <a href="#" data-transition="slide" onclick="start();">
                             Restart App
                         </a>
                     </li>
@@ -90,14 +90,49 @@
                 <h3 id="fmjs-header">
                     Fever Hot Feeds
                 </h3>
-                <a href="#" data-icon="refresh" onclick="showHot();">Refresh</a>
+                <a href="#" data-icon="refresh" onclick="showHot(1);">Refresh</a>
             </div>
             <div data-role="content">
-            
+            	<div>
+            	    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="fmjs-hot-range">
+                Links from the last ...
+            </label>
+            <select name="fmjs-hot-range" id="fmjs-hot-range" data-mini="true">
+                <option value="1">day</option>
+                <option value="2">2 days</option>
+                <option value="3">3 days</option>
+                <option value="4">4 days</option>
+                <option value="5">5 days</option>
+				<option value="6">6 days</option>
+				<option value="7">week</option>
+				<option value="14">2 weeks</option>
+            </select>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="fmjs-hot-offset">
+                Starting ...
+            </label>
+            <select name="fmjs-hot-offset" id="fmjs-hot-offset" data-mini="true">
+                <option value="0">Now</option>
+                <option value="1">Yesterday</option>
+                <option value="2">2 days ago</option>
+                <option value="3">3 days ago</option>
+                <option value="4">4 days ago</option>
+                <option value="5">5 days ago</option>
+				<option value="6">6 days ago</option>
+				<option value="7">One week ago</option>
+				<option value="14">2 weeks ago</option>
+            </select>
+        </div>
+    </div>
+
+            	</div>
 				<div id="fmjs-hot-content">
 				
 				</div>
-         
+         		<a href="#" id="fmjs-hot-more" data-role="button">Load more</a>
             </div>
 
         </div>
@@ -268,7 +303,7 @@
                 (Autor)
             </a>
         </div>
-        <a data-role="button" target="_blank" href="http://www.spiegel.de/" data-icon="forward"
+        <a data-role="button" target="_blank" href="" data-icon="forward"
         data-iconpos="left" id="fmjs-single-url">
             Open URL
         </a>
