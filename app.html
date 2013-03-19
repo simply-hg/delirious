@@ -32,7 +32,7 @@
         <div data-role="page" id="page1">
             <div data-theme="a" data-role="header" data-position="fixed">
                 <h3 id="fmjs-header">
-                    Fever
+                    Fever<span style="color:red">°</span>
                 </h3>
             </div>
             <div data-role="content">
@@ -88,7 +88,7 @@
             <div data-theme="a" data-role="header" data-position="fixed">
             	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-header">
-                    Fever Hot Feeds
+                    Fever<span style="color:red">°</span> Hot Feeds
                 </h3>
                 <a href="#" data-icon="refresh" onclick="showHot(1);">Refresh</a>
             </div>
@@ -140,7 +140,7 @@
         <div data-role="page" id="page-group" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
                 <h3 id="fmjs-header">
-                    Fever Custom Group
+                    Fever<span style="color:red">°</span> Custom Group
                 </h3>
             </div>
             <div data-role="content">
@@ -158,7 +158,7 @@
         <div data-role="page" id="page-feed" data-add-back-btn="true" data-back-btn-text="Back">
             <div data-theme="a" data-role="header">
                 <h3 id="fmjs-feed-header">
-                    Fever View Feed
+                    Fever<span style="color:red">°</span> View Feed
                 </h3>
             </div>
             <div data-role="content" id="fmjs-feed-content">
@@ -189,7 +189,7 @@
         <div data-role="page" id="page-sparks" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
                 <h3 id="fmjs-sparks-header">
-                    Fever Sparks
+                    Fever<span style="color:red">°</span> Sparks
                 </h3>   </div>
             <div data-role="content">
             
@@ -202,7 +202,7 @@
         <div data-role="page" id="page-restart" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
                 <h3 id="fmjs-header">
-                    Fever
+                    Fever<span style="color:red">°</span>
                 </h3>
             </div>
             <div data-role="content">
@@ -220,14 +220,14 @@
         <div data-role="page" id="page-settings" data-add-back-btn="true" data-back-btn-text="Main">
                     <div data-theme="a" data-role="header" data-position="fixed">
                 <h3 id="fmjs-header">
-                    Fever Settings
+                    Fever<span style="color:red">°</span> Settings
                 </h3>
             </div>
             <div data-role="content">
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup">
                         <label for="fmjs-fever-url">
-                            Fever-URL
+                            Fever<span style="color:red">°</span>-URL
                         </label>
                         <input name="fmjs-fever-url" id="fmjs-fever-url" placeholder="" value="" type="text" />
                     </fieldset>
@@ -248,7 +248,7 @@
                         <input name="fmjs-password" id="fmjs-password" placeholder="" value="" type="password" />
                     </fieldset>
                 </div>
-                <a data-role="button" data-icon="check" href="javascript:refreshFavicons()">
+                <a data-role="button" data-icon="refresh" href="javascript:refreshFavicons()">
                     Refresh Favicons
                 </a>
                 <a data-role="button" data-icon="check" href="javascript:saveSettings()">
@@ -309,6 +309,7 @@
         </a>
     </div>
 
-</div>   
+</div>
+
     </body>
 </html>
