@@ -14,23 +14,24 @@ How to run it
 - add jstorage.min.js from https://github.com/andris9/jStorage to your directory
 - add md5.js from http://www.webtoolkit.info/javascript-md5.html to your directory
 
-Call app.html on your server. Now check out the settings-screen. There you can fill in your server info, username and password. Save it. Now return to the home screen and reload (this is a rough prototype after all).
+Call app.html on your server. You should now see a dialog screen, which leads you to your settings. There you can fill in your server and your user credentials. Upon saving you are redirected to home base of this web app. To show favicons please return to settings screen and refresh favicons. They are cached and survive a restart of the app.
 
-You should now see your custom groups. They currently do not show any items. As Hot-Item-View was my priority, this view is working to some extend. It shows you hot items with their respective links. Currently this view is hardcoded to show only the first page and only links from the current day. This can and will be fixed, so, let's say, this is a good start.
+You should now see your custom groups. They currently do not show any items if clicked. As Hot-Item-View was my priority, this view is working quite well. It shows you hot items with their respective links. You can adjust the range of your hot links and you can also load more. Items that are also in your Fever database do show a bit more of their content.
 
-Of course the usual warnings apply: This software comes with no guarantees. It might fry your phone, server and everything else. Please report any bugs you encounter. I add this as well: While Fevers very own api should take care of user authentification and not return anything, when an unauthorised user tries to access your content, my protoype does not do very well in ensuring it. So, until this is fixed, use it with caution. Some tests without proper username and password didn't fire up any issues (the app just wasn't very useful), but as I said: This is a prototype so anything can happen.
+Of course the usual warnings apply: This software comes with no guarantees. It might fry your phone, server and everything else. Please report any bugs you encounter. I add this as well: Fevers very own api should take care of user authentification and not return anything, when an unauthorised user tries to access your content. Newer versions of my prototype check for it as well. An attacker might still be able to find a security breach, so be careful when using this app.
 
 Todo and feature list
-===========
+=====================
 
 - [ ] Show items in feed groups
 - [X] Show Hot items
 - [X] Show saved items
 - [X] Show a single item
-- [ ] Show Favicons
+- [X] Show Favicons
 - [ ] Show unread items of a feed. This works, but there is an optical glitch due to an odd behaviour of jquery mobile.
+- [X] Show more info on local hot links
 - [X] Links look ugly. Somewhat fixed.
-- [ ] Implement a login workflow, i.e. alert when user is not logged in and stuff. Partly finished.
+- [X] Implement a login workflow, i.e. alert when user is not logged in and stuff. Partly finished.
 - [ ] Implement a smart cache for items.
 - [X] Mark single items as read when you open them
 - [ ] Mark all items in a feed as read
