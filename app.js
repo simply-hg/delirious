@@ -13,30 +13,37 @@ function start() {
 
 	// test-auth
 	$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
-		state_auth = data.auth;
-		console.log("Login: " + data.auth);
-		if (data.auth == "0" ) {
-			$.mobile.navigate("#page-settings");
-		}
-	});
-	
+		
+		if ( data.auth && data.auth == 1 ) {
+			state_auth = data.auth;
+			// Get groups and build them
+			$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
+				if (data.auth != 1 ) {
+					console.log("Auth-Error");
+					return;
+				}
+				groups = _.sortBy(data.groups, "title");
+				feeds_groups = data.feeds_groups;
+				createGroups(false);
+			});
 
-	// Get groups and build them
-	$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
-		if (data.auth != 1 ) {
-			console.log("Auth-Error");
-			return;
+			$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
+				feeds = data.feeds;
+			});
+	
+			refreshItems();
+			
+		} else {
+			console.log("Forbidden");
+			$.mobile.navigate("#page-settings");
+			alert("Forbidden!");
 		}
-		groups = _.sortBy(data.groups, "title");
-		feeds_groups = data.feeds_groups;
-		createGroups(false);	
+	
+	}).fail(function(){
+		console.log("Forbidden");
+		$.mobile.navigate("#page-settings");
 	});
 	
-	$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
-		feeds = data.feeds;
-	});
-	
-	refreshItems();
 }
 
 function refreshItems() {
@@ -64,6 +71,9 @@ function loadItems(ids) {
 		$.each(data.items, function(index, value) {
 			// Save each item in
 			//console.log(value);
+			var group_id = getGroupID(value.feed_id);
+			value.group_id = group_id;
+			value.favicon_id = 0;
 			items.push(value);
 		});
 		
@@ -79,6 +89,9 @@ function loadItems(ids) {
 	}
 	
 }
+function getGroupID(feed_id) {
+
+}
 
 function createGroups(refresh) {	
 	if ( refresh == true ) {
@@ -92,6 +105,8 @@ function createGroups(refresh) {
 			createGroups(false);	
 		});
 	} else {
+		$("#fmjs-groups").empty();
+		$("#fmjs-groups").listview( "refresh" );
 		$.each( groups, function(index, value) {
 			var item = '<li data-theme="c" id="fmjs-group-'+value.id+'"><a href="#page-group" onclick="showGroup('+value.id+');" data-transition="slide">'+ _.escape(value.title) +'</a></li>';
 			$("#fmjs-groups").append(item);
@@ -105,9 +120,9 @@ function createGroups(refresh) {
 
 function getSettings() {
 	if ( $.jStorage.storageAvailable() ) {
-		fm_key  = $.jStorage.get("fmjs-key", "none");
-		fm_url  = $.jStorage.get("fmjs-url", "none");
-		fm_user = $.jStorage.get("fmjs-user", "none");
+		fm_key   = $.jStorage.get("fmjs-key", "none");
+		fm_url   = $.jStorage.get("fmjs-url", "none");
+		fm_user  = $.jStorage.get("fmjs-user", "none");
 		favicons = $.jStorage.get("fmjs-favicons");
 		
 		if ( fm_url != "none" ) {
@@ -140,7 +155,7 @@ function saveSettings() {
 	} else {
 		return false;
 	}
-	return;
+	start();
 }
 
 
@@ -176,14 +191,34 @@ function showSaved() {
 	});
 }
 
-function showHot() {
-	$.post(fm_url + "?api&links&offset=0&range=1", { api_key: fm_key }).done(function(data) {
+function showHot(page) {
+	console.log("Requested hot page: "+page);
+	if ( page == 1 ) {
+		// First page has been called, so do a complete refresh
+		$("#fmjs-hot-content").empty();
+		$("#fmjs-hot-more").attr("onclick", "showHot(2)");
+	} else {
+		// another page has been called, so let's append a new one
+		var next_page = page;
+		next_page++;
+		$("#fmjs-hot-more").attr("onclick", "showHot("+next_page+")");
+	}
+	
+	// Set range and offset
+	
+	var range  = $("#fmjs-hot-range :selected").attr("value");
+	var offset = $("#fmjs-hot-offset :selected").attr("value");
+	
+	console.log("Range: "+range);
+	console.log("Offset: "+offset);
+	
+	$.post(fm_url + "?api&links&offset="+offset+"&range="+range+"&page="+page, { api_key: fm_key }).done(function(data) {
 		if (data.auth != 1 ) {
 			console.log("Auth-Error");
 			return;
 		}
 		load_ids = '';
-		$("#fmjs-hot-content").html("");
+		//$("#fmjs-hot-content").html("");
 		$.each(data.links, function(index, value) {
 			//console.log("Link: "+value.id);
 			var item = '';
