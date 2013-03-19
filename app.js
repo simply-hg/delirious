@@ -36,6 +36,7 @@ function start() {
 }
 
 function refreshItems() {
+	console.log("Refreshing items");
 	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
 		if ( checkAuth(data.auth) ) {
 			var ids = data.unread_item_ids.split(',');
@@ -142,6 +143,7 @@ function saveSettings() {
 	} else {
 		return false;
 	}
+	$.mobile.navigate("page-home");
 	start();
 }
 
@@ -400,22 +402,36 @@ function refreshFavicons() {
 }
 
 function showSingleItem(id) {
+	var item = _.findWhere(items, {id: id});
+	console.log(item);
+	if ( item ) {
+		console.log("cache hit");
+		renderSingleItem(item);
+	} else {
 	$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
 		if ( checkAuth(data.auth) ) {
-			//console.log(data.items);
-			$("#fmjs-single-content").html(data.items[0].html);
-			$("#fmjs-single-title").html(_.escape(data.items[0].title));
-			$("#fmjs-single-author").html(_.escape(data.items[0].author));
-			$("#fmjs-single-url").attr("href", data.items[0].url);
-		
-			var feedname = _.where(feeds, {id: data.items[0].feed_id});
-			//console.log(feedname[0].favicon_id);
-			$("#fmjs-feed-title").html(_.escape(feedname[0].title));
-			$("#fmjs-single-feedname").html(_.escape(feedname[0].title));
-			markItemRead(id);
+			renderSingleItem(data.items[0]);
 		}
-
 	}).fail(function(){ checkAuth(0); });
+	}
+}
+function saveCurrentItem() {
+	var id = $("#fmjs-single-content").data("fmjs-single-item-current");
+	saveItem(id);
+}
+function renderSingleItem(data) {
+	$("#fmjs-single-content").html(data.html);
+	$("#fmjs-single-content").data("fmjs-single-item-current", data.id);
+	$("#fmjs-single-title").html(_.escape(data.title));
+	$("#fmjs-single-author").html(_.escape(data.author));
+	$("#fmjs-single-url").attr("href", data.url);
+		
+	var feedname = _.findWhere(feeds, {id: data.feed_id});
+	//console.log(feedname[0].favicon_id);
+	$("#fmjs-feed-title").html(_.escape(feedname.title));
+	$("#fmjs-single-feedname").html(_.escape(feedname.title));
+	console.log(data.id);
+	markItemsRead(data.id.toString());
 }
 
 function markItemsRead(ids) {
