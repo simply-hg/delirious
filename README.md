@@ -37,7 +37,7 @@ Todo and feature list
 - [X] Show more info on local hot links
 - [X] Links look ugly. Somewhat fixed.
 - [X] Implement a login workflow, i.e. alert when user is not logged in and stuff. Partly finished.
-- [ ] Implement a smart cache for items.
+- [ ] Implement a smart cache for items. Started on this, but there is a long road ahead.
 - [X] Mark single items as read when you open them
 - [X] Mark all items in a feed as read
 - [X] Mark links to a hot item as read (this feature is not found in other clients I am aware of, but I need it :D )
