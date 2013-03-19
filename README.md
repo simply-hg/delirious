@@ -20,14 +20,20 @@ You should now see your custom groups. They currently do not show any items. As 
 
 Of course the usual warnings apply: This software comes with no guarantees. It might fry your phone, server and everything else. Please report any bugs you encounter. I add this as well: While Fevers very own api should take care of user authentification and not return anything, when an unauthorised user tries to access your content, my protoype does not do very well in ensuring it. So, until this is fixed, use it with caution. Some tests without proper username and password didn't fire up any issues (the app just wasn't very useful), but as I said: This is a prototype so anything can happen.
 
-Still to do
+Todo and feature list
 ===========
 
 - [ ] Show items in feed groups
+- [X] Show Hot items
 - [X] Show saved items
+- [X] Show a single item
 - [ ] Show Favicons
+- [ ] Show unread items of a feed. This works, but there is an optical glitch due to an odd behaviour of jquery mobile.
 - [X] Links look ugly. Somewhat fixed.
-- [ ] Implement a login workflow, i.e. alert when user is not logged in and stuff.
+- [ ] Implement a login workflow, i.e. alert when user is not logged in and stuff. Partly finished.
 - [ ] Implement a smart cache for items.
 - [X] Mark single items as read when you open them
-- [ ] Mark all items in feed as read
+- [ ] Mark all items in a feed as read
+- [X] Mark links to a hot item as read (this feature is not found in other clients I am aware of, but I need it :D )
+- [X] Load more hot links
+- [X] Support range and offset when loading hot items.
