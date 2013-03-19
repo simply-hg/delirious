@@ -17,16 +17,16 @@ How to run it
 
 Please note: I intend to add all these required files into a nice package, but currently do not have time for it. I'm not sure about the redistribution rights either. All files offered in this repository are considered open source, license details are to follow.
 
-Call app.html on your server. You should now see a dialog screen, which leads you to your settings. There you can fill in your server and your user credentials. Upon saving you are redirected to home base of this web app. To show favicons please return to settings screen and refresh favicons. They are cached and survive a restart of the app.
+Call app.html on your server. You should now see a dialog screen, which leads you to your settings. There you can fill in your server and user credentials. Upon saving you are redirected to home base of this web app. To show favicons please return to settings screen and refresh favicons. They are cached and survive a restart of the app.
 
-You should now see your custom groups. They currently do not show any items if clicked. As Hot-Item-View was my priority, this view is working quite well. It shows you hot items with their respective links. You can adjust the range of your hot links and you can also load more. Items that are also in your Fever database do show a bit more of their content.
+You should now see your custom groups. As Hot-Item-View was my priority, this view is working quite well. It shows you hot items with their respective links. You can adjust the range of your hot links and you can also load more. Items that are also in your Fever database do show a bit more of their content. You can see unread items in your group and you can mark a whole group as read.
 
 Of course the usual warnings apply: This software comes with no guarantees. It might fry your phone, server and everything else. Please report any bugs you encounter. I add this as well: Fevers very own api should take care of user authentification and not return anything, when an unauthorised user tries to access your content. Newer versions of my prototype check for it as well. An attacker might still be able to find a security breach, so be careful when using this app.
 
 Todo and feature list
 =====================
 
-- [ ] Show items in feed groups
+- [X] Show items in feed groups
 - [X] Show Hot items
 - [X] Show saved items
 - [X] Show a single item
@@ -37,7 +37,7 @@ Todo and feature list
 - [X] Implement a login workflow, i.e. alert when user is not logged in and stuff. Partly finished.
 - [ ] Implement a smart cache for items.
 - [X] Mark single items as read when you open them
-- [ ] Mark all items in a feed as read
+- [X] Mark all items in a feed as read
 - [X] Mark links to a hot item as read (this feature is not found in other clients I am aware of, but I need it :D )
 - [X] Load more hot links
 - [X] Support range and offset when loading hot items.
