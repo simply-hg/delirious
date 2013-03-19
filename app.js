@@ -12,25 +12,23 @@ function start() {
 
 	// test-auth
 	$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
-		
 		if ( checkAuth(data.auth) ) {
 			// Get groups and build them
 			$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
-				if (data.auth != 1 ) {
-					console.log("Auth-Error");
-					return;
+				if ( checkAuth(data.auth) ) {
+				
+					groups = _.sortBy(data.groups, "title");
+					feeds_groups = data.feeds_groups;
+					createGroups(false);
+					$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
+						if ( checkAuth(data.auth) ) {
+							feeds = data.feeds;
+							refreshItems();
+						}
+					});
 				}
-				groups = _.sortBy(data.groups, "title");
-				feeds_groups = data.feeds_groups;
-				createGroups(false);
 			});
 
-			$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
-				feeds = data.feeds;
-			});
-	
-			refreshItems();
-			
 		}
 			
 	}).fail(function(){ checkAuth(0); });
@@ -63,15 +61,12 @@ function loadItems(ids) {
 	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
 		if ( checkAuth(data.auth) ) {
 			$.each(data.items, function(index, value) {
-				// Save each item in
-				//console.log(value);
-				var group_id = getGroupID(value.feed_id);
-				value.group_id = group_id;
-				value.favicon_id = 0;
+				// Save each item in cache
+				// value.group_id = getGroupID(value.feed_id);
 				items.push(value);
 			});
 		}
-	}).fail(function(){ checkAuth(0); });
+	});
 	
 	if ( rest.length > 0 ) {
 		//console.log(rest.length + " to go");
@@ -84,7 +79,7 @@ function loadItems(ids) {
 	
 }
 function getGroupID(feed_id) {
-
+	return 0;
 }
 
 function createGroups(refresh) {	
@@ -221,9 +216,9 @@ function showHot(page) {
 				item += _.escape( value.temperature ) + '<span style="color:red">°</span>&nbsp;';
 				if (value.is_local == 1 && value.is_item == 1) {
 					load_ids += value.item_id + ",";
-					item += '<a href="#page-single" class="fmjs-link-'+value.item_id+'" onclick="showSingleItem('+value.item_id+');">'+_.escape(value.title)+'</a>';
+					item += '<a href="#page-single" class="fmjs-link-'+value.item_id+' fmjs-hot-links" onclick="showSingleItem('+value.item_id+');">'+_.escape(value.title)+'</a>';
 				} else {
-					item += '<a href="'+value.url+'" target="_blank">'+_.escape(value.title)+'</a>';
+					item += '<a href="'+value.url+'" class="fmjs-hot-links" target="_blank">'+_.escape(value.title)+'</a>';
 				}
 				
 				item += '</h2>';
@@ -236,7 +231,7 @@ function showHot(page) {
 					console.log("Local item");
 					
 					item +='<p style="max-height:2.5em;overflow:hidden;" class="fmjs-link-'+value.item_id+'-content"></p>';
-					item += '<p style="text-align:right;">by <img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+value.item_id+'-favicon fmjs-favicon"/> <span class="fmjs-link-'+value.item_id+'-feedname">Feed</span> (<a href="'+value.url+'" target="_blank">Open URL</a>)</p>';
+					item += '<p style="text-align:right;">posted by <img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+value.item_id+'-favicon fmjs-favicon"/> <span class="fmjs-link-'+value.item_id+'-feedname fmjs-hot-links">Feed</span> <a href="'+value.url+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button" data-icon="grid">Open URL</a> <a href="#" onclick="saveItem('+value.item_id+');" target="_blank" data-role="button" data-icon="star" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button">Save</a></p>';
 				}
 			
 				// Now we show a list of all those items, linking to this hot item...
@@ -247,20 +242,21 @@ function showHot(page) {
 				for (var i=0, link_id; link_id=links[i]; i++) {
 					// item is "some", then "example", then "array"
 					// i is the index of item in the array
-					item += '<li><p><img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+link_id+'-favicon fmjs-favicon"/><a href="#page-single" class="fmjs-link-'+link_id+'" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname">Feed</span></p></li>';
+					item += '<li><p><img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+link_id+'-favicon fmjs-favicon"/><a href="#page-single" class="fmjs-link-'+link_id+' fmjs-hot-links" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
 					id_list += link_id + ",";
 				}	
 				item += '</ul>';
 				//
-				item += '<div style="text-align:right"><a href="" data-role="button" onclick="markItemsRead(\''+id_list+'\');">Mark Links as read</a></div>';
+				item += '<div style="text-align:right"><a href="#" data-role="button" onclick="markItemsRead(\''+id_list+'\');" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button" data-icon="check">Mark Links as read</a></div>';
 				//
 				item += '</div>';
 				$("#fmjs-hot-content").append(item);
-				$("#fmjs-hot-content-link-"+value.id).listview();
 
+				$(".fmjs-hot-to-button").button();
+				$("#fmjs-hot-content-link-"+value.id).listview();
+				
 			});	
-		
-		
+
 			var ids_to_get = load_ids.split(',');
 			//console.log(ids_to_get.length);
 			ids_to_get = _.uniq(ids_to_get);
@@ -312,26 +308,57 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 function showGroup(id) {
 	//var entries = _.where(items, {feed_id: id});
 	//console.log(items);
+	$("#fmjs-group").removeData("fmjs-current-ids");
 	$("#fmjs-group").empty();
-	var feeds_to_show = feeds_groups;
+	var group = _.where(groups, {id: id});
+	$("#fmjs-group-header").html(group[0].title);
+	//var feeds_to_show = feeds_groups;
 	//console.log(feeds_to_show);
 	var ids_to_show = _.where(feeds_groups, {group_id: id});
 	
 	feeds_to_show = ids_to_show[0].feed_ids.split(",");
+	feeds_for_group = [];
+	$.each(feeds_to_show, function(index, value) {
+		feeds_for_group.push(parseInt(value, 10));
+	});
+	//console.log(feeds_for_group);
 	//console.log(feeds_to_show);
+	//console.log(items);
+	item_ids_in_group = '';
 	$.each(items, function(index, value) {
-		//console.log(feeds_to_show);
-		if ( $.inArray(value.feed_id, feeds_to_show ) !== false ) {
-		
+		if ( $.inArray(value.feed_id, feeds_for_group ) !== -1 && value.is_read == 0 ) {
+			//console.log(feeds_to_show);
+			//console.log(index+' '+value.feed_id);
 			var item = "";
-			item += '<li data-theme="c">';
-			item += '<a href="#page-single" onclick="showSingleItem('+value.id+')">' + value.title + '</a>';
-			item += '</li>';
+			item += '<li data-theme="c"><p>';
+			
+			var feed = _.findWhere(feeds, {id: value.feed_id});
+			var favicon_id = feed.favicon_id;
+			var favicon = _.findWhere(favicons, {id: favicon_id});
+			if ( favicon.id != 1) {
+				//console.log(favicon);
+				item += '<img src="data:'+favicon.data+'" height="16" width="16" class="fmjs-favicon"/>';
+			} else {
+				item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
+			}
+
+			item += '<strong><a href="#page-single" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += '</p></li>';
+			item_ids_in_group += value.id +",";
 			$("#fmjs-group").append(item);
 		}
 	});
-	
+	$("#fmjs-group").data("fmjs-current-ids", item_ids_in_group);
 	$("#fmjs-group").listview("refresh");
+
+}
+
+function markGroupAsRead() {
+	var data = $("#fmjs-group").data("fmjs-current-ids");
+	$("#fmjs-group").removeData("fmjs-current-ids");
+	console.log(data);
+	markItemsRead(data);
+	$.mobile.navigate("#page-home");
 }
 
 function showFeed(id) {
@@ -394,17 +421,28 @@ function showSingleItem(id) {
 function markItemsRead(ids) {
 	if ( _.isArray(ids) ) {
 		// An array of ids
-		$.each(ids, function(index, value) {
-			markItemRead(value);
-		});
+		ids_to_mark_read = ids;
 	} else {
 		// a comma seperated string
-		var ids_split = ids.split(",");
+		ids_to_mark_read = ids.split(",");
 		//console.log(ids_split);
-		$.each(ids_split, function(index, value) {
-			markItemRead(value);
-		});
 	}
+	console.log(ids_to_mark_read);
+	items = _.reject(items, function(item) {
+	
+		if ( $.inArray(item.id.toString(), ids_to_mark_read ) == -1 )  {
+			return false;
+		} else {
+			console.log("reject");
+			return true;
+		}
+	});
+	
+	
+	$.each(ids_to_mark_read, function(index, value) {
+		markItemRead(value);
+	});	
+
 }
 
 function markItemRead(id) {
@@ -417,12 +455,22 @@ function markItemRead(id) {
 	}
 }
 
+function saveItem(id) {
+	if ( $.trim(id) != "") {
+		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
+			if ( checkAuth(data.auth) ) {
+				console.log("Saved item on server.");
+			}
+		}).fail(function(){ checkAuth(0); });
+	}
+}
+
 function checkAuth(auth) {
 	if ( auth == 1 ) {
 		return true;
 	} else {
 		console.log("Forbidden");
-		alert("Please check your Login-credentials. This could also mean, that your internet connection is lost.");	
+		alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");	
 		$.mobile.navigate("#page-settings");
 		return false;
 	}
