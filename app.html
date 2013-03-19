@@ -34,6 +34,7 @@
                 <h3 id="fmjs-header">
                     Fever<span style="color:red">°</span> Mobile
                 </h3>
+                <a href="#" data-icon="refresh" onclick="refreshItems();" class="ui-btn-right">Refresh Items</a>
             </div>
             <div data-role="content">
 <h1>Fever<span style="color:red">°</span> System Groups</h1>
@@ -277,15 +278,18 @@
 <!-- Single Entry -->
 <div data-role="page" id="page-single" data-add-back-btn="true" data-back-btn-text="Back">
     <div data-theme="a" data-role="header" data-position="fixed">
+    <a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
         <h3 id="fmjs-feed-title">
             Feed-Name
         </h3>
+        <a href="#" data-icon="check" data-theme="b" onclick="saveCurrentItem();">Save</a>
     </div>
     <div data-role="content">
         <h2 id="fmjs-single-title">
             Title
         </h2>
-        <a href="#" data-icon="check" data-theme="b">Save</a>
+
+ 
         <div id="fmjs-single-content"></div>
         <div>
             <a id="fmjs-single-feedname" href="" data-transition="slide">
