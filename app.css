@@ -1,7 +1,8 @@
 .fmjs-item-is-unread {
 	font-weight:bold;
 }
-#fmjs-hot-content :link, #fmjs-hot-content :visited {
+
+.fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited {
 	text-decoration:none;
 	color:steelblue;
 }
