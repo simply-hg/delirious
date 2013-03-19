@@ -10,7 +10,7 @@ My code currently uses jQuery Mobile, undescore.js and some jQuery plugins.
 How to run it
 =============
 
-- Upload app.html and app.js into a directory on the domain you are running fever from.
+- Upload app.html, app.js and app.css from this repository into a directory on the domain you are running fever from.
 - add jstorage.min.js from https://github.com/andris9/jStorage to your directory
 - add md5.js from http://www.webtoolkit.info/javascript-md5.html to your directory
 
