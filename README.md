@@ -13,6 +13,9 @@ How to run it
 - Upload app.html, app.js and app.css from this repository into a directory on the domain you are running fever from.
 - add jstorage.min.js from https://github.com/andris9/jStorage to your directory
 - add md5.js from http://www.webtoolkit.info/javascript-md5.html to your directory
+- find a nice looking generic rss-icon in the size of 16x16 pixel and upload it as feed-icon-generic.png to your directory.
+
+Please note: I intend to add all these requirement into a nice package, but currently do not have time for it.
 
 Call app.html on your server. You should now see a dialog screen, which leads you to your settings. There you can fill in your server and your user credentials. Upon saving you are redirected to home base of this web app. To show favicons please return to settings screen and refresh favicons. They are cached and survive a restart of the app.
 
