@@ -410,8 +410,10 @@ function markItemsRead(ids) {
 function markItemRead(id) {
 	if ( $.trim(id) != "") {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "read", id: $.trim(_.escape(id))  }).done(function(data) {
-			console.log("Marked as read");
-		});
+			if ( checkAuth(data.auth) ) {
+				console.log("Marked as read");
+			}
+		}).fail(function(){ checkAuth(0); });
 	}
 }
 
