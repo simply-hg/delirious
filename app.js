@@ -96,7 +96,7 @@ function createGroups(refresh) {
 		$("#fmjs-groups").empty();
 		$("#fmjs-groups").listview( "refresh" );
 		$.each( groups, function(index, value) {
-			var item = '<li data-theme="c" id="fmjs-group-'+value.id+'"><a href="#page-group" onclick="showGroup('+value.id+');" data-transition="slide">'+ _.escape(value.title) +'</a></li>';
+			var item = '<li data-theme="c" id="fmjs-group-'+value.id+'"><a href="#" onclick="showGroup('+value.id+');" data-transition="slide">'+ _.escape(value.title) +'</a></li>';
 			$("#fmjs-groups").append(item);
 		});
 	
@@ -154,9 +154,10 @@ function showSaved() {
 	$.post(fm_url + "?api&saved_item_ids", { api_key: fm_key }).done(function(data) {
 		if ( checkAuth(data.auth) ) {
 
-		
 			$("#fmjs-saved-content").empty();
-			$("#fmjs-saved-content").listview("refresh");
+			$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="d" data-inset="false" data-filter="true"></ul>');
+			
+			//$("#fmjs-saved-content").listview("refresh");
 			if ( data.saved_item_ids != "") {
 				//console.log(data.saved_item_ids);
 				$.post(fm_url + "?api&items&with_ids=" + data.saved_item_ids, { api_key: fm_key }).done(function(data) {
@@ -165,18 +166,28 @@ function showSaved() {
 						$.each(sorted, function(index, value) {
 							if ( value.is_saved == "1" ) {
 								var item = "";
-								item += '<li data-theme="c">';
-								item += '<a href="#page-single" onclick="showSingleItem('+value.id+')">' + value.title + '</a>';
+								item += '<li data-theme="c"><p>';
+								
+								var feedname = _.findWhere(feeds, {id: value.feed_id});
+								var favicon = _.findWhere(favicons, {id: feedname.favicon_id});
+								if (favicon != 0 ) {
+									item += '<img src="data:'+favicon.data+'" height="16" width="16" class="fmjs-favicon"/>';
+								}  else {
+									item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
+								}
+								
+								item += '<a href="#" class="fmjs-hot-links" onclick="showSingleItem('+value.id+')">' + value.title + '</a>';
+								item += ' by <a href="#" class="fmjs-hot-links" onclick="showFeed('+value.feed_id+');">'+feedname.title+'</a></p>';
 								item += '</li>';
-								$("#fmjs-saved-content").append(item);
+								$("#fmjs-saved-view").append(item);
 							}
 						});
 				
-						$("#fmjs-saved-content").listview("refresh");
+						//$("#fmjs-saved-content").listview("refresh");
+						$.mobile.navigate("#page-saved");
 					}
 				}).fail(function(){ checkAuth(0); });
-			
-			
+
 			}
 		}
 	}).fail(function(){ checkAuth(0); });
@@ -218,7 +229,7 @@ function showHot(page) {
 				item += _.escape( value.temperature ) + '<span style="color:red">°</span>&nbsp;';
 				if (value.is_local == 1 && value.is_item == 1) {
 					load_ids += value.item_id + ",";
-					item += '<a href="#page-single" class="fmjs-link-'+value.item_id+' fmjs-hot-links" onclick="showSingleItem('+value.item_id+');">'+_.escape(value.title)+'</a>';
+					item += '<a href="#" class="fmjs-link-'+value.item_id+' fmjs-hot-links" onclick="showSingleItem('+value.item_id+');">'+_.escape(value.title)+'</a>';
 				} else {
 					item += '<a href="'+value.url+'" class="fmjs-hot-links" target="_blank">'+_.escape(value.title)+'</a>';
 				}
@@ -233,18 +244,18 @@ function showHot(page) {
 					console.log("Local item");
 					
 					item +='<p style="max-height:2.5em;overflow:hidden;" class="fmjs-link-'+value.item_id+'-content"></p>';
-					item += '<p style="text-align:right;">posted by <img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+value.item_id+'-favicon fmjs-favicon"/> <span class="fmjs-link-'+value.item_id+'-feedname fmjs-hot-links">Feed</span> <a href="'+value.url+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button" data-icon="grid">Open URL</a> <a href="#" onclick="saveItem('+value.item_id+');" target="_blank" data-role="button" data-icon="star" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button">Save</a></p>';
+					item += '<p style="text-align:right;">posted by <img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+value.item_id+'-favicon fmjs-favicon"/> <span class="fmjs-link-'+value.item_id+'-feedname fmjs-hot-links">Feed</span></p><p style="text-align:right;"><a href="'+value.url+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button" data-icon="grid">Open URL</a> <a href="#" onclick="saveItem('+value.item_id+');" target="_blank" data-role="button" data-icon="star" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button">Save</a></p>';
 				}
 			
 				// Now we show a list of all those items, linking to this hot item...
 				//item += '<p>' + value.item_ids+'</p>'; // we remove this line later
-				item += '<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-hot-content-link-'+value.id+'" class="fmjs-hot-linkbox">';
+				item += '<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-hot-content-link-'+value.id+'" class="fmjs-hot-linkbox fmjs-to-listview">';
 				//console.log(value.item_ids);
 				var links = value.item_ids.split(',');
 				for (var i=0, link_id; link_id=links[i]; i++) {
 					// item is "some", then "example", then "array"
 					// i is the index of item in the array
-					item += '<li><p><img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+link_id+'-favicon fmjs-favicon"/><a href="#page-single" class="fmjs-link-'+link_id+' fmjs-hot-links" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
+					item += '<li><p><img src="feed-icon-generic.png" height="16" width="16" alt="Feed-Icon" class="fmjs-link-'+link_id+'-favicon fmjs-favicon"/><a href="#" class="fmjs-link-'+link_id+' fmjs-hot-links" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
 					id_list += link_id + ",";
 				}	
 				item += '</ul>';
@@ -255,7 +266,7 @@ function showHot(page) {
 				$("#fmjs-hot-content").append(item);
 
 				$(".fmjs-hot-to-button").button();
-				$("#fmjs-hot-content-link-"+value.id).listview();
+				//$("#fmjs-hot-content-link-"+value.id).listview();
 				
 			});	
 
@@ -263,8 +274,14 @@ function showHot(page) {
 			//console.log(ids_to_get.length);
 			ids_to_get = _.uniq(ids_to_get);
 			//console.log(ids_to_get.length);
+			
 			fillLinkPlaceholder(ids_to_get, 'link' );
-			$(".fmjs-hot-linkbox").listview("refresh");
+			if ( page == 1) {
+				$.mobile.navigate("#page-hot");
+			} else {
+				
+				$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
+			}
 		}
 	}).fail(function(){ checkAuth(0); });
 }
@@ -289,14 +306,17 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 				}
 				$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
 				//$("#fmjs-link-"+link_id).attr("href",_.escape(data.url));
-				var feedname = _.where(feeds, {id: value.feed_id});
+				var feedname = _.findWhere(feeds, {id: value.feed_id});
 				//items.push(value);
-				$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#page-feed" onclick="showFeed('+$.trim(feedname[0].id)+');">'+_.escape(feedname[0].title)+'</a>');
-			
-				var favicon = _.where(favicons, {id: feedname[0].favicon_id});
-				if (favicon[0]) {
-					$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").attr("src", "data:"+favicon[0].data);
+				$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#" onclick="showFeed('+$.trim(feedname.id)+');">'+_.escape(feedname.title)+'</a>');
+				//var feedname = _.findWhere(feeds, {id: value.feed_id});
+				var favicon = _.findWhere(favicons, {id: feedname.favicon_id});
+				if (favicon != 0 ) {
+					$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").attr("src", "data:"+favicon.data);
+				}  else {
+					item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
 				}
+
 			});
 		
 		}
@@ -310,10 +330,12 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 function showGroup(id) {
 	//var entries = _.where(items, {feed_id: id});
 	//console.log(items);
-	$("#fmjs-group").removeData("fmjs-current-ids");
-	$("#fmjs-group").empty();
-	var group = _.where(groups, {id: id});
-	$("#fmjs-group-header").html(group[0].title);
+	$("#fmjs-group-content").removeData("fmjs-current-ids");
+	$("#fmjs-group-content").empty();
+	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
+
+	var group = _.findWhere(groups, {id: id});
+	$("#fmjs-group-header").html(group.title);
 	//var feeds_to_show = feeds_groups;
 	//console.log(feeds_to_show);
 	var ids_to_show = _.where(feeds_groups, {group_id: id});
@@ -344,20 +366,21 @@ function showGroup(id) {
 				item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
 			}
 
-			item += '<strong><a href="#page-single" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += '<strong><a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += ' by <a href="#" onclick="showFeed('+feed.id+');" class="fmjs-hot-links">'+feed.title+'</a>';
 			item += '</p></li>';
 			item_ids_in_group += value.id +",";
-			$("#fmjs-group").append(item);
+			$("#fmjs-group-view").append(item);
 		}
 	});
-	$("#fmjs-group").data("fmjs-current-ids", item_ids_in_group);
-	$("#fmjs-group").listview("refresh");
+	$("#fmjs-group-content").data("fmjs-current-ids", item_ids_in_group);
+	$.mobile.navigate("#page-group");//("#fmjs-group").listview("refresh");
 
 }
 
 function markGroupAsRead() {
-	var data = $("#fmjs-group").data("fmjs-current-ids");
-	$("#fmjs-group").removeData("fmjs-current-ids");
+	var data = $("#fmjs-group-content").data("fmjs-current-ids");
+	$("#fmjs-group-content").removeData("fmjs-current-ids");
 	console.log(data);
 	markItemsRead(data);
 	$.mobile.navigate("#page-home");
@@ -365,11 +388,13 @@ function markGroupAsRead() {
 
 function showFeed(id) {
 	//$("#fmjs-feed-view").listview();
-	//$("#fmjs-feed-view").empty();
-	var feed_info = _.where(feeds, {id: id});
+	$("#fmjs-feed-content").empty();
+	$("#fmjs-feed-content").append('<ul data-divider-theme="d" data-inset="false" data-filter="true" id="fmjs-feed-view" data-role="listview"></ul>');
+	
+	var feed_info = _.findWhere(feeds, {id: id});
 	
 	//console.log(items);
-	$("#fmjs-feed-header").html(feed_info[0].title);
+	$("#fmjs-feed-header").html(feed_info.title);
 	
 	//$("#fmjs-feed-content").append('');
 		
@@ -379,15 +404,24 @@ function showFeed(id) {
 		//console.log(value.feed_id);
 		if ( value.is_read == "0" ) {
 			var item = "";
-			item += '<li data-theme="c">';
-			item += '<a href="#page-single" onclick="showSingleItem('+value.id+');">' + value.title + '</a>';
-			item += '</li>';
+			item += '<li data-theme="c"><p>';
+			
+
+			if ( favicon.id != 1) {
+				//console.log(favicon);
+				item += '<img src="data:'+favicon.data+'" height="16" width="16" class="fmjs-favicon"/>';
+			} else {
+				item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
+			}
+				
+			item += '<a href="#" class="fmjs-hot-links" onclick="showSingleItem('+value.id+');">' + value.title + '</a>';
+			item += '</p></li>';
 			$("#fmjs-feed-view").append(item);
 		}
 	});
 
-	$("#fmjs-feed-view").listview("refresh");
-
+	//$("#fmjs-feed-view").listview("refresh");
+	$.mobile.navigate("#page-feed");
 }
 
 
@@ -395,7 +429,7 @@ function refreshFavicons() {
 	$.post(fm_url + "?api&favicons", { api_key: fm_key }).done(function(data) {
 		if ( checkAuth(data.auth) ) {
 			favicons = data.favicons;
-			favicons = $.jStorage.set("fmjs-favicons", favicons);
+			$.jStorage.set("fmjs-favicons", favicons);
 			console.log("Favicons refreshed");
 		}
 	});
@@ -432,6 +466,7 @@ function renderSingleItem(data) {
 	$("#fmjs-single-feedname").html(_.escape(feedname.title));
 	console.log(data.id);
 	markItemsRead(data.id.toString());
+	$.mobile.navigate("#page-single");
 }
 
 function markItemsRead(ids) {
@@ -490,4 +525,67 @@ function checkAuth(auth) {
 		$.mobile.navigate("#page-settings");
 		return false;
 	}
+}
+
+
+function showSparks() {
+	//var entries = _.where(items, {feed_id: id});
+	//console.log(items);
+	//$("#fmjs-group").removeData("fmjs-current-ids");
+	$("fmjs-sparks-content").empty();
+	$("fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-sparks-view"></ul>');
+	
+	//var group = _.where(groups, {id: id});
+	//$("#fmjs-group-header").html(group[0].title);
+	//var feeds_to_show = feeds_groups;
+	//console.log(feeds_to_show);
+	var spark_feeds = _.where(feeds, {is_spark: 1});
+	
+	//feeds_to_show = ids_to_show[0].feed_ids.split(",");
+	feeds_for_sparks = [];
+	$.each(spark_feeds, function(index, value) {
+		feeds_for_sparks.push(parseInt(value.id, 10));
+	});
+	//console.log(feeds_for_group);
+	//console.log(feeds_to_show);
+	//console.log(items);
+	item_ids_in_sparks = '';
+	$.each(items, function(index, value) {
+		if ( $.inArray(value.feed_id, feeds_for_sparks ) !== -1 && value.is_read == 0 ) {
+			//console.log(feeds_to_show);
+			//console.log(index+' '+value.feed_id);
+			var item = "";
+			item += '<li data-theme="c"><p>';
+			
+			var feed = _.findWhere(feeds, {id: value.feed_id});
+			var favicon_id = feed.favicon_id;
+			var favicon = _.findWhere(favicons, {id: favicon_id});
+			if ( favicon.id != 1) {
+				//console.log(favicon);
+				item += '<img src="data:'+favicon.data+'" height="16" width="16" class="fmjs-favicon"/>';
+			} else {
+				item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
+			}
+
+			item += '<strong><a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += '</p></li>';
+			item_ids_in_sparks += value.id +",";
+			$("#fmjs-sparks-view").append(item);
+		}
+	});
+	$("#fmjs-group").data("fmjs-current-ids", item_ids_in_sparks);
+	$.mobile.navigate("#page-sparks");//("#fmjs-group").listview("refresh");
+
+}
+
+function logout() {
+	$.jStorage.deleteKey("fmjs-key");
+	$.jStorage.deleteKey("fmjs-url");
+	$.jStorage.deleteKey("fmjs-user");
+	$.jStorage.deleteKey("fmjs-favicons");
+	fm_key   = '';
+	fm_url   = '';
+	fm_user  = '';
+	favicons = '';
+	start();
 }
