@@ -4,6 +4,11 @@ var feeds = {};
 var feeds_groups = {};
 var favicons = {};
 var items = [];
+var called_group  = false;
+var called_saved  = false;
+var called_feed   = false;
+var called_sparks = false;
+var called_hot    = false;
 
 function start() {
 	// Load Config, if any
@@ -184,6 +189,11 @@ function showSaved() {
 						});
 				
 						//$("#fmjs-saved-content").listview("refresh");
+						if (called_saved == false ) {
+							called_saved = true;
+						} else {
+							$("#fmjs-saved-view").listview();
+						}
 						$.mobile.navigate("#page-saved");
 					}
 				}).fail(function(){ checkAuth(0); });
@@ -277,9 +287,13 @@ function showHot(page) {
 			
 			fillLinkPlaceholder(ids_to_get, 'link' );
 			if ( page == 1) {
+				if ( called_hot == false ) {
+					called_hot = true;
+				} else {
+					$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
+				}
 				$.mobile.navigate("#page-hot");
 			} else {
-				
 				$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
 			}
 		}
@@ -374,6 +388,11 @@ function showGroup(id) {
 		}
 	});
 	$("#fmjs-group-content").data("fmjs-current-ids", item_ids_in_group);
+	if (called_group == false ) {
+		called_group = true;
+	} else {
+		$("#fmjs-group-view").listview();
+	}
 	$.mobile.navigate("#page-group");//("#fmjs-group").listview("refresh");
 
 }
@@ -406,7 +425,9 @@ function showFeed(id) {
 			var item = "";
 			item += '<li data-theme="c"><p>';
 			
-
+			var feed = _.findWhere(feeds, {id: value.feed_id});
+			var favicon = _.findWhere(favicons, {id: feed.favicon_id});
+			
 			if ( favicon.id != 1) {
 				//console.log(favicon);
 				item += '<img src="data:'+favicon.data+'" height="16" width="16" class="fmjs-favicon"/>';
@@ -419,7 +440,11 @@ function showFeed(id) {
 			$("#fmjs-feed-view").append(item);
 		}
 	});
-
+	if (called_feed == false ) {
+		called_feed = true;
+	} else {
+		$("#fmjs-feed-view").listview();
+	}
 	//$("#fmjs-feed-view").listview("refresh");
 	$.mobile.navigate("#page-feed");
 }
@@ -574,6 +599,11 @@ function showSparks() {
 		}
 	});
 	$("#fmjs-group").data("fmjs-current-ids", item_ids_in_sparks);
+	if (called_sparks == false ) {
+		called_sparks = true;
+	} else {
+		$("#fmjs-sparks-view").listview();
+	}
 	$.mobile.navigate("#page-sparks");//("#fmjs-group").listview("refresh");
 
 }
