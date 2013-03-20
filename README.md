@@ -31,6 +31,7 @@ Todo and feature list
 - [X] Show items in feed groups
 - [X] Show Hot items
 - [X] Show saved items
+- [X] Show Sparks (untested, because I don't use this group that much)
 - [X] Show a single item
 - [X] Show Favicons
 - [X] Show unread items of a single feed.
