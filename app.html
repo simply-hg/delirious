@@ -13,7 +13,6 @@
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-        <!--<script src="jquery.json-2.3.min.js"></script>-->
         <script src="jstorage.min.js"></script>
         <script src="md5.js"></script>
         <script src="app.js"></script>
@@ -41,7 +40,7 @@
                 <ul data-role="listview" data-divider-theme="d" data-inset="true">
 
                     <li data-theme="c">
-                        <a href="#page-hot" data-transition="slide" onclick="showHot(1);">
+                        <a href="#" data-transition="slide" onclick="showHot(1);">
                             Hot
                         </a>
                     </li>
@@ -49,14 +48,14 @@
                         <a href="#page-kindling" data-transition="slide">
                             Kindling
                         </a>
-                    </li>
-                    <li data-theme="c">
-                        <a href="#page-sparks" data-transition="slide">
-                            Sparks
-                        </a>
                     </li>-->
                     <li data-theme="c">
-                        <a href="#page-saved" data-transition="slide" onclick="showSaved();">
+                        <a href="#" data-transition="slide" onclick="showSparks();">
+                            Sparks
+                        </a>
+                    </li>
+                    <li data-theme="c">
+                        <a href="#" data-transition="slide" onclick="showSaved();">
                             Saved
                         </a>
                     </li>
@@ -73,11 +72,7 @@
                             Settings
                         </a>
                     </li>
-                    <li data-theme="c">
-                        <a href="#" data-transition="slide" onclick="start();">
-                            Restart App
-                        </a>
-                    </li>
+
                 </ul>
             
             </div>
@@ -113,7 +108,7 @@
         </div>
         <div data-role="fieldcontain">
             <label for="fmjs-hot-offset">
-                Starting ...
+                ... Starting ...
             </label>
             <select name="fmjs-hot-offset" id="fmjs-hot-offset" data-mini="true">
                 <option value="0">Now</option>
@@ -147,13 +142,8 @@
             	<a href="#" data-icon="check" onclick="markGroupAsRead();">Mark Read</a>
 
             </div>
-            <div data-role="content">
+            <div data-role="content" id="fmjs-group-content">
             
-                  <ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group">
-
-                    
-                </ul>          
-         
             </div>
 
         </div>
@@ -161,13 +151,14 @@
         <!-- A Feed -->
         <div data-role="page" id="page-feed" data-add-back-btn="true" data-back-btn-text="Back">
             <div data-theme="a" data-role="header">
+            	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-feed-header">
                     Fever<span style="color:red">°</span> View Feed
                 </h3>
             </div>
             <div data-role="content" id="fmjs-feed-content">
             	
-<ul data-divider-theme="d" data-inset="false" data-filter="true" id="fmjs-feed-view"></ul>
+
             </div>
 
         </div>
@@ -181,10 +172,8 @@
                 </h3>
                 <a href="#" data-icon="refresh" onclick="showSaved();">Refresh</a>
             </div>
-            <div data-role="content">
-				<ul id="fmjs-saved-content" data-role="listview" data-divider-theme="d" data-inset="false" data-filter="true">
+            <div data-role="content" id="fmjs-saved-content">
 				
-				</ul>
             </div>
 
         </div>
@@ -192,30 +181,12 @@
         <!-- Sparks -->
         <div data-role="page" id="page-sparks" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header">
+            	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-sparks-header">
                     Fever<span style="color:red">°</span> Sparks
                 </h3>   </div>
-            <div data-role="content">
-            
-            
-         
-            </div>
+            <div data-role="content" id="fmjs-sparks-content">
 
-        </div>
-         <!--Restart page -->
-        <div data-role="page" id="page-restart" data-add-back-btn="true" data-back-btn-text="Main">
-            <div data-theme="a" data-role="header">
-                <h3 id="fmjs-header">
-                    Fever<span style="color:red">°</span> Mobile
-                </h3>
-            </div>
-            <div data-role="content">
-  
-                <a id="fmjs-save-settings" data-role="button" data-icon="check" href="#page-home">
-                    Restart
-                </a>
-
-         
             </div>
 
         </div>
@@ -252,10 +223,10 @@
                         <input name="fmjs-password" id="fmjs-password" placeholder="" value="" type="password" />
                     </fieldset>
                 </div>
-                <a data-role="button" data-icon="refresh" href="javascript:refreshFavicons()">
+                <a data-role="button" data-icon="refresh" href="#" onclick="refreshFavicons();">
                     Refresh Favicons
                 </a>
-                <a data-role="button" data-icon="check" href="javascript:saveSettings()">
+                <a data-role="button" data-icon="check" href="#" onclick="saveSettings();">
                     Save Settings
                 </a>
 
@@ -266,6 +237,10 @@
                  
                  <h1>Settings</h1>
 <p>none so far</p>
+		<h1>Log out</h1>
+		        <a data-role="button" data-icon="delete" href="#" onclick="logout();">
+                    Log out and delete data
+                </a>
 				<h1>Copyright and Support Information</h1>
 
 				<p><a href="http://www.feedafever.com/" target="_blank">Fever</a><span style="color:red">°</span>, its website and all related files are copyright &copy; 2008-2013 <a href="http://shauninman.com/" target="_blank">Shaun Inman</a>.</p>
