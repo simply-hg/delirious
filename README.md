@@ -33,7 +33,7 @@ Todo and feature list
 - [X] Show saved items
 - [X] Show a single item
 - [X] Show Favicons
-- [ ] Show unread items of a single feed. This works, but there is an optical glitch due to an odd behaviour of jquery mobile.
+- [X] Show unread items of a single feed.
 - [X] Show more info on local hot links
 - [X] Links look ugly. Somewhat fixed.
 - [X] Implement a login workflow, i.e. alert when user is not logged in and stuff. Partly finished.
