@@ -49,11 +49,7 @@
                             Kindling
                         </a>
                     </li>
-				<li data-theme="c">
-                        <a href="#" data-transition="slide" onclick="showAllFeeds();">
-                            All Feeds
-                        </a>
-                    </li>
+
                     <li data-theme="c">
                         <a href="#" data-transition="slide" onclick="showSparks();">
                             Sparks
@@ -62,6 +58,11 @@
                     <li data-theme="c">
                         <a href="#" data-transition="slide" onclick="showSaved();">
                             Saved
+                        </a>
+                    </li>			
+                    <li data-theme="c">
+                        <a href="#" data-transition="slide" onclick="showAllFeeds();">
+                            All Feeds
                         </a>
                     </li>
                 </ul>
@@ -87,7 +88,7 @@
         <!-- Hot-view -->
         <div data-role="page" id="page-hot" data-add-back-btn="true" data-back-btn-text="Main">
             <div data-theme="a" data-role="header" data-position="fixed">
-            	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
+            	<a href="#" data-icon="arrow-l" onclick="window.history.back();" data-theme="a">Back</a>
                 <h3 id="fmjs-header">
                     Fever<span style="color:red">°</span> Hot Feeds
                 </h3>
@@ -113,7 +114,7 @@
         </div>
         <div data-role="fieldcontain">
             <label for="fmjs-hot-offset">
-                ... Starting ...
+                ... starting ...
             </label>
             <select name="fmjs-hot-offset" id="fmjs-hot-offset" data-mini="true">
                 <option value="0">Now</option>
@@ -144,7 +145,7 @@
                 <h3 id="fmjs-group-header">
                     Fever<span style="color:red">°</span> Custom Group
                 </h3>
-            	<a href="#" data-icon="check" data-theme="b" onclick="markGroupAsRead();">Mark Read</a>
+            	<a href="" data-icon="check" data-theme="b" onclick="markGroupAsRead();">Mark Read</a>
 
             </div>
             <div data-role="content" id="fmjs-group-content">
@@ -152,7 +153,21 @@
             </div>
 
         </div>
+        <!-- Kindling -->
+        <div data-role="page" id="page-kindling" data-add-back-btn="true" data-back-btn-text="Main">
+            <div data-theme="a" data-role="header">
+            	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
+                <h3 id="fmjs-group-header">
+                    Fever<span style="color:red">°</span> Kindling
+                </h3>
+            	<a href="" data-icon="check" data-theme="b" onclick="markKindlingRead();">Mark Read</a>
 
+            </div>
+            <div data-role="content" id="fmjs-kindling-content">
+            
+            </div>
+
+        </div>
         <!-- A Feed -->
         <div data-role="page" id="page-feed" data-add-back-btn="true" data-back-btn-text="Back">
             <div data-theme="a" data-role="header">
@@ -160,6 +175,7 @@
                 <h3 id="fmjs-feed-header">
                     Fever<span style="color:red">°</span> View Feed
                 </h3>
+                <a href="" data-icon="check" data-theme="b" onclick="markFeedAsRead();">Mark Read</a>
             </div>
             <div data-role="content" id="fmjs-feed-content">
             	
@@ -262,7 +278,7 @@
         <h3 id="fmjs-feed-title">
             Feed-Name
         </h3>
-        <a href="#" data-icon="check" data-theme="b" onclick="saveCurrentItem();">Save</a>
+        <a data-icon="star" data-theme="b" onclick="saveCurrentItem();" id="fmjs-single-btn-save">Save</a>
     </div>
     <div data-role="content">
         <h2 id="fmjs-single-title">
