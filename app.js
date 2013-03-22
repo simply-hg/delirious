@@ -9,6 +9,9 @@ var called_saved  = false;
 var called_feed   = false;
 var called_sparks = false;
 var called_hot    = false;
+var called_all_feeds = false;
+var loading = 0;
+var auth_success = false;
 
 function start() {
 	// Load Config, if any
@@ -18,16 +21,19 @@ function start() {
 	// test-auth
 	$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
 		if ( checkAuth(data.auth) ) {
+			auth_success = true;
 			// Get groups and build them
+			showHideLoader("start");
 			$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
+				showHideLoader("stop");
 				if ( checkAuth(data.auth) ) {
-				
+					
 					groups = _.sortBy(data.groups, "title");
 					feeds_groups = data.feeds_groups;
 					createGroups(false);
 					$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
 						if ( checkAuth(data.auth) ) {
-							feeds = data.feeds;
+							feeds = _.sortBy(data.feeds, "title");
 							refreshItems();
 						}
 					});
@@ -36,20 +42,22 @@ function start() {
 
 		}
 			
-	}).fail(function(){ checkAuth(0); });
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	
 }
 
 function refreshItems() {
 	console.log("Refreshing items");
+	showHideLoader("start");
 	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			var ids = data.unread_item_ids.split(',');
 			//console.log(ids);
 			items = [];
 			loadItems(ids);
 		}
-	}).fail(function(){ checkAuth(0); });
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
 function loadItems(ids) {
@@ -64,7 +72,9 @@ function loadItems(ids) {
 		var rest = [];
 	}
 	var get_ids = first.join(",");
+	showHideLoader("start");
 	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			$.each(data.items, function(index, value) {
 				// Save each item in cache
@@ -90,13 +100,15 @@ function getGroupID(feed_id) {
 
 function createGroups(refresh) {	
 	if ( refresh == true ) {
+		showHideLoader("start");
 		$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
+			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				groups = _.sortBy(data.groups, "title");
 				feeds_groups = data.feeds_groups.split(",");
 				createGroups(false);
 			}
-		}).fail(function(){ checkAuth(0); });
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	} else {
 		$("#fmjs-groups").empty();
 		$("#fmjs-groups").listview( "refresh" );
@@ -148,7 +160,8 @@ function saveSettings() {
 	} else {
 		return false;
 	}
-	$.mobile.navigate("page-home");
+	//$.mobile.changePage("#page-sparks");
+	$.mobile.changePage("#page-home", {transition: "slide"});
 	start();
 }
 
@@ -156,16 +169,20 @@ function saveSettings() {
 function showSaved() {
 	//$("#fmjs-saved-content").html("");
 	//$("#fmjs-saved-content").listview();
+	showHideLoader("start");
 	$.post(fm_url + "?api&saved_item_ids", { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 
 			$("#fmjs-saved-content").empty();
-			$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="d" data-inset="false" data-filter="true"></ul>');
+			$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true"></ul>');
 			
 			//$("#fmjs-saved-content").listview("refresh");
 			if ( data.saved_item_ids != "") {
 				//console.log(data.saved_item_ids);
+				showHideLoader("start");
 				$.post(fm_url + "?api&items&with_ids=" + data.saved_item_ids, { api_key: fm_key }).done(function(data) {
+					showHideLoader("stop");
 					if ( checkAuth(data.auth) ) {
 						var sorted = _.sortBy(data.items, "created_on_time");
 						$.each(sorted, function(index, value) {
@@ -175,7 +192,7 @@ function showSaved() {
 								
 								var feedname = _.findWhere(feeds, {id: value.feed_id});
 								var favicon = _.findWhere(favicons, {id: feedname.favicon_id});
-								if (favicon != 0 ) {
+								if (favicon != 1 ) {
 									item += '<img src="data:'+favicon.data+'" height="16" width="16" class="fmjs-favicon"/>';
 								}  else {
 									item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
@@ -194,13 +211,14 @@ function showSaved() {
 						} else {
 							$("#fmjs-saved-view").listview();
 						}
-						$.mobile.navigate("#page-saved");
+						//$.mobile.changePage("#page-sparks");
+						$.mobile.changePage("#page-saved", {transition: "slide"});
 					}
-				}).fail(function(){ checkAuth(0); });
+				}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 
 			}
 		}
-	}).fail(function(){ checkAuth(0); });
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
 function showHot(page) {
@@ -223,8 +241,9 @@ function showHot(page) {
 	
 	//console.log("Range: "+range);
 	//console.log("Offset: "+offset);
-	
+	showHideLoader("start");
 	$.post(fm_url + "?api&links&offset="+offset+"&range="+range+"&page="+page, { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 		
 			load_ids = '';
@@ -292,12 +311,13 @@ function showHot(page) {
 				} else {
 					$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
 				}
-				$.mobile.navigate("#page-hot");
+				//$.mobile.changePage("#page-sparks");
+				$.mobile.changePage("#page-hot", {transition: "slide"});
 			} else {
 				$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
 			}
 		}
-	}).fail(function(){ checkAuth(0); });
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
 function fillLinkPlaceholder(placeholder_ids, class_prefix) {
@@ -311,7 +331,9 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 		var rest = [];
 	}
 	var get_ids = first.join(",");
+	showHideLoader("start");
 	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
 		if (checkAuth(data.auth) ) {
 			$.each(data.items, function(index, value) {
 				$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
@@ -325,7 +347,7 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 				$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#" onclick="showFeed('+$.trim(feedname.id)+');">'+_.escape(feedname.title)+'</a>');
 				//var feedname = _.findWhere(feeds, {id: value.feed_id});
 				var favicon = _.findWhere(favicons, {id: feedname.favicon_id});
-				if (favicon != 0 ) {
+				if (favicon != 1 ) {
 					$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").attr("src", "data:"+favicon.data);
 				}  else {
 					item += '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
@@ -334,7 +356,7 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 			});
 		
 		}
-	}).fail(function(){ checkAuth(0); });
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	
 	if ( rest.length > 0 ) {
 		fillLinkPlaceholder(rest, class_prefix);
@@ -393,7 +415,8 @@ function showGroup(id) {
 	} else {
 		$("#fmjs-group-view").listview();
 	}
-	$.mobile.navigate("#page-group");//("#fmjs-group").listview("refresh");
+	//$.mobile.changePage("#page-sparks");
+	$.mobile.changePage("#page-group", {transition: "slide"});//("#fmjs-group").listview("refresh");
 
 }
 
@@ -402,13 +425,14 @@ function markGroupAsRead() {
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
 	console.log(data);
 	markItemsRead(data);
-	$.mobile.navigate("#page-home");
+	//$.mobile.changePage("#page-sparks");
+	$.mobile.changePage("#page-home", {transition: "slide"});
 }
 
 function showFeed(id) {
 	//$("#fmjs-feed-view").listview();
 	$("#fmjs-feed-content").empty();
-	$("#fmjs-feed-content").append('<ul data-divider-theme="d" data-inset="false" data-filter="true" id="fmjs-feed-view" data-role="listview"></ul>');
+	$("#fmjs-feed-content").append('<ul data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feed-view" data-role="listview"></ul>');
 	
 	var feed_info = _.findWhere(feeds, {id: id});
 	
@@ -446,18 +470,21 @@ function showFeed(id) {
 		$("#fmjs-feed-view").listview();
 	}
 	//$("#fmjs-feed-view").listview("refresh");
-	$.mobile.navigate("#page-feed");
+	//$.mobile.changePage("#page-sparks");
+	$.mobile.changePage("#page-feed", {transition: "slide"});
 }
 
 
 function refreshFavicons() {
+	showHideLoader("start");
 	$.post(fm_url + "?api&favicons", { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			favicons = data.favicons;
 			$.jStorage.set("fmjs-favicons", favicons);
 			console.log("Favicons refreshed");
 		}
-	});
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
 function showSingleItem(id) {
@@ -467,11 +494,13 @@ function showSingleItem(id) {
 		console.log("cache hit");
 		renderSingleItem(item);
 	} else {
-	$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
-		if ( checkAuth(data.auth) ) {
-			renderSingleItem(data.items[0]);
-		}
-	}).fail(function(){ checkAuth(0); });
+		showHideLoader("start");
+		$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
+			showHideLoader("stop");
+			if ( checkAuth(data.auth) ) {
+				renderSingleItem(data.items[0]);
+			}
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
 }
 function saveCurrentItem() {
@@ -482,16 +511,47 @@ function renderSingleItem(data) {
 	$("#fmjs-single-content").html(data.html);
 	$("#fmjs-single-content").data("fmjs-single-item-current", data.id);
 	$("#fmjs-single-title").html(_.escape(data.title));
-	$("#fmjs-single-author").html(_.escape(data.author));
+	//$("#fmjs-single-author").html(_.escape(data.author));
 	$("#fmjs-single-url").attr("href", data.url);
-		
+	var meta = '';
+	if (data.author) {
+		meta += 'by ' + data.author + ' ';
+	}
+	meta += 'on ' + renderDate("long", data.created_on_time);
+	$("#fmjs-single-meta").html(_.escape(meta));
 	var feedname = _.findWhere(feeds, {id: data.feed_id});
 	//console.log(feedname[0].favicon_id);
 	$("#fmjs-feed-title").html(_.escape(feedname.title));
-	$("#fmjs-single-feedname").html(_.escape(feedname.title));
+
+
+	var favicon = _.findWhere(favicons, {id: feedname.favicon_id});
+	if ( favicon.id != 1) {
+		//console.log(favicon);
+		favicon_img = '<img src="data:'+favicon.data+'" height="16" width="16" class="fmjs-favicon"/>';
+	} else {
+		favicon_img = '<img src="feed-icon-generic.png" height="16" width="16" class="fmjs-favicon"/>';
+	}
+			
+	$("#fmjs-single-feedname").html(favicon_img + _.escape(feedname.title));
+	$("#fmjs-single-feedname").attr("onclick", "showFeed("+data.feed_id+");");
 	console.log(data.id);
 	markItemsRead(data.id.toString());
-	$.mobile.navigate("#page-single");
+	//$.mobile.changePage("#page-sparks");
+	$.mobile.changePage("#page-single", {transition: "slide"});
+}
+
+function renderDate(how, timestamp) {
+	if ( how == "long") {
+		var date = new Date(timestamp*1000);
+		var month =  date.getMonth();
+		month++;
+		var minutes = date.getMinutes();
+		if (minutes < 10 ) {
+			minutes = "0"+minutes;
+		}
+		var return_date = date.getDate() + '.' + month + '.' + date.getFullYear() + ' @ ' + date.getHours()+ ':' + minutes;
+		return return_date;
+	}
 }
 
 function markItemsRead(ids) {
@@ -545,13 +605,22 @@ function checkAuth(auth) {
 	if ( auth == 1 ) {
 		return true;
 	} else {
-		console.log("Forbidden");
-		alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");	
-		$.mobile.navigate("#page-settings");
-		return false;
+		if ( auth_success == true ) {
+			// it was once successful, so it's probably a network issue,
+			// a stop or anything else, just log it, and don't do anything at all.
+			// an alert would be ok too, but this might be unwise, as 
+			// initial loading can happen quite often...
+			console.log("Probably stopped or network issue.");
+		} else {
+			console.log("Forbidden");
+			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");	
+
+			$.mobile.changePage("#page-settings", {transition: "slide"});
+			return false;		
+		}
+
 	}
 }
-
 
 function showSparks() {
 	//var entries = _.where(items, {feed_id: id});
@@ -604,7 +673,7 @@ function showSparks() {
 	} else {
 		$("#fmjs-sparks-view").listview();
 	}
-	$.mobile.navigate("#page-sparks");//("#fmjs-group").listview("refresh");
+	$.mobile.changePage("#page-sparks", {transition: "slide"});
 
 }
 
@@ -618,4 +687,57 @@ function logout() {
 	fm_user  = '';
 	favicons = '';
 	start();
+}
+
+function showAllFeeds() {
+	$("#fmjs-all-feeds-content").empty();
+	$("#fmjs-all-feeds-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-all-feeds-view"></ul>');
+	
+	$.each(feeds, function(index, value){
+		//console.log(value);
+		var item = '';
+		item += '<li>';
+		item += '<a href="showFeed('+value.id+')">';
+			var favicon = _.findWhere(favicons, {id: value.favicon_id});
+			if ( favicon.id != 1) {
+				//console.log(favicon);
+				item += '<img src="data:'+favicon.data+'" height="16" width="16"  class="ui-li-icon ui-corner-none"/>';
+			} else {
+				item += '<img src="feed-icon-generic.png" height="16" width="16"  class="ui-li-icon ui-corner-none"/>';
+			}
+		
+		item += value.title+'</a>';
+		item += '</li>';
+
+		$("#fmjs-all-feeds-view").append(item);
+		
+	});
+	
+	if (called_all_feeds == false ) {
+		called_all_feeds = true;
+	} else {
+		$("#fmjs-all-feeds-view").listview();
+	}
+	//$.mobile.changePage("#page-sparks");
+	$.mobile.changePage("#page-all-feeds", {transition: "slide"});
+}
+
+function showHideLoader(state) {
+	if ( state == "start" ) {
+		loading++;
+	} else {
+		loading--;
+	}
+	
+	if ( loading == 0 ) {
+		$.mobile.loading( "hide" );
+	}
+	
+	if ( loading == 1 && state == "start") {
+		$.mobile.loading( "show", {
+			text: "Loading",
+			textVisible: true,
+			theme: "b",
+		});
+	}
 }
