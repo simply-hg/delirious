@@ -33,7 +33,7 @@
                 <h3 id="fmjs-header">
                     Fever<span style="color:red">°</span> Mobile
                 </h3>
-                <a href="#" data-icon="refresh" onclick="refreshItems();" class="ui-btn-right">Refresh Items</a>
+                <a href="#" data-icon="refresh" onclick="refreshItems();" data-theme="b" class="ui-btn-right">Refresh Items</a>
             </div>
             <div data-role="content">
 <h1>Fever<span style="color:red">°</span> System Groups</h1>
@@ -44,11 +44,16 @@
                             Hot
                         </a>
                     </li>
-                    <!--<li data-theme="c">
-                        <a href="#page-kindling" data-transition="slide">
+                    <li data-theme="c">
+                        <a href="#" data-transition="slide" onclick="showKindling();">
                             Kindling
                         </a>
-                    </li>-->
+                    </li>
+				<li data-theme="c">
+                        <a href="#" data-transition="slide" onclick="showAllFeeds();">
+                            All Feeds
+                        </a>
+                    </li>
                     <li data-theme="c">
                         <a href="#" data-transition="slide" onclick="showSparks();">
                             Sparks
@@ -86,7 +91,7 @@
                 <h3 id="fmjs-header">
                     Fever<span style="color:red">°</span> Hot Feeds
                 </h3>
-                <a href="#" data-icon="refresh" onclick="showHot(1);">Refresh</a>
+                <a href="#" data-icon="refresh" onclick="showHot(1);" data-theme="b">Refresh</a>
             </div>
             <div data-role="content">
             	<div>
@@ -139,7 +144,7 @@
                 <h3 id="fmjs-group-header">
                     Fever<span style="color:red">°</span> Custom Group
                 </h3>
-            	<a href="#" data-icon="check" onclick="markGroupAsRead();">Mark Read</a>
+            	<a href="#" data-icon="check" data-theme="b" onclick="markGroupAsRead();">Mark Read</a>
 
             </div>
             <div data-role="content" id="fmjs-group-content">
@@ -170,7 +175,7 @@
                 <h3 id="fmjs-saved-header">
                     Saved Items
                 </h3>
-                <a href="#" data-icon="refresh" onclick="showSaved();">Refresh</a>
+                <a href="#" data-icon="refresh" data-theme="b" onclick="showSaved();">Refresh</a>
             </div>
             <div data-role="content" id="fmjs-saved-content">
 				
@@ -192,7 +197,7 @@
         </div>
         
         <!-- Settings -->
-        <div data-role="page" id="page-settings" data-add-back-btn="true" data-back-btn-text="Main">
+        <div data-role="page" id="page-settings" data-add-back-btn="true" data-back-btn-text="Home">
                     <div data-theme="a" data-role="header" data-position="fixed">
                 <h3 id="fmjs-header">
                     Fever<span style="color:red">°</span> Mobile Settings
@@ -266,20 +271,32 @@
 
  
         <div id="fmjs-single-content"></div>
-        <div>
-            <a id="fmjs-single-feedname" href="" data-transition="slide">
+        <div class="fmjs-single-below-content">posted on
+            <a id="fmjs-single-feedname" href="" data-transition="slide" class="fmjs-hot-links" onclick="showFeed();">
                 (Feed-Name)
             </a>
         </div>
-        <div>
-            <a id="fmjs-single-author" href="" data-transition="fade">
-                (Autor)
-            </a>
-        </div>
-        <a data-role="button" target="_blank" href="" data-icon="forward"
-        data-iconpos="left" id="fmjs-single-url">
+        <div id="fmjs-single-meta" class="fmjs-single-below-content"></div>
+
+
+        <a data-role="button" target="_blank" href="#" data-icon="forward" data-iconpos="left" id="fmjs-single-url">
             Open URL
         </a>
+
+    </div>
+
+</div>
+
+<div data-role="page" id="page-all-feeds" data-add-back-btn="true" data-back-btn-text="Back">
+    <div data-theme="a" data-role="header" data-position="fixed">
+    <a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
+        <h3 id="fmjs-all-feeds-title">
+            All Feeds
+        </h3>
+   
+    </div>
+    <div data-role="content" id="fmjs-all-feeds-content">
+
     </div>
 
 </div>
