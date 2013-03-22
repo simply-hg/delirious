@@ -2,7 +2,7 @@
 	font-weight:bold;
 }
 
-.fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited {
+.fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited, #fmjs-single-content a {
 	text-decoration:none;
 	color:steelblue;
 }
@@ -12,4 +12,22 @@ img.fmjs-favicon {
 	border:1px solid #ddd;
 	margin-right: 5px;
 	vertical-align:middle;
+}
+
+#fmjs-single-content :link, #fmjs-single-content :visited {
+	text-decoration:none;
+	color:steelblue;
+}
+
+#fmjs-single-content {
+	border:1px solid #ccc;
+	padding:10px;
+	border-radius:1em;
+	background-color:white;
+}
+
+.fmjs-single-below-content {
+	padding-top:0.3em;
+	padding-right:1em;
+	text-align:right;
 }
