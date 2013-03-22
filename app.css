@@ -1,6 +1,9 @@
 .fmjs-item-is-unread {
 	font-weight:bold;
 }
+.fmjs-item-is-read {
+	font-weight:normal;
+}
 
 .fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited, #fmjs-single-content a {
 	text-decoration:none;
