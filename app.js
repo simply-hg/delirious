@@ -4,14 +4,17 @@ var feeds = {};
 var feeds_groups = {};
 var favicons = {};
 var items = [];
+var saved_items = [];
 var called_group  = false;
 var called_saved  = false;
 var called_feed   = false;
 var called_sparks = false;
 var called_hot    = false;
 var called_all_feeds = false;
+var called_kindling  = false;
 var loading = 0;
 var auth_success = false;
+var last_fmjs_refresh = 0;
 
 function start() {
 	// Load Config, if any
@@ -55,6 +58,7 @@ function start() {
 function refreshItems() {
 	console.log("Refreshing items");
 	createGroups(true);
+	last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
 	showHideLoader("start");
 	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
 		showHideLoader("stop");
@@ -313,8 +317,11 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 		if (checkAuth(data.auth) ) {
 			$.each(data.items, function(index, value) {
 				$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
+
 				if ( value.is_read == 0 ) {
 					$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-unread");
+				} else {
+					$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-read");
 				}
 				$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
 
@@ -338,6 +345,7 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 function showGroup(id) {
 
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
+	$("#fmjs-group-content").removeData("fmjs-current-group-id");
 	$("#fmjs-group-content").empty();
 	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
 
@@ -370,6 +378,7 @@ function showGroup(id) {
 		}
 	});
 	$("#fmjs-group-content").data("fmjs-current-ids", item_ids_in_group);
+	$("#fmjs-group-content").data("fmjs-current-group-id", id);
 	if (called_group == false ) {
 		called_group = true;
 	} else {
@@ -381,39 +390,53 @@ function showGroup(id) {
 }
 
 function markGroupAsRead() {
-	var data = $("#fmjs-group-content").data("fmjs-current-ids");
+	var data     = $("#fmjs-group-content").data("fmjs-current-ids");
+	var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
-	console.log(data);
-	markItemsRead(data);
-
+	$("#fmjs-group-content").removeData("fmjs-current-group-id");
+	markGroupRead("group", group_id, data);//what, id, ids
 	$.mobile.changePage("#page-home", {transition: "slide"});
 }
+
+function markFeedAsRead() {
+	var data     = $("#fmjs-feed-content").data("fmjs-feed-item-ids");
+	var feed_id = $("#fmjs-feed-content").data("fmjs-feed-id");
+	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
+	$("#fmjs-feed-content").removeData("fmjs-feed-id");
+	markGroupRead("feed", feed_id, data);//what, id, ids
+	$.mobile.changePage("#page-home", {transition: "slide"});
+}
+
 
 function showFeed(id) {
 
 	$("#fmjs-feed-content").empty();
 	$("#fmjs-feed-content").append('<ul data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feed-view" data-role="listview"></ul>');
+	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
+	$("#fmjs-feed-content").removeData("fmjs-feed-id");	
+	called_feed_info = _.findWhere(feeds, {id: id});
 	
-	var feed_info = _.findWhere(feeds, {id: id});
-	
-	$("#fmjs-feed-header").html(feed_info.title);
-	
+	$("#fmjs-feed-header").html(called_feed_info.title);
+	feed_items_shown = '';
 	var items_to_show = _.where(items, {feed_id: id});
 
 	$.each(items_to_show, function(index, value) {
 
 		if ( value.is_read == "0" ) {
+			feed_items_shown += value.id + ',';
 			var item = "";
 			item += '<li data-theme="c"><p>';
 			
-			var feed = _.findWhere(feeds, {id: value.feed_id});
-			item += getFavicon(feed);
+			item += getFavicon(called_feed_info);
 
 			item += '<a href="#" class="fmjs-hot-links" onclick="showSingleItem('+value.id+');">' + value.title + '</a>';
 			item += '</p></li>';
 			$("#fmjs-feed-view").append(item);
 		}
 	});
+	
+	$("#fmjs-feed-content").data("fmjs-feed-item-ids", feed_items_shown);
+	$("#fmjs-feed-content").data("fmjs-feed-id", id);
 	if (called_feed == false ) {
 		called_feed = true;
 	} else {
@@ -438,7 +461,7 @@ function refreshFavicons() {
 
 function showSingleItem(id) {
 	var item = _.findWhere(items, {id: id});
-	console.log(item);
+	//console.log(item);
 	if ( item ) {
 		console.log("cache hit");
 		renderSingleItem(item);
@@ -452,10 +475,26 @@ function showSingleItem(id) {
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
 }
+
 function saveCurrentItem() {
 	var id = $("#fmjs-single-content").data("fmjs-single-item-current");
 	saveItem(id);
+	$("#fmjs-single-btn-save .ui-btn-text").html("Unsave");
+	$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
+	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "delete" });
+
+	return false;
 }
+function unsaveCurrentItem() {
+	var id = $("#fmjs-single-content").data("fmjs-single-item-current");
+	unsaveItem(id);
+	$("#fmjs-single-btn-save .ui-btn-text").html("Save");
+	$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
+	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "star" });
+
+	return false;
+}
+
 function renderSingleItem(data) {
 	$("#fmjs-single-content").html(data.html);
 	$("#fmjs-single-content").data("fmjs-single-item-current", data.id);
@@ -478,7 +517,11 @@ function renderSingleItem(data) {
 	$("#fmjs-single-feedname").attr("onclick", "showFeed("+data.feed_id+");");
 	console.log(data.id);
 	markItemsRead(data.id.toString());
-
+	if ( data.is_saved == 1 ) {
+		$("#fmjs-single-btn-save .ui-btn-text").html("Unsave");
+		$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
+		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "delete" });		
+	}
 	$.mobile.changePage("#page-single", {transition: "slide"});
 }
 
@@ -504,7 +547,7 @@ function markItemsRead(ids) {
 		// a comma seperated string
 		ids_to_mark_read = ids.split(",");
 	}
-	console.log(ids_to_mark_read);
+
 	items = _.reject(items, function(item) {
 	
 		if ( $.inArray(item.id.toString(), ids_to_mark_read ) == -1 )  {
@@ -515,11 +558,52 @@ function markItemsRead(ids) {
 		}
 	});
 	
-	
+
 	$.each(ids_to_mark_read, function(index, value) {
 		markItemRead(value);
 	});	
 
+}
+function markKindlingRead() {
+	items = [];
+	showHideLoader("start");
+	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_refresh  }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			console.log("Kindling marked as read");
+			$.mobile.changePage("#page-home", {transition: "slide"});
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
+function markGroupRead(what, id, ids) {
+	if ( _.isArray(ids) ) {
+		// An array of ids
+		ids_to_mark_read = ids;
+	} else {
+		// a comma seperated string
+		ids_to_mark_read = ids.split(",");
+	}
+
+	items = _.reject(items, function(item) {
+	
+		if ( $.inArray(item.id.toString(), ids_to_mark_read ) == -1 )  {
+			return false;
+		} else {
+			console.log("reject");
+			return true;
+		}
+	});
+	
+	if ( $.trim(id) != "") {
+		showHideLoader("start");
+		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_refresh  }).done(function(data) {
+			showHideLoader("stop");
+			if ( checkAuth(data.auth) ) {
+				console.log("Group marked as read");
+				$.mobile.changePage("#page-home", {transition: "slide"});
+			}
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+	}
 }
 
 function markItemRead(id) {
@@ -541,6 +625,18 @@ function saveItem(id) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				console.log("Saved item on server.");
+			}
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+	}
+}
+
+function unsaveItem(id) {
+	if ( $.trim(id) != "") {
+		showHideLoader("start");
+		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "unsaved", id: $.trim(_.escape(id))  }).done(function(data) {
+			showHideLoader("stop");
+			if ( checkAuth(data.auth) ) {
+				console.log("Unsaved item on server.");
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
@@ -625,7 +721,7 @@ function showAllFeeds() {
 
 		var item = '';
 		item += '<li>';
-		item += '<a href="showFeed('+value.id+')">';
+		item += '<a onclick="showFeed('+value.id+')">';
 		
 		item += getFavicon(value, "ui-li-icon ui-corner-none");
 		
@@ -663,6 +759,37 @@ function showHideLoader(state) {
 			theme: "b",
 		});
 	}
+}
+
+function showKindling() {
+	$("#fmjs-kindling-content").empty();
+	$("#fmjs-kindling-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-kindling-view"></ul>');
+
+	$.each(items, function(index, value) {
+		if ( value.is_read == 0 ) {
+
+			var item = "";
+			item += '<li data-theme="c"><p>';
+			
+			var feed = _.findWhere(feeds, {id: value.feed_id});
+			item += getFavicon(feed);
+
+			item += '<strong><a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += ' by <a href="#" onclick="showFeed('+feed.id+');" class="fmjs-hot-links">'+feed.title+'</a>';
+			item += '</p></li>';
+
+			$("#fmjs-kindling-view").append(item);
+		}
+	});
+
+	if (called_kindling == false ) {
+		called_kindling = true;
+	} else {
+		$("#fmjs-kindling-view").listview();
+	}
+
+	$.mobile.changePage("#page-kindling", {transition: "slide"});
+
 }
 
 function getFavicon(feed, css_classes) {
