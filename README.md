@@ -3,7 +3,7 @@ fever-js
 
 This is a Javascript client for the feed reader [Fever](http://www.feedafever.com/) by Shaun Inman. It is started, because a mobile interface is not coming to Android any time soon. While there is [Meltdown](https://github.com/phubbard/Meltdown), an excellent client on Android, it currently does not show Hot items. And what about all those other plattforms like Windows Phone, BB10, Firefox OS? If this project gets it right, they all benefit from a nice and usable fever-client.
 
-My code currently uses [jQuery Mobile](http://www.jquerymobile.com/), [undescore.js](http://underscorejs.org/) and [jStorage](http://www.jstorage.info/).
+My code currently uses [jQuery Mobile](http://www.jquerymobile.com/), [undescore.js](http://underscorejs.org/) and [jStorage](http://www.jstorage.info/). It hasn't been tested for browser compatibility. It works on Dolphin (with Jetpack) and on the desktop version of Firefox. Other browsers sometimes fail to log in. This has to be checked in detail.
 
 How to run it
 =============
