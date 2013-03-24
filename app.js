@@ -5,6 +5,7 @@ var feeds_groups = {};
 var favicons = {};
 var items = [];
 var saved_items = [];
+var session_unread_items = [];
 var called_group  = false;
 var called_saved  = false;
 var called_feed   = false;
@@ -167,52 +168,81 @@ function saveSettings() {
 	start();
 }
 
-
-function showSaved() {
-
+function refreshSavedItems() {
 	showHideLoader("start");
 	$.post(fm_url + "?api&saved_item_ids", { api_key: fm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
-
-			$("#fmjs-saved-content").empty();
-			$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true"></ul>');
-
+			$.jStorage.set("fmjs-local-items", []);
 			if ( data.saved_item_ids != "") {
-
-				showHideLoader("start");
-				$.post(fm_url + "?api&items&with_ids=" + data.saved_item_ids, { api_key: fm_key }).done(function(data) {
-					showHideLoader("stop");
-					if ( checkAuth(data.auth) ) {
-						var sorted = _.sortBy(data.items, "created_on_time");
-						$.each(sorted, function(index, value) {
-							if ( value.is_saved == "1" ) {
-								var item = "";
-								item += '<li data-theme="c"><p>';
-								
-								var feedname = _.findWhere(feeds, {id: value.feed_id});
-								item += getFavicon(feedname);
-								
-								item += '<a href="#" class="fmjs-hot-links" onclick="showSingleItem('+value.id+')">' + value.title + '</a>';
-								item += ' by <a href="#" class="fmjs-hot-links" onclick="showFeed('+value.feed_id+');">'+feedname.title+'</a></p>';
-								item += '</li>';
-								$("#fmjs-saved-view").append(item);
-							}
-						});
-				
-						if (called_saved == false ) {
-							called_saved = true;
-						} else {
-							$("#fmjs-saved-view").listview();
-						}
-
-						$.mobile.changePage("#page-saved", {transition: "slide"});
-					}
-				}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-
+				var ids = data.saved_item_ids.split(',');
+				loadSavedItems(ids);
 			}
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
+
+function loadSavedItems(ids) {
+	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
+	if ( ids.length > 20 ) {
+		var first = _.first(ids, 20);
+		var rest  = _.rest(ids, 20);
+	} else {
+		var first = ids;
+		var rest = [];
+	}
+	var get_ids = first.join(",");
+	
+	showHideLoader("start");
+	$.post(fm_url + "?api&items&with_ids=" + get_ids, { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			$.each(data.items, function(index, value) {
+				var local_items = $.jStorage.get("fmjs-local-items", []);
+				local_items.push(value);
+				$.jStorage.set("fmjs-local-items", local_items);
+			});
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+	
+	if ( rest.length > 0 ) {
+		loadItems(rest);
+	} else {
+		
+	}
+	
+}
+
+function showSaved() {
+	$("#fmjs-saved-content").empty();
+	$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true"></ul>');
+	var local_items = $.jStorage.get("fmjs-local-items", []);
+	console.log(local_items);
+	if ( local_items.length > 0 ) {
+		local_items = _.sortBy(local_items, "created_on_time");
+		$.each(local_items, function(index, value) {
+			//if ( value.is_saved == "1" ) {
+
+				var item = "";
+				item += '<li data-theme="c"><p>';
+							
+				var feedname = _.findWhere(feeds, {id: value.feed_id});
+				item += getFavicon(feedname);
+						
+				item += '<a href="" class="fmjs-hot-links fmjs-item-is-read" onclick="showSingleItem('+value.id+');">' + value.title + '</a>';
+				item += ' by <a href="" class="fmjs-hot-links" onclick="showFeed('+value.feed_id+');">'+feedname.title+'</a></p>';
+				item += '</li>';
+				$("#fmjs-saved-view").append(item);
+			//}
+		});
+	}
+	if (called_saved == false ) {
+		called_saved = true;
+	} else {
+		$("#fmjs-saved-view").listview();
+	}
+	
+	$.mobile.changePage("#page-saved", {transition: "slide"});
 }
 
 function showHot(page) {
@@ -268,7 +298,7 @@ function showHot(page) {
 				for (var i=0, link_id; link_id=links[i]; i++) {
 					// item is "some", then "example", then "array"
 					// i is the index of item in the array
-					item += '<li><p><span class="fmjs-link-'+link_id+'-favicon"></span><a href="#" class="fmjs-link-'+link_id+' fmjs-hot-links" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
+					item += '<li><p><span class="fmjs-link-'+link_id+'-favicon"></span><a href="#" class="fmjs-link-'+link_id+' fmjs-hot-links fmjs-single-item-link-'+link_id+'" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links fmjs-single-item-link-'+link_id+'">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
 					id_list += link_id + ",";
 				}	
 				item += '</ul>';
@@ -370,7 +400,7 @@ function showGroup(id) {
 			var feed = _.findWhere(feeds, {id: value.feed_id});
 			item += getFavicon(feed);
 
-			item += '<strong><a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += '<a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links fmjs-item-is-unread fmjs-single-item-link-'+value.id+'">' + value.title + '</a>';
 			item += ' by <a href="#" onclick="showFeed('+feed.id+');" class="fmjs-hot-links">'+feed.title+'</a>';
 			item += '</p></li>';
 			item_ids_in_group += value.id +",";
@@ -429,7 +459,7 @@ function showFeed(id) {
 			
 			item += getFavicon(called_feed_info);
 
-			item += '<a href="#" class="fmjs-hot-links" onclick="showSingleItem('+value.id+');">' + value.title + '</a>';
+			item += '<a href="#" class="fmjs-hot-links fmjs-item-is-unread fmjs-single-item-link-'+value.id+'" onclick="showSingleItem('+value.id+');">' + value.title + '</a>';
 			item += '</p></li>';
 			$("#fmjs-feed-view").append(item);
 		}
@@ -461,7 +491,9 @@ function refreshFavicons() {
 
 function showSingleItem(id) {
 	var item = _.findWhere(items, {id: id});
-	//console.log(item);
+	//conso-le.log(item);
+	session_unread_items.push(item);
+	console.log(session_unread_items);
 	if ( item ) {
 		console.log("cache hit");
 		renderSingleItem(item);
@@ -608,6 +640,7 @@ function markGroupRead(what, id, ids) {
 
 function markItemRead(id) {
 	if ( $.trim(id) != "") {
+		$(".fmjs-single-item-link-"+id).removeClass("fmjs-item-is-unread").addClass("fmjs-item-is-read");
 		showHideLoader("start");
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "read", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
@@ -619,7 +652,36 @@ function markItemRead(id) {
 }
 
 function saveItem(id) {
-	if ( $.trim(id) != "") {
+	id = $.trim(id);
+	if ( id != "") {
+
+		console.log("checkpoint 1");
+		var local_items = $.jStorage.get("fmjs-local-items", []);
+		var item = _.findWhere(items, {id: id});
+		console.log("checkpoint 2");
+		console.log(item);
+		if ( item ) {
+			//
+			console.log("checkpoint fail in this case");
+			local_items.push(item);
+			$.jStorage.set("fmjs-local-items", local_items);
+		} else {
+			console.log("checkpoint 3");
+			console.log(session_unread_items);
+
+			item = _.findWhere(session_unread_items, {id: id});
+			console.log("checkpoint 4");
+			//console.log(item);					
+			if ( item ) {
+				console.log("checkpoint 5");
+				local_items.push(item);
+				
+				$.jStorage.set("fmjs-local-items", local_items);
+				var kjsdgfbjkdf = $.jStorage.get("fmjs-local-items", []);
+				console.log(kjsdgfbjkdf);
+			}
+			
+		}
 		showHideLoader("start");
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
@@ -632,6 +694,18 @@ function saveItem(id) {
 
 function unsaveItem(id) {
 	if ( $.trim(id) != "") {
+		var saved_items = $.jStorage.get("fmjs-local-items", []);
+		current_unsave_id = id;
+		saved_items = _.reject(saved_items, function(item) {
+			if ( item.id != current_unsave_id )  {
+				return false;
+			} else {
+				console.log("reject");
+				return true;
+			}
+		});
+		$.jStorage.set("fmjs-local-items", saved_items);
+
 		showHideLoader("start");
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "unsaved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
@@ -685,7 +759,7 @@ function showSparks() {
 			var feed = _.findWhere(feeds, {id: value.feed_id});
 			item += getFavicon(feed);
 			
-			item += '<strong><a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += '<a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links fmjs-item-is-unread fmjs-single-item-link-'+value.id+'">' + value.title + '</a>';
 			item += '</p></li>';
 			item_ids_in_sparks += value.id +",";
 			$("#fmjs-sparks-view").append(item);
@@ -706,6 +780,7 @@ function logout() {
 	$.jStorage.deleteKey("fmjs-url");
 	$.jStorage.deleteKey("fmjs-user");
 	$.jStorage.deleteKey("fmjs-favicons");
+	$.jStorage.deleteKey("fmjs-local-items");
 	fm_key   = '';
 	fm_url   = '';
 	fm_user  = '';
@@ -774,7 +849,7 @@ function showKindling() {
 			var feed = _.findWhere(feeds, {id: value.feed_id});
 			item += getFavicon(feed);
 
-			item += '<strong><a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links">' + value.title + '</a></strong>';
+			item += '<strong><a href="#" onclick="showSingleItem('+value.id+')" class="fmjs-hot-links fmjs-item-is-unread fmjs-single-item-link-'+value.id+'">' + value.title + '</a></strong>';
 			item += ' by <a href="#" onclick="showFeed('+feed.id+');" class="fmjs-hot-links">'+feed.title+'</a>';
 			item += '</p></li>';
 
