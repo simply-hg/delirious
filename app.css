@@ -5,7 +5,7 @@
 	font-weight:normal;
 }
 
-.fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited, #fmjs-single-content a {
+.fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited, #fmjs-single-content a, .fmjs-content :link {
 	text-decoration:none;
 	color:steelblue;
 }
@@ -22,13 +22,26 @@ img.fmjs-favicon {
 	color:steelblue;
 }
 
+/* integrated clearfix by: http://www.webtoolkit.info/css-clearfix.html */
 #fmjs-single-content {
 	border:1px solid #ccc;
 	padding:10px;
 	border-radius:1em;
 	background-color:white;
+	display: inline-block;
 }
 
+#fmjs-single-content:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+* html #fmjs-single-content {
+	height: 1%;
+}
 .fmjs-single-below-content {
 	padding-top:0.3em;
 	padding-right:1em;
