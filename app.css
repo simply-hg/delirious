@@ -47,3 +47,11 @@ img.fmjs-favicon {
 	padding-right:1em;
 	text-align:right;
 }
+
+.warning {
+	margin:1em;
+	background-color:white;
+	border:1px solid red;
+	border-radius:1em;
+	padding:1em;
+}
