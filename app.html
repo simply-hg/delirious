@@ -5,12 +5,25 @@
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<link rel="icon" href="touch-icon-16.png" type="image/png">
+		<!-- Adapted from: http://mathiasbynens.be/notes/touch-icons -->      
+		<!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --> 
+		<link rel="apple-touch-icon" href="touch-icon-57.png">
+		<!-- For first- and second-generation iPad: -->
+		<link rel="apple-touch-icon" sizes="72x72" href="touch-icon-72.png">
+		<!-- For iPhone with high-resolution Retina display: -->
+		<link rel="apple-touch-icon" sizes="114x114" href="touch-icon-114.png">
+		<!-- For third-generation iPad with high-resolution Retina display: -->
+		<link rel="apple-touch-icon" sizes="144x144" href="touch-icon-144.png">
+
         <title>
+        	Fever° Mobile
         </title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
         <link rel="stylesheet" href="app.css" />
 
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
         <script src="jstorage.min.js"></script>
@@ -71,6 +84,20 @@
 
                     
                 </ul>
+                <h1>Tools</h1>
+                
+
+
+                <a data-role="button" data-icon="refresh" href="" onclick="refreshSavedItems();">
+                    Refresh Saved items
+                </a>
+
+                   
+  <a data-role="button" data-icon="refresh" href="" onclick="refreshFavicons();">
+                    Refresh Favicons
+                </a>
+
+            
                 <h1>Settings</h1>
                 <ul data-role="listview" data-divider-theme="d" data-inset="true">
                     <li data-theme="c">
@@ -80,7 +107,14 @@
                     </li>
 
                 </ul>
-            
+                <ul data-role="listview" data-divider-theme="d" data-inset="true">
+                    <li data-theme="c">
+                        <a href="#page-support" data-transition="slide">
+                            Help &amp; Credits
+                        </a>
+                    </li>
+
+                </ul>            
             </div>
 
         </div>
@@ -244,9 +278,8 @@
                         <input name="fmjs-password" id="fmjs-password" placeholder="" value="" type="password" />
                     </fieldset>
                 </div>
-                <a data-role="button" data-icon="refresh" href="#" onclick="refreshFavicons();">
-                    Refresh Favicons
-                </a>
+
+
                 <a data-role="button" data-icon="check" href="#" onclick="saveSettings();">
                     Save Settings
                 </a>
@@ -257,16 +290,12 @@
                  <p><strong>Please note</strong>: In order to change your e-mail, you also need to provide your password, because your login changes with your e-mail. Your password is <strong>not stored</strong> on your device.</p>
                  
                  <h1>Settings</h1>
-<p>none so far</p>
+<p>None so far. But some are planned: store saved item on device, how many items should be shown in large lists, escape html content on single item view (tightens security, but images and such are not shown)</p>
 		<h1>Log out</h1>
 		        <a data-role="button" data-icon="delete" href="#" onclick="logout();">
                     Log out and delete data
                 </a>
-				<h1>Copyright and Support Information</h1>
 
-				<p><a href="http://www.feedafever.com/" target="_blank">Fever</a><span style="color:red">°</span>, its website and all related files are copyright &copy; 2008-2013 <a href="http://shauninman.com/" target="_blank">Shaun Inman</a>.</p>
-				<p>fever-js is <strong>not</strong> developed or endorsed by Shaun Inman, please don't bother him with bug reports, complaints or anything else regarding fever-js.</p>
-				<p>If you encounter bugs, miss features or have a comment about fever-js, go to <a href="https://github.com/simply-hg/fever-js" target="_blank">fever-js on github.com</a> and post your questions there.</p>
             </div>
 
         </div>   
@@ -295,7 +324,7 @@
         <div id="fmjs-single-meta" class="fmjs-single-below-content"></div>
 
 
-        <a data-role="button" target="_blank" href="#" data-icon="forward" data-iconpos="left" id="fmjs-single-url">
+        <a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="#" data-icon="forward" data-iconpos="left" id="fmjs-single-url">
             Open URL
         </a>
 
@@ -313,6 +342,36 @@
     </div>
     <div data-role="content" id="fmjs-all-feeds-content">
 
+    </div>
+
+</div>
+
+<div data-role="page" id="page-support" data-add-back-btn="true" data-back-btn-text="Back">
+    <div data-theme="a" data-role="header" data-position="fixed">
+    <a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
+        <h3 id="fmjs-all-feeds-title">
+           Help, Credits and Copyrights <span style="color:red">&copy;</span>
+        </h3>
+   
+    </div>
+    <div data-role="content" id="fmjs-all-feeds-content" class="fmjs-content">
+    <h1>Support, bug reports et. al.</h1>
+	<p>This app is still a work in progress. It works quite well, but has not been fully tested for security aspects and such cases.</p>
+    <p>If you encounter bugs, miss features or have a comment about fever-js, go to <a href="https://github.com/simply-hg/fever-js" target="_blank">fever-js on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to fever-js on github.com in any way you find fitting. If you want to make your own adjustments to fever-js I suggest to fork it on githib. That way your features my flow back into fever-js.</p>
+    <p>News, comments and announcements about fever-js are posted to my webpage.</p>
+    <p>You like social networks? If so, you can like fever-js and tell your friends about it on Facebook, Google+, LinkedIn or Xing. Have question about fever-js? You can send me a tweet to @simplyhg on twitter (I'm not too active there, but I receive and try to answer messages and tweets - maybe I even get more active there, who knows).</p>
+    <h1>fever-js license</h1>
+    <p>fever-js is provided as is without any guarantees. It is licensed under MIT-style terms. If you redistribute or modify it, please leave this license in place. If you use it in your project I'd be happy to hear about it. Also, I kindly ask you, to put up a link to the homepage of fever-js (simply-hg.de/fever-js/) in case you use it as a base of your own work. Thank you very much.</p>
+    <p>fever-js uses some plugins and works done by other people, which are not covered by this license. So check them out:</p>
+				<h1>Copyright Information</h1>
+
+				<p><a href="http://www.feedafever.com/" target="_blank">Fever</a><span style="color:red">°</span>, its website and all related files are copyright &copy; 2008-2013 <a href="http://shauninman.com/" target="_blank">Shaun Inman</a>.</p>
+				<p>fever-js is <strong>not</strong> developed or endorsed by Shaun Inman, please don't bother him with bug reports, complaints or anything else regarding fever-js.</p>
+				
+				<p><a href="http://www.jquery.com/" target="_blank">jQuery</a> is used under its <a href="https://jquery.org/license/" target="_blank">license terms (MIT)</a>.</p>
+				<p><a href="http://www.jstorage.info/" target="_blank">jStorage</a> is licensed under MIT-styled terms. You can <a href="http://www.jstorage.info/static/license.txt" target="_blank">find its license online</a>.</p>
+				<p>RSS icons used in this app are taken from <a href="http://commons.wikimedia.org/wiki/File:Feed-icon.svg" target="_blank">Wikimedia Commons</a> and <a href="http://www.feedicons.com/" target="_blank">feedicon.com</a>.</p>
+				<p>MD5 hashing is done with help from an implementation found on <a href="http://www.webtoolkit.info/javascript-md5.html" target="_blank">webtoolkit.info</a>. Some css code for the single item view is also from here, known as <a href="http://www.webtoolkit.info/css-clearfix.html" target="_blank">clearfix</a>. You can find <a href="http://www.webtoolkit.info/license" target="_blank">their license</a> online. </p>
     </div>
 
 </div>
