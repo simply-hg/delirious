@@ -36,6 +36,7 @@
         <script>
 			$(document).ready(function() {
 				start();
+				$("#fmjs-homescreen-message").on("click", function(e) { e.stopPropagation(); $(this).empty(); });
 			});
         </script>
     </head>
@@ -49,6 +50,7 @@
                 <a href="#" data-icon="refresh" onclick="refreshItems();" data-theme="b" class="ui-btn-right">Refresh</a>
             </div>
             <div data-role="content">
+            	<div id="fmjs-homescreen-message"></div>
 <h1>Fever<span style="color:red">°</span> System Groups</h1>
                 <ul data-role="listview" data-divider-theme="d" data-inset="true">
 
@@ -84,18 +86,7 @@
 
                     
                 </ul>
-                <h1>Tools</h1>
-                
 
-
-                <a data-role="button" data-icon="refresh" href="" onclick="refreshSavedItems();">
-                    Refresh Saved items
-                </a>
-
-                   
-  <a data-role="button" data-icon="refresh" href="" onclick="refreshFavicons();">
-                    Refresh Favicons
-                </a>
 
             
                 <h1>Settings</h1>
@@ -168,13 +159,13 @@
 				<div id="fmjs-hot-content">
 				
 				</div>
-         		<a href="#" id="fmjs-hot-more" data-role="button">Load more</a>
+         		<a href="" id="fmjs-hot-more" data-role="button" onclick="showHot(2);">Load more</a>
             </div>
 
         </div>
         <!-- A Group -->
         <div data-role="page" id="page-group" data-add-back-btn="true" data-back-btn-text="Main">
-            <div data-theme="a" data-role="header">
+            <div data-theme="a" data-role="header" data-position="fixed">
             	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-group-header">
                     Fever<span style="color:red">°</span> Custom Group
@@ -189,7 +180,7 @@
         </div>
         <!-- Kindling -->
         <div data-role="page" id="page-kindling" data-add-back-btn="true" data-back-btn-text="Main">
-            <div data-theme="a" data-role="header">
+            <div data-theme="a" data-role="header" data-position="fixed">
             	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-group-header">
                     Fever<span style="color:red">°</span> Kindling
@@ -204,7 +195,7 @@
         </div>
         <!-- A Feed -->
         <div data-role="page" id="page-feed" data-add-back-btn="true" data-back-btn-text="Back">
-            <div data-theme="a" data-role="header">
+            <div data-theme="a" data-role="header" data-position="fixed">
             	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-feed-header">
                     Fever<span style="color:red">°</span> View Feed
@@ -220,7 +211,7 @@
         
         <!-- Saved -->
         <div data-role="page" id="page-saved" data-add-back-btn="true" data-back-btn-text="Main">
-            <div data-theme="a" data-role="header">
+            <div data-theme="a" data-role="header" data-position="fixed">
             	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-saved-header">
                     Saved Items
@@ -235,7 +226,7 @@
         
         <!-- Sparks -->
         <div data-role="page" id="page-sparks" data-add-back-btn="true" data-back-btn-text="Main">
-            <div data-theme="a" data-role="header">
+            <div data-theme="a" data-role="header" data-position="fixed">
             	<a href="#" data-icon="arrow-l" onclick="window.history.back();">Back</a>
                 <h3 id="fmjs-sparks-header">
                     Fever<span style="color:red">°</span> Sparks
@@ -278,7 +269,19 @@
                         <input name="fmjs-password" id="fmjs-password" placeholder="" value="" type="password" />
                     </fieldset>
                 </div>
+                <h1>Tools</h1>
+                
 
+
+                <a data-role="button" data-icon="refresh" href="" onclick="refreshSavedItems();">
+                    Refresh Saved items
+                </a>
+
+                   
+  <a data-role="button" data-icon="refresh" href="" onclick="refreshFavicons();">
+                    Refresh Favicons
+                </a>
+                <h1>Save options</h1>
 
                 <a data-role="button" data-icon="check" href="#" onclick="saveSettings();">
                     Save Settings
