@@ -1,5 +1,5 @@
 function widgetSystemGroups() {
-  var sysgroups = '';
+	var sysgroups = '';
 
 	sysgroups += '<h2>Fever<span style="color:red">°</span> Groups</h2><ul data-role="listview" data-theme="a" data-inset="true" class="fmjs-to-listview">';
 
@@ -18,8 +18,8 @@ function widgetSystemGroups() {
 }
 
 function widgetCustomGroups() {
-	panel_custom_groups = '<h2>Groups</h2><ul data-role="listview" data-filter-theme="d" data-divider-theme="d" data-theme="d" data-inset="true" data-filter="true" id="fmjs-groups" class="fmjs-home-views fmjs-to-listview">';
-	console.log("just before "+show_empty_groups);
+	panel_custom_groups = '<h2>My Groups</h2><ul data-role="listview" data-filter-theme="d" data-divider-theme="d" data-theme="d" data-inset="true" data-filter="true" id="fmjs-groups" class="fmjs-home-views fmjs-to-listview">';
+
 	$.each( groups, function(index, value) {
 		var unread = countUnreadInGroup(value.id);
 		
@@ -76,14 +76,14 @@ function widgetShowFavFeeds() {
 	//
 	content_ShowFavFeeds = '';
 	$.each(fav_feeds, function(index, value) {
-		console.log(value);
+
 		value = parseInt(value, 10);
 		var fav_items = _.where(items, {feed_id: value});
-		console.log(fav_items);
+
 		if ( fav_items.length ) {
 			content_ShowFavFeeds += renderListviewItemFeed(value);
 		} else {
-			console.log("feed " + value + " has no items");
+
 		}
 	});
 	if ( content_ShowFavFeeds ) {
@@ -121,4 +121,8 @@ function widgetButtonHotView() {
 function widgetButtonAllFeeds() {
 	var widget = '';
 	return '<a href="" data-role="button" onclick="showAllFeeds();" class="fmjs-to-button">Show All Feeds</a>';
+}
+function widgetButtonGroups() {
+	var widget = '';
+	return '<a href="" data-role="button" onclick="showGroups();" class="fmjs-to-button">Show Groups</a>';
 }
