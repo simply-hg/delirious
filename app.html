@@ -39,17 +39,7 @@
 			$("#fmjs-homescreen-message").on("click", function(e) { e.stopPropagation(); $(this).empty(); });
 			
 			$(document).on('pagebeforeshow', '[data-role="page"]', function(){                
-				
-				/*
-				$('<div>').attr({'id':'mypanel','data-role':'panel'}).prependTo($(this));
-    
-				$('<a>').attr({'id':'test-btn','data-role':'button'}).html('Click me').appendTo('mypanel');
-    
-				$.mobile.activePage.find('#mypanel').panel();
-				$(document).on('click', '#open-panel', function(){   
-					$.mobile.activePage.find('#mypanel').panel("open");       
-				});*/
-				console.log("pagechange");
+				//console.log("pagechange");
 			});
 		});
 	</script>
@@ -170,7 +160,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="markFeedAsRead();">Mark all items as read</a></li>
-					<li data-icon="star"><a href="" onclick="markGroupAsFav();">Mark group as favourite</a></li>
+					<li data-icon="star"><a href="" id="fmjs-group-favmarker" onclick="markGroupAsFav();">Mark group as favourite</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
 				</ul>
 			</div>
@@ -188,6 +178,12 @@
 		
 		<div data-role="content">
 			<div id="fmjs-feedgroup-content"></div>
+			<div id="fmjs-feedgroup-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
 
 	</div><!-- / A Group of feeds -->
@@ -202,6 +198,12 @@
 		</div>
 		<div data-role="content">
 			<div id="fmjs-kindling-content"></div>
+			<div id="fmjs-kindling-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
 	</div><!-- / Kindling -->
 	
@@ -239,8 +241,6 @@
 			<div id="fmjs-saved-bottom">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="check"><a href="" onclick="markFeedAsRead();">Mark all items as read</a></li>
-					<li data-icon="star"><a href="" onclick="markFeedAsFav();">Mark feed as favourite</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
 				</ul>
 			</div>
@@ -255,9 +255,16 @@
 			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
 			<h3 id="fmjs-sparks-header">Fever<span style="color:red">°</span> Sparks</h3>
 		</div>
-		<div data-role="content" id="fmjs-sparks-content">
+		<div data-role="content">
+			<div id="fmjs-sparks-content"></div>
+		
+			<div id="fmjs-sparks-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
-
 	</div>
 
 
@@ -269,18 +276,19 @@
 			<h3 id="fmjs-groups-header">Fever<span style="color:red">°</span> Groups</h3>
 		</div>
 		
-		<div data-role="content" id="fmjs-groups-content">
-			<h1>Fever<span style="color:red">°</span> System Groups</h1>
-			<ul data-role="listview" data-divider-theme="d" data-inset="true">
-				<li data-theme="c"><a href="#" data-transition="slide" onclick="showHot(1);">Hot</a></li>
-				<li data-theme="c"><a href="#" data-transition="slide" onclick="showKindling();">Kindling</a></li>
-				<li data-theme="c"><a href="#" data-transition="slide" onclick="showSparks();">Sparks</a></li>
-				<li data-theme="c"><a href="#" data-transition="slide" onclick="showSaved();">Saved</a></li>			
-				<li data-theme="c"><a href="#" data-transition="slide" onclick="showAllFeeds();">All Feeds</a></li>
-			</ul>
+		<div data-role="content">
+			<div id="fmjs-groups-content">
+
+			</div>
+			<div id="fmjs-groups-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
 
-	</div><!-- / A Group of feeds -->
+	</div><!-- Show all groups -->
 	
 	
 	<!-- Settings -->
@@ -411,6 +419,13 @@
 			<a data-role="button" data-icon="refresh" href="" onclick="refreshSavedItems();">Reload all saved items</a>
 			<a data-role="button" data-icon="refresh" href="" onclick="refreshItems();">Reload all unread items</a>
 			<a data-role="button" data-icon="refresh" href="" onclick="refreshFavicons();">Refresh Favicons</a>
+
+			<div id="fmjs-settings-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
 
 	</div><!-- / Settings -->
@@ -431,6 +446,12 @@
 			</div>
 			<div id="fmjs-single-meta" class="fmjs-single-below-content"></div>
 			<a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="#" data-icon="forward" data-iconpos="left" id="fmjs-single-url">Open URL</a>
+			<div id="fmjs-single-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
 
 	</div><!-- / Single Item -->
@@ -442,7 +463,14 @@
 			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
 			<h3 id="fmjs-all-feeds-title">All Feeds</h3>
 		</div>
-		<div data-role="content" id="fmjs-all-feeds-content">
+		<div data-role="content">
+			<div id="fmjs-all-feeds-content"></div>
+			<div id="fmjs-all-feeds-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
 	</div><!-- / All feeds -->
 
@@ -452,7 +480,7 @@
 			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
 			<h3 id="fmjs-all-feeds-title">Help, Credits and Copyrights <span style="color:red">&copy;</span></h3>
 		</div>
-		<div data-role="content" id="fmjs-all-feeds-content" class="fmjs-content">
+		<div data-role="content" id="fmjs-support-content" class="fmjs-content">
 			<h1>Support, bug reports et. al.</h1>
 			<p>This app is still a work in progress. It works quite well, but has not been fully tested for security aspects and such cases.</p>
 			<p>If you encounter bugs, miss features or have a comment about fever-js, go to <a href="https://github.com/simply-hg/fever-js" target="_blank">fever-js on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to fever-js on github.com in any way you find fitting. If you want to make your own adjustments to fever-js I suggest to fork it on githib. That way your features my flow back into fever-js.</p>
@@ -472,8 +500,14 @@
 			<p>MD5 hashing is done with help from an implementation found on <a href="http://www.webtoolkit.info/javascript-md5.html" target="_blank">webtoolkit.info</a>. Some css code for the single item view is also from here, known as <a href="http://www.webtoolkit.info/css-clearfix.html" target="_blank">clearfix</a>. You can find <a href="http://www.webtoolkit.info/license" target="_blank">their license</a> online. </p>
 			<p>fever-js releases are compressed by <a href="http://www.jscompress.com/" target="_blank">jscompress.com</a></p>
 			<p>Some nicer looking parts of the settings screen have been adapted from <a href="http://roughlybrilliant.com/jquery_mobile_best_practices" target="_blank">Roughly Brilliant</a>.</sp>
+		
+			<div id="fmjs-support-bottom">
+				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+				</ul>
+			</div>
 		</div>
-
 	</div>
 
 </body>
