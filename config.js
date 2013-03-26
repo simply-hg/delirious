@@ -28,6 +28,7 @@ var called_kindling  = false;
 var called_single    = false;
 var called_home      = false; // well, we are not calling home :s just a naming coincidence
 var called_feedgroup = false;
+var called_groups    = false;
 
 var loading           = 0; // counts current loading processes
 var auth_success      = false; // if a successful auth has been registered this is true. helps on stopped or failed connections. Not (!) used for authentification
@@ -35,7 +36,7 @@ var last_fmjs_refresh   = 0; // unix timestamps in seconds when were items refre
 var last_fever_refresh = 0; // unix timestamps in seconds when Server last refreshed items
 
 function getSettings() {
-  if ( $.jStorage.storageAvailable() ) {
+	if ( $.jStorage.storageAvailable() ) {
 		fm_key       = $.jStorage.get("fmjs-key", "");
 		fm_url       = $.jStorage.get("fmjs-url", "");
 		fm_user      = $.jStorage.get("fmjs-user", "");
@@ -44,7 +45,7 @@ function getSettings() {
 		html_content = $.jStorage.get("fmjs-html-content", "escape");
 		groupview    = $.jStorage.get("fmjs-groupview", "items");
 		show_empty_groups = $.jStorage.get("fmjs-show-empty-groups", "false");
-		console.log('loaded set' + show_empty_groups);
+
 		saved_items = $.jStorage.get("fmjs-local-items", []);
 		
 		fav_feeds  = $.jStorage.get("fmjs-fav-feeds", []);
