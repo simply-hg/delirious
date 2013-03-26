@@ -1,5 +1,5 @@
 function syncItems() {
-  syncSavedItems("sync");
+	syncSavedItems("sync");
 	syncUnreadItems("sync");
 }
 
@@ -18,16 +18,16 @@ function syncSavedItems(what) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			var online_ids = data.saved_item_ids.split(',');
-			//console.log("Anzahl saved online: " + online_ids.length);
+
 			local_ids = [];
 			$.each(saved_items, function(index, value) {
 				local_ids.push(value.id.toString());
 			});
-			//console.log("Anzahl local: " + local_ids.length);
+
 			var load_em = _.difference(online_ids, local_ids);
-			//console.log(load_em);
+
 			delete_em =  _.difference(local_ids, online_ids);
-			//console.log(delete_em);
+
 			
 			if ( load_em.length > 0 ) {
 				if ( what == "start" && load_em.length > 50 ) {
@@ -48,7 +48,7 @@ function syncSavedItems(what) {
 					if ( $.inArray(item.id.toString(), delete_em ) == -1 )  {
 						return false;
 					} else {
-						//console.log("reject");
+
 						return true;
 					}
 				});
@@ -77,21 +77,19 @@ function syncUnreadItems(what) {
 		if ( checkAuth(data.auth) ) {
 			var run_anyway = false;
 			var online_unread_ids = data.unread_item_ids.split(',');
-			//console.log("Unread online: " + online_unread_ids.length);
+
 			local_unread_ids = [];
 			$.each(items, function(index, value) {
 				local_unread_ids.push(value.id.toString());
 			});
-			//console.log("Unread local: " + local_unread_ids.length);
+
 			var load_unread_em = _.difference(online_unread_ids, local_unread_ids);
-			//console.log(load_unread_em);
 			delete_unread_em =  _.difference(local_unread_ids, online_unread_ids);
-			//console.log(delete_unread_em);
 			
 			if ( load_unread_em.length > 0 ) {
-					// load unread items
-					afterItemLoad = _.after(load_unread_em.length, runAfterItemLoad);
-					loadItems(load_unread_em);
+				// load unread items
+				afterItemLoad = _.after(load_unread_em.length, runAfterItemLoad);
+				loadItems(load_unread_em);
 			} else {
 				run_anyway = true;
 			}
@@ -101,14 +99,14 @@ function syncUnreadItems(what) {
 					if ( $.inArray(item.id.toString(), delete_em ) == -1 )  {
 						return false;
 					} else {
-						//console.log("reject");
 						return true;
 					}
 				});
+				run_anyway = true;
 			} else {
 				run_anyway = true;
 			}
-			console.log(run_anyway);
+
 			if (run_anyway == true) {
 				runAfterItemLoad();
 			}
@@ -120,8 +118,8 @@ function syncUnreadItems(what) {
 }
 
 function refreshItems() {
-	//console.log("Refreshing items");
-	//createGroups(true);
+
+
 	//last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
 	showHideLoader("start");
 	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
@@ -138,7 +136,7 @@ function refreshItems() {
 function loadItems(ids) {
 
 	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
-	//console.log(placeholder_ids.length);
+
 	if ( ids.length > 20 ) {
 		var first = _.first(ids, 20);
 		var rest  = _.rest(ids, 20);
@@ -170,7 +168,7 @@ function loadItems(ids) {
 }
 
 function runAfterItemLoad() {
-	console.log("items finished loading");
+	items = _.sortBy(items, "created_on_time");
 	createPanels();
 }
 
@@ -184,7 +182,7 @@ function refreshSavedItems() {
 			saved_items = [];
 			if ( data.saved_item_ids != "") {
 				var ids = data.saved_item_ids.split(',');
-				//console.log("Anzahl saved: " + ids.length);
+
 				processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
 				loadSavedItems(ids);
 			}
@@ -195,8 +193,7 @@ function refreshSavedItems() {
 function storeLoadedSavedItems() {
 	saved_items = _.sortBy(saved_items, "created_on_time");
 	$.jStorage.set("fmjs-local-items", saved_items);
-	//console.log(saved_items);
-	//console.log("Locally saved " + saved_items.length + " items");
+
 }
 
 function loadSavedItems(ids) {
@@ -237,14 +234,23 @@ function markItemsRead(ids) {
 		ids_to_mark_read = ids;
 	} else {
 		// a comma seperated string
-		ids_to_mark_read = ids.split(",");
+		ids_to_mark_read = _.compact(ids.split(","));
 	}
-
+	var read_items = [];
+	read_items = _.reject(items, function(item) {
+		if ( $.inArray(item.id.toString(), ids_to_mark_read ) == -1 )  {
+			return true;
+		} else {
+			return false;
+		}
+	});
+	$.each(read_items, function(index, value) {
+		session_read_items.push(value);
+	});
 	items = _.reject(items, function(item) {
 		if ( $.inArray(item.id.toString(), ids_to_mark_read ) == -1 )  {
 			return false;
 		} else {
-			//console.log("reject");
 			return true;
 		}
 	});
@@ -262,7 +268,7 @@ function markItemRead(id) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "read", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-				//console.log("Marked as read");
+
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
@@ -274,7 +280,7 @@ function markKindlingRead() {
 	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_refresh  }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
-			//console.log("Kindling marked as read");
+
 			$.mobile.changePage("#page-home", {transition: "slide"});
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -293,7 +299,7 @@ function markGroupRead(what, id, ids) {
 		if ( $.inArray(item.id.toString(), ids_to_mark_read ) == -1 )  {
 			return false;
 		} else {
-			//console.log("reject");
+
 			return true;
 		}
 	});
@@ -303,7 +309,7 @@ function markGroupRead(what, id, ids) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_refresh  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-				//console.log("Group marked as read");
+
 				$.mobile.changePage("#page-home", {transition: "slide"});
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -339,7 +345,7 @@ function saveItem(id) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-				//console.log("Saved item on server.");
+
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
@@ -353,7 +359,7 @@ function unsaveItem(id) {
 			if ( item.id != current_unsave_id )  {
 				return false;
 			} else {
-				//console.log("reject");
+
 				return true;
 			}
 		});
@@ -363,7 +369,7 @@ function unsaveItem(id) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "unsaved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-				//console.log("Unsaved item on server.");
+
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
