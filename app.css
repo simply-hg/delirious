@@ -2,7 +2,7 @@
 	font-weight:bold;
 }
 .fmjs-item-is-read {
-	font-weight:normal;
+	font-weight:normal !important;
 }
 
 .fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited, #fmjs-single-content a, .fmjs-content :link {
@@ -54,4 +54,19 @@ img.fmjs-favicon {
 	border:1px solid red;
 	border-radius:1em;
 	padding:1em;
+}
+
+/* from: http://roughlybrilliant.com/jquery_mobile_best_practices */
+.ui-checkbox .ui-li-heading, 
+.ui-radio .ui-li-heading{
+    margin-top:0;white-space:normal;
+}
+.ui-checkbox .ui-li-desc, 
+.ui-radio .ui-li-desc{
+    white-space:normal;
+}
+
+.fmjs-widget-container {
+	padding-left:0.5em;
+	padding-right:0.5em;
 }
