@@ -75,7 +75,7 @@ function saveSettings() {
 	html_content = $('input[name=fmjs-setting-html-content]:checked').val();
 	groupview = $('input[name=fmjs-setting-groupview]:checked').val();
 	emptygroups = $('input[name=fmjs-setting-empty-groups]:checked').val();
-	console.log("rec. set: "+emptygroups);
+
 	
 	if ( $.jStorage.storageAvailable() ) {
 		$.jStorage.set("fmjs-url", url);
@@ -90,7 +90,7 @@ function saveSettings() {
 		$.jStorage.set("fmjs-html-content", html_content);
 		$.jStorage.set("fmjs-groupview", groupview);
 		$.jStorage.set("fmjs-show-empty-groups", emptygroups);
-		//console.log("Saved");
+
 	} else {
 		return false;
 	}
@@ -134,7 +134,7 @@ function showSaved() {
 	$("#fmjs-saved-content").empty();
 	$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true"></ul>');
 	//var local_items = $.jStorage.get("fmjs-local-items", []);
-	//console.log(saved_items);
+
 	if ( saved_items.length > 0 ) {
 		//local_items = _.sortBy(local_items, "created_on_time");
 		$.each(saved_items, function(index, value) {
@@ -223,9 +223,29 @@ function showHot(page) {
 			});	
 
 			var ids_to_get = load_ids.split(',');
-			ids_to_get     = _.uniq(ids_to_get);
+			ids_to_get     = _.compact(_.uniq(ids_to_get));
+			// let's see, if some are already loaded...
+			$.each(ids_to_get, function(index, id) {
+				var local = _.findWhere(items, {id: parseInt(id, 10)});
+				if ( !local ) {
+					local = _.findWhere(session_read_items, {id: parseInt(id, 10)});
+				}
+				if ( local ) {
+					local_check_id = id;
+					ids_to_get = _.filter(ids_to_get, function(id) {
+						if (id == local_check_id ) {
+							return false;
+						}
+						return true;
+					});
+					replacePlaceholder(local);
+				}
+			});
+			
 			
 			fillLinkPlaceholder(ids_to_get, 'link' );
+			
+			
 			if ( page == 1) {
 				if ( called_hot == false ) {
 					called_hot = true;
@@ -257,26 +277,8 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 		showHideLoader("stop");
 		if (checkAuth(data.auth) ) {
 			$.each(data.items, function(index, value) {
-				$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
-
-				if ( value.is_read == 0 ) {
-					$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-unread");
-				} else {
-					$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-read");
-				}
-				
-				if ( html_content == "raw" ) {
-					$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(value.html);
-				} else {
-					$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
-				}
-				var feedname = _.findWhere(feeds, {id: value.feed_id});
-
-				$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#" onclick="showFeed('+_.escape($.trim(feedname.id))+');">'+_.escape(feedname.title)+'</a>');
-
-				var favicon = getFavicon(feedname);
-				$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").append(favicon).removeClass("fmjs-"+class_prefix+"-"+value.id+"-favicon");
-
+				session_read_items.push(value);
+				replacePlaceholder(value);
 			});
 		
 		}
@@ -286,6 +288,31 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 		fillLinkPlaceholder(rest, class_prefix);
 	}
 }
+
+function replacePlaceholder(value) {
+	var class_prefix = 'link';
+	$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
+
+	if ( value.is_read == 0 ) {
+		$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-unread");
+	} else {
+		$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-read");
+	}
+	
+	if ( html_content == "raw" ) {
+		$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(value.html);
+	} else {
+		$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
+	}
+	var feedname = _.findWhere(feeds, {id: value.feed_id});
+	$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="#" onclick="showFeed('+_.escape($.trim(feedname.id))+');">'+_.escape(feedname.title)+'</a>');
+
+	var favicon = getFavicon(feedname);
+	$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").append(favicon).removeClass("fmjs-"+class_prefix+"-"+value.id+"-favicon");
+	return true;
+}
+
+
 
 function showGroup(id) {
 
@@ -375,35 +402,32 @@ function refreshFavicons() {
 		if ( checkAuth(data.auth) ) {
 			favicons = data.favicons;
 			$.jStorage.set("fmjs-favicons", favicons);
-			//console.log("Favicons refreshed");
+
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
 function showSingleItem(id) {
 	var item = _.findWhere(items, {id: id});
-	//conso-le.log(item);
-	
-	//console.log(session_read_items);
+
 	if ( item ) {
-		session_read_items.push(item);
-		//console.log("cache hit");
+		//session_read_items.push(item);
 		renderSingleItem(item);
 	} else {
 		// Could be a saved item...
 		item = _.findWhere(saved_items, {id: id});
 		if ( item ) {
-			//console.log("saved item hit");
+
 			renderSingleItem(item);
 		} else {
 			// Let's check for unread_cache
 			item = _.findWhere(session_read_items, {id: id});
 			if ( item ) {
-				//console.log("unread_cache hit");
+
 				renderSingleItem(item);
 			} else {
 				// Nothing, so load item
-				//console.log("Loading item");
+
 				showHideLoader("start");
 				$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
 					showHideLoader("stop");
@@ -534,7 +558,7 @@ function showSparks() {
 	
 	feeds_for_sparks = [];
 	$.each(spark_feeds, function(index, value) {
-		feeds_for_sparks.push(parseInt(value.id, 10));
+		feeds_for_sparks.push(value.id);
 	});
 
 	item_ids_in_sparks = '';
@@ -653,12 +677,6 @@ function getFavicon(feed, css_classes) {
 	return '<img src="feed-icon-generic.png" height="16" width="16" class="'+css_classes+'"/>';
 }
 
-
-
-function countUnread() {
-
-}
-
 function showGroupSelector(id) {
 	if ( groupview == "feeds" ) {
 		// feeds 
@@ -685,11 +703,10 @@ function showFeedsInGroups(id) {
 	var feeds_to_show = ids_to_show.feed_ids.split(",");
 	
 	$.each(feeds_to_show, function(index, value) {
-		//console.log(value);
-
 		var item = renderListviewItemFeed(value);
-
-		$("#fmjs-feedgroup-view").append(item);
+		if (item) {
+			$("#fmjs-feedgroup-view").append(item);
+		}
 	});
 
 	if (called_feedgroup == false ) {
@@ -707,12 +724,19 @@ function showFeedsInGroups(id) {
 
 function renderListviewItemFeed(feed_id) {
 	var feed = _.findWhere(feeds, {id: parseInt(feed_id, 10)});
+	var unread = _.where(items, {is_read:0, feed_id:feed.id});
+	
+	if (unread == 0 ) {
+		if ( show_empty_groups == "false" ) {
+			return '';
+		}
+	}
 	var item = '';
 	item += '<li>';
 	item += '<a onclick="showFeed('+_.escape(feed.id)+')">';
 		
 	item += getFavicon(feed, "ui-li-icon ui-corner-none");
-	var unread = _.where(items, {is_read:0, feed_id:feed.id});
+
 	
 	item += _.escape(feed.title)+ '<span class="ui-li-count">'+unread.length+'</span>'+'</a>';
 	item += '</li>';
@@ -765,9 +789,10 @@ function prepareHome() {
 	$("#fmjs-widget-place-b4").html(widgetButtonSparks());
 
 	$("#fmjs-widget-place-a5").html(widgetButtonAllFeeds());
+	$("#fmjs-widget-place-b5").html(widgetButtonGroups());
 
-	$(".fmjs-to-listview").listview();
-	$(".fmjs-to-button").button();
+	$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
+	$(".fmjs-to-button").button().removeClass("fmjs-to-button");
 }
 
 function showHome() {
@@ -785,16 +810,20 @@ function showHome() {
 
 function createPanels() {
 	prepareHome();
-	console.log("running panel create");
-
-	
-	
-	//$(".fmjs-panel").append(tools);
-	//$( ".fmjs-panel" ).trigger( "updatelayout" );
-	
 }
 
 function showGroups() {
+	$("#fmjs-groups-content").empty();
+	$("#fmjs-groups-content").append(widgetSystemGroups());
+	$("#fmjs-groups-content").append(widgetCustomGroups());
+
+	if (called_groups == false ) {
+		called_groups = true;
+	} else {
+		$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
+		$(".fmjs-to-button").button().removeClass("fmjs-to-button");
+	}	
+	
 	$.mobile.changePage("#page-groups", {transition: transition});
 	$.mobile.silentScroll(0);
 }
@@ -813,7 +842,7 @@ function markFeedAsFav() {
 		$.jStorage.set("fmjs-fav-feeds", _.compact(fav_feeds));
 		$("#fmjs-feed-favmarker").html("Remove from favourite");
 	}
-	console.log(fav_feeds);
+
 	return;
 }
 
@@ -831,7 +860,7 @@ function markGroupAsFav() {
 		$.jStorage.set("fmjs-fav-groups", _.compact(fav_groups));
 		$("#fmjs-groups-favmarker").html("Remove from favourite");
 	}
-	console.log(fav_groups);
+
 	return;
 }
 
