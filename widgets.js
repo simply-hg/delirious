@@ -1,16 +1,41 @@
+widget_places = ["a1", "b1", "a2", "b2", "a3", "b3", "a4", "b4", "a5", "b5", "a6", "b6", "a7", "b7", "a8", "b8", "a9", "b9"];
+var defined_widgets = [
+	// Some Buttons:
+	{ fnc: "widgetButtonHotView", title: "Button: Show Hot Items", desc: ""},
+	{ fnc: "widgetButtonSaved", title: "Button: Show Saved Items", desc: ""},
+	{ fnc: "widgetButtonKindling", title: "Button: Show Kindling Items", desc: ""},
+	{ fnc: "widgetButtonSparks", title: "Button: Show Sparks", desc: "", n:""},
+	{ fnc: "widgetButtonAllFeeds", title: "Button: Show All Feeds", desc: ""},
+	{ fnc: "widgetButtonGroups", title: "Button: Show Groups", desc: ""},
+	{ fnc: "widgetButtonReloadFavicons", title: "Button: Reload Favicons", desc: ""},
+	{ fnc: "widgetButtonSettings", title: "Button: Show Settings", desc:"" },
+	{ fnc: "widgetButtonEditHomescreen", title: "Button: Edit Homescreen", desc:"" },
+	{ fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc:"" },
+	
+	// Favourites:
+	{ fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: "" },
+	{ fnc: "widgetShowFavGroups", title: "Show Favourite Groups", desc: "" },
+	
+	// Groups:
+	{ fnc: "widgetSystemGroups", title: "Show System Groups", desc: "" },
+	{ fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: "" }
+];
+function widgetEmpty() {
+	return '';
+}
 function widgetSystemGroups() {
 	var sysgroups = '';
 
 	sysgroups += '<h2>Fever<span style="color:red">°</span> Groups</h2><ul data-role="listview" data-theme="a" data-inset="true" class="fmjs-to-listview">';
 
-	sysgroups += '<li data-theme="d"><a href="#" data-transition="slide" onclick="showHot(1);">Hot</a></li>';
-	sysgroups += '<li data-theme="d"><a href="#" data-transition="slide" onclick="showKindling();">Kindling';
+	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showHot(1);">Hot</a></li>';
+	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showKindling();">Kindling';
 	var unread_items = _.where(items, {is_read:0});
 	sysgroups +=    '<span class="ui-li-count">'+unread_items.length+'</span>'+'</a></li>';
-	sysgroups += '<li data-theme="d"><a href="#" data-transition="slide" onclick="showSparks();">Sparks</a></li>';
-	sysgroups += '<li data-theme="d"><a href="#" data-transition="slide" onclick="showSaved();">Saved items</a>';
+	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showSparks();">Sparks</a></li>';
+	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showSaved();">Saved items</a>';
 	sysgroups +=    '<span class="ui-li-count">'+saved_items.length+'</span>'+'</li>';
-	sysgroups += '<li data-theme="d"><a href="#" data-transition="slide" onclick="showAllFeeds();">All Feeds';
+	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showAllFeeds();">All Feeds';
 	sysgroups +=    '<span class="ui-li-count">'+feeds.length+'</span>'+'</a></li>';
 	sysgroups += '</ul>';
 	sysgroups += '<p>Last Fever<span style="color:red">°</span> refresh @ '+renderDate("time", last_fever_refresh)+'</p>';
@@ -25,11 +50,11 @@ function widgetCustomGroups() {
 		
 		if ( unread == 0 ) {
 			if ( show_empty_groups == "true") {
-				panel_custom_groups += '<li data-theme="d" id="fmjs-group-'+value.id+'"><a href="#" onclick="showGroupSelector('+value.id+');">'+ _.escape(value.title) +'</a>';
+				panel_custom_groups += '<li data-theme="d" id="fmjs-group-'+value.id+'"><a href="" onclick="showGroupSelector('+value.id+');">'+ _.escape(value.title) +'</a>';
 			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</li>';
 			}
 		} else {
-			panel_custom_groups += '<li data-theme="d" id="fmjs-group-'+value.id+'"><a href="#" onclick="showGroupSelector('+value.id+');">'+ _.escape(value.title) +'</a>';
+			panel_custom_groups += '<li data-theme="d" id="fmjs-group-'+value.id+'"><a href="" onclick="showGroupSelector('+value.id+');">'+ _.escape(value.title) +'</a>';
 			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</li>';
 		}
 		
@@ -55,7 +80,7 @@ function widgetShowFavGroups() {
 		var unread = countUnreadInGroup(value);
 		if ( unread > 0 ) {
 			var group = _.findWhere(groups, {id:value});
-			content_ShowFavGroups = '<li data-theme="d"><a href="#" onclick="showGroupSelector('+group.id+');">'+ _.escape(group.title) +'</a>';
+			content_ShowFavGroups = '<li data-theme="d"><a href="" onclick="showGroupSelector('+group.id+');">'+ _.escape(group.title) +'</a>';
 			content_ShowFavGroups += '<span class="ui-li-count">'+unread+'</span>'+'</li>';
 		}  
 	});
@@ -100,29 +125,41 @@ function widgetShowFavFeeds() {
 
 
 function widgetButtonSparks() {
-	var widget = '';
 	return '<a href="" data-role="button" onclick="showSparks();" class="fmjs-to-button">Show Sparks</a>';
 }
 
 function widgetButtonKindling() {
-	var widget = '';
 	return '<a href="" data-role="button" onclick="showKindling();" class="fmjs-to-button">Show Kindling</a>';
 }
 
 function widgetButtonSaved() {
-	var widget = '';
 	return '<a href="" data-role="button" onclick="showSaved();" class="fmjs-to-button">Show Saved</a>';
 }
 
 function widgetButtonHotView() {
-	var widget = '';
 	return '<a href="" data-role="button" onclick="showHot(1);" class="fmjs-to-button">Show Hot Items</a>';
 }
 function widgetButtonAllFeeds() {
-	var widget = '';
 	return '<a href="" data-role="button" onclick="showAllFeeds();" class="fmjs-to-button">Show All Feeds</a>';
 }
 function widgetButtonGroups() {
-	var widget = '';
 	return '<a href="" data-role="button" onclick="showGroups();" class="fmjs-to-button">Show Groups</a>';
+}
+
+// ------------------------------
+
+function widgetButtonSettings() {
+	return '<a href="#page-settings" data-icon="gear" data-role="button" class="fmjs-to-button">Edit Settings</a>';
+}
+
+function widgetButtonReloadFavicons() {
+	return '<a href="" data-role="button" data-icon="refresh" onclick="refreshFavicons();" class="fmjs-to-button">Reload Favicons</a>';
+}
+
+function widgetButtonEditHomescreen() {
+	return '<a href="" data-role="button" data-icon="grid" onclick="showEditHomescreen();" class="fmjs-to-button">Edit Homescreen</a>';
+}
+
+function widgetButtonSyncItems() {
+	return '<a href="" data-role="button" data-icon="refresh" onclick="syncItems();" class="fmjs-to-button">Sync with Fever<span style="color:red;">°</span></a>';
 }
