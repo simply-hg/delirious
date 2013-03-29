@@ -10,12 +10,29 @@ var transition   = "";
 var html_content = "";
 var show_empty_groups = "false";
 
+var started = false;
+
 var items              = [];
 var saved_items        = [];
 var session_read_items = [];
 
 var fav_groups = [];
 var fav_feeds  = [];
+
+var default_widgets = [
+	{place:"a1", fnc: "widgetButtonHotView", options: {}},
+	{place:"b1", fnc: "widgetButtonSaved", options: {}},
+	{place:"a2", fnc: "widgetShowFavFeeds", options: {}},
+	{place:"b2", fnc: "widgetShowFavGroups", options: {}},
+	{place:"a3", fnc: "widgetSystemGroups", options: {}},
+	{place:"b3", fnc: "widgetCustomGroups", options: {}},
+	{place:"a4", fnc: "widgetButtonKindling", options: {}},
+	{place:"b4", fnc: "widgetButtonSparks", options: {}},
+	{place:"a5", fnc: "widgetButtonReloadFavicons", options: {}},
+	{place:"b5", fnc: "widgetButtonSettings", options: {}},
+	{place:"a6", fnc: "widgetButtonEditHomescreen", options: {}},
+];
+var widgets = [];
 
 // For navigation purposes to refresh listviews
 var called_group     = false;
@@ -29,6 +46,7 @@ var called_single    = false;
 var called_home      = false; // well, we are not calling home :s just a naming coincidence
 var called_feedgroup = false;
 var called_groups    = false;
+var called_edit_homescreen = false;
 
 var loading           = 0; // counts current loading processes
 var auth_success      = false; // if a successful auth has been registered this is true. helps on stopped or failed connections. Not (!) used for authentification
@@ -47,10 +65,11 @@ function getSettings() {
 		show_empty_groups = $.jStorage.get("fmjs-show-empty-groups", "false");
 
 		saved_items = $.jStorage.get("fmjs-local-items", []);
+		widgets     = $.jStorage.get("fmjs-widgets", default_widgets);
 		
 		fav_feeds  = $.jStorage.get("fmjs-fav-feeds", []);
 		fav_groups = $.jStorage.get("fmjs-fav-groups", []);
-		 $.mobile.defaultPageTransition = transition;
+		$.mobile.defaultPageTransition = transition;
 		return true;
 	} else {
 		return false;
@@ -58,8 +77,9 @@ function getSettings() {
 }
 
 
+			
 $(document).bind("mobileinit", function(){
-  //apply overrides here
-  getSettings();
- 
+	//apply overrides here
+	getSettings();
+ 	console.log("start");
 });
