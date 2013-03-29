@@ -21,9 +21,14 @@ img.fmjs-favicon {
 	text-decoration:none;
 	color:steelblue;
 }
+#fmjs-single-content img, #fmjs-single-content object {
+	max-width:100%;
+}
 
 /* integrated clearfix by: http://www.webtoolkit.info/css-clearfix.html */
 #fmjs-single-content {
+	max-width:100%;
+	overflow:hidden;
 	border:1px solid #ccc;
 	padding:10px;
 	border-radius:1em;
@@ -66,12 +71,26 @@ img.fmjs-favicon {
     white-space:normal;
 }
 
+
 .fmjs-widget-container {
 	padding-left:0.5em;
 	padding-right:0.5em;
 }
+
+@media all and (max-width: 35em) {
+		.fmjs-widget-container {
+		padding-left:0;
+		padding-right:0;
+	}
+}
+
 #fmjs-groups-content .fmjs-widget-container {
 	padding-left:0;
 	padding-right:0;
 }
 
+.fmjs-bottom-menu {
+	width:20em;
+	margin-left:auto;
+	margin-right:auto;
+}
