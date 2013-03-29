@@ -1,6 +1,7 @@
 function syncItems() {
 	syncSavedItems("sync");
 	syncUnreadItems("sync");
+	prepareHome();
 }
 
 function syncSavedItems(what) {
@@ -65,7 +66,7 @@ function syncUnreadItems(what) {
 	// if some are missing here, we load them.
 	// if some are missing there, we remove our copy (beacuse it was probably unsaved somewhere else...).
 	// It is done by comparing ids
-	createGroups(true);
+	//createGroups(true);
 	last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript	
 	if ( what == "full" ) {
 		refreshItems();
@@ -96,7 +97,7 @@ function syncUnreadItems(what) {
 			
 			if ( delete_unread_em.length > 0 ) {
 				items = _.reject(items, function(item) {
-					if ( $.inArray(item.id.toString(), delete_em ) == -1 )  {
+					if ( $.inArray(item.id.toString(), delete_unread_em ) == -1 )  {
 						return false;
 					} else {
 						return true;
@@ -280,7 +281,7 @@ function markKindlingRead() {
 	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_refresh  }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
-
+			syncItems();
 			$.mobile.changePage("#page-home", {transition: "slide"});
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -380,7 +381,7 @@ function saveCurrentItem() {
 	saveItem(id);
 	$("#fmjs-single-btn-save .ui-btn-text").html("Unsave");
 	$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
-	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "delete" });
+	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "minus" });
 
 	return false;
 }
@@ -389,7 +390,7 @@ function unsaveCurrentItem() {
 	unsaveItem(id);
 	$("#fmjs-single-btn-save .ui-btn-text").html("Save");
 	$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
-	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "star" });
+	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });
 
 	return false;
 }
