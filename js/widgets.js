@@ -4,13 +4,14 @@ var defined_widgets = [
 	{ fnc: "widgetButtonHotView", title: "Button: Show Hot Items", desc: ""},
 	{ fnc: "widgetButtonSaved", title: "Button: Show Saved Items", desc: ""},
 	{ fnc: "widgetButtonKindling", title: "Button: Show Kindling Items", desc: ""},
-	{ fnc: "widgetButtonSparks", title: "Button: Show Sparks", desc: "", n:""},
+	{ fnc: "widgetButtonSparks", title: "Button: Show Sparks", desc: ""},
 	{ fnc: "widgetButtonAllFeeds", title: "Button: Show All Feeds", desc: ""},
 	{ fnc: "widgetButtonGroups", title: "Button: Show Groups", desc: ""},
 	{ fnc: "widgetButtonReloadFavicons", title: "Button: Reload Favicons", desc: ""},
 	{ fnc: "widgetButtonSettings", title: "Button: Show Settings", desc:"" },
 	{ fnc: "widgetButtonEditHomescreen", title: "Button: Edit Homescreen", desc:"" },
 	{ fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc:"" },
+	{ fnc: "widgetButtonMarkAllRead", title: "Button: Mark all read", desc:"" },
 	
 	// Favourites:
 	{ fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: "" },
@@ -26,7 +27,7 @@ function widgetEmpty() {
 function widgetSystemGroups() {
 	var sysgroups = '';
 
-	sysgroups += '<h2>Fever<span style="color:red">°</span> Groups</h2><ul data-role="listview" data-theme="a" data-inset="true" class="fmjs-to-listview">';
+	sysgroups += '<h2>Fever<span style="color:red">°</span> Groups</h2><ul data-role="listview" data-theme="a" data-inset="true" class="fmjs-to-listview" style="margin-top:-10px;">';
 
 	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showHot(1);">Hot</a></li>';
 	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showKindling();">Kindling';
@@ -125,41 +126,45 @@ function widgetShowFavFeeds() {
 
 
 function widgetButtonSparks() {
-	return '<a href="" data-role="button" onclick="showSparks();" class="fmjs-to-button">Show Sparks</a>';
+	return '<a href="" data-role="button" onclick="showSparks();">Show Sparks</a>';
 }
 
 function widgetButtonKindling() {
-	return '<a href="" data-role="button" onclick="showKindling();" class="fmjs-to-button">Show Kindling</a>';
+	return '<a href="" data-role="button" onclick="showKindling();">Show Kindling</a>';
 }
 
 function widgetButtonSaved() {
-	return '<a href="" data-role="button" onclick="showSaved();" class="fmjs-to-button">Show Saved</a>';
+	return '<a href="" data-role="button" onclick="showSaved();">Show Saved</a>';
 }
 
 function widgetButtonHotView() {
-	return '<a href="" data-role="button" onclick="showHot(1);" class="fmjs-to-button">Show Hot Items</a>';
+	return '<a href="" data-role="button" onclick="showHot(1);">Show Hot Items</a>';
 }
 function widgetButtonAllFeeds() {
-	return '<a href="" data-role="button" onclick="showAllFeeds();" class="fmjs-to-button">Show All Feeds</a>';
+	return '<a href="" data-role="button" onclick="showAllFeeds();">Show All Feeds</a>';
 }
 function widgetButtonGroups() {
-	return '<a href="" data-role="button" onclick="showGroups();" class="fmjs-to-button">Show Groups</a>';
+	return '<a href="" data-role="button" onclick="showGroups();">Show Groups</a>';
 }
 
 // ------------------------------
 
 function widgetButtonSettings() {
-	return '<a href="#page-settings" data-icon="gear" data-role="button" class="fmjs-to-button">Edit Settings</a>';
+	return '<a href="#page-settings" data-icon="gear" data-role="button">Edit Settings</a>';
 }
 
 function widgetButtonReloadFavicons() {
-	return '<a href="" data-role="button" data-icon="refresh" onclick="refreshFavicons();" class="fmjs-to-button">Reload Favicons</a>';
+	return '<a href="" data-role="button" data-icon="refresh" onclick="refreshFavicons();">Reload Favicons</a>';
 }
 
 function widgetButtonEditHomescreen() {
-	return '<a href="" data-role="button" data-icon="grid" onclick="showEditHomescreen();" class="fmjs-to-button">Edit Homescreen</a>';
+	return '<a href="" data-role="button" data-icon="grid" onclick="showEditHomescreen();">Edit Homescreen</a>';
 }
 
 function widgetButtonSyncItems() {
-	return '<a href="" data-role="button" data-icon="refresh" onclick="syncItems();" class="fmjs-to-button">Sync with Fever<span style="color:red;">°</span></a>';
+	return '<a href="" data-role="button" data-icon="refresh" onclick="syncItems();">Sync with Fever<span style="color:red;">°</span></a>';
+}
+
+function widgetButtonMarkAllRead() {
+	return '<a href="" data-role="button" data-icon="check" onclick="markKindlingRead();">Mark all Read</a>';
 }
