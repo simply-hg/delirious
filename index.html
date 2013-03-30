@@ -22,7 +22,6 @@
 
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="lib/jstorage.min.js"></script>
-	<script src="lib/jquery.imagefit.min.js"></script>
 	<script src="lib/fitvid.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
 	
@@ -48,12 +47,9 @@
 	<!-- Home -->
 
 	<div data-role="page" id="page-home">
-	
-
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-
 			<h3 id="fmjs-header">Fever<span style="color:red">°</span> Mobile</h3>
-			<a href="" data-icon="refresh" onclick="syncItems();" data-theme="b" class="ui-btn-right">Refresh</a>
+			<a href="" data-icon="refresh" onclick="syncItems();" data-theme="b" class="ui-btn-right">Sync</a>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-homescreen-message"></div>
@@ -90,7 +86,7 @@
 					<li data-theme="d" data-icon="gear"><a href="#page-settings">Settings</a></li>
 					<li data-theme="d" data-icon="grid"><a href="" onclick="showEditHomescreen();">Edit Homescreen</a></li>
 					<li data-theme="d" data-icon="info"><a href="#page-support">Help &amp; Credits</a></li>
-					<li data-icon="refresh" data-theme="d"><a href="" onclick="syncItems();">Refresh Items</a></li>
+					<li data-icon="refresh" data-theme="d"><a href="" onclick="syncItems();">Sync Items</a></li>
 				</ul>
 			</div>
 		</div>			
@@ -309,7 +305,7 @@
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
 			<h3 id="fmjs-header">Fever<span style="color:red">°</span> Mobile Settings</h3>
-			<a href="" data-icon="check" onclick="saveSettings();">Save</a>
+			<a href="" data-icon="check" data-theme="b" onclick="saveSettings();">Save</a>
 		</div>
 		<div data-role="content">
 			<h1>Authentification</h1>
@@ -417,8 +413,35 @@
 					<h3 class="ui-li-heading">Raw HTML</h3>
 					<p class="ui-li-desc">Looks best, but might raise security issues.</p>
 				</label>     	
-			</fieldset>	
+			</fieldset>
 			
+			<h1>Show Sharing Buttons</h1>
+			<fieldset data-role="controlgroup" id="fmjs-setting-sharing-group"> 
+				<input type="radio" name="fmjs-setting-sharing" id="fmjs-setting-sharing-1" value="all" />
+				<label for="fmjs-setting-sharing-1">
+					<h3 class="ui-li-heading">All Services</h3>
+					<p class="ui-li-desc">ATM: Facebook, Google+, Twitter, E-Mail. Some data might be sent over to the networks.</p>
+				</label>
+				<input type="radio" name="fmjs-setting-sharing" id="fmjs-setting-sharing-2" value="email" />       	
+				<label for="fmjs-setting-sharing-2">
+					<h3 class="ui-li-heading">Show Only E-Mail Button</h3>
+					<p class="ui-li-desc">Just offer sharing by E-Mail. No privacy concerns here.</p>
+				</label>
+				<input type="radio" name="fmjs-setting-sharing" id="fmjs-setting-sharing-3" value="none" />       	
+				<label for="fmjs-setting-sharing-3">
+					<h3 class="ui-li-heading">No Sharing</h3>
+					<p class="ui-li-desc">If you do not want to show or use any sharing buttons, choose this.</p>
+				</label>
+				<p>Some feeds post urls which lead to a feed proxy or something like it. Currently, if you share an item this url gets shared. Most times this is a 'by-feed-phenomenom', so you will be able to share the correct urls on some feeds, on some others this is not possible.</p> 
+			</fieldset>
+			<h2>Default Sharing Message</h2>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<p>Always start with this text, when sharing an item:</p>
+					<textarea name="fmjs-setting-sharing-msg" id="fmjs-setting-sharing-msg" placeholder=""></textarea>
+				</fieldset>
+				<p>Please Note: %url% gets replaced with the url of the item.</p>
+			</div>
 			<h1>Save Settings</h1>
 			<a data-role="button" data-icon="check" href="" onclick="saveSettings();">Save Settings</a>
 			<a id="fmjs-cancel-settings" data-role="button" data-icon="delete" href="#page-home">Cancel</a> 
@@ -458,7 +481,9 @@
 			<div class="fmjs-single-below-content">posted on
 				<a id="fmjs-single-feedname" href="" class="fmjs-hot-links" onclick="showFeed();">(Feed-Name)</a>
 			</div>
+			
 			<div id="fmjs-single-meta" class="fmjs-single-below-content"></div>
+			<div id="fmjs-single-sharing-buttons" class="fmjs-single-below-content"></div>
 			<a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="" data-icon="forward" data-iconpos="left" id="fmjs-single-url">Open URL</a>
 			<div id="fmjs-single-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
@@ -499,7 +524,7 @@
 		<div data-role="content" id="fmjs-support-content" class="fmjs-content">
 			<h1>Support, bug reports et. al.</h1>
 			<p>This app is still a work in progress. It works quite well, but has not been fully tested for security, compatibility and such aspects.</p>
-			<p>If you encounter bugs, miss features or have a comment about fever-js, go to <a href="https://github.com/simply-hg/fever-js" target="_blank">fever-js on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to fever-js on github.com in any way you find fitting. If you want to make your own adjustments to fever-js I suggest to fork it on githib. That way your features my flow back into fever-js.</p>
+			<p>If you encounter bugs, miss features or have a comment about fever-js, go to <a href="https://github.com/simply-hg/fever-js" target="_blank">fever-js on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to fever-js on github.com in any way you find fitting. If you want to make your own adjustments to fever-js I suggest to fork it on github. That way your features may flow back into fever-js.</p>
 			<p>News, comments and announcements about fever-js are posted to my webpage.</p>
 			<p>You like social networks? If so, you can like fever-js and tell your friends about it on Facebook, Google+, LinkedIn or Xing. Have question about fever-js? You can send me a tweet to @simplyhg on twitter (I'm not too active there, but I receive and try to answer messages and tweets - maybe I even get more active there, who knows).</p>
 			<h1>fever-js license</h1>
@@ -540,29 +565,29 @@
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
 			<h3 id="fmjs-header">Edit Homescreen</h3>
-			<a href="" data-icon="check" onclick="saveHomescreen();">Save</a>
+			<a href="" data-icon="check" data-theme="b" onclick="saveHomescreen();">Save</a>
 		</div>
 		<div data-role="content">
 			
 			<div class="ui-grid-a ui-responsive" id="fmjs-edit-widget-place-grid">
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a1"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b1"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a2"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b2"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a3"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b3"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a4"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b4"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a5"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b5"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a6"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b6"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a7"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b7"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a8"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b8"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a9"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b9"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a1" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b1" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a2" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b2" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a3" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b3" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a4" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b4" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a5" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b5" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a6" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b6" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a7" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b7" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a8" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b8" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a9" class="fmjs-widget-container"></div></div>
+				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b9" class="fmjs-widget-container"></div></div>
 			</div><!-- /grid-c -->
 			
 			<div id="fmjs-edithomescreen-bottom" class="fmjs-bottom-menu">
