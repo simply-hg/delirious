@@ -3,6 +3,8 @@ function init() {
 	$('input:radio[name="fmjs-setting-html-content"]').filter('[value="'+html_content+'"]').prop('checked', true);
 	$('input:radio[name="fmjs-setting-groupview"]').filter('[value="'+groupview+'"]').prop('checked', true);
 	$('input:radio[name="fmjs-setting-empty-groups"]').filter('[value="'+show_empty_groups+'"]').prop('checked', true);
+	$('input:radio[name="fmjs-setting-sharing"]').filter('[value="'+sharing+'"]').prop('checked', true);
+	$('#fmjs-setting-sharing-msg').val(sharing_msg);
 }
 
 function start() {
@@ -55,7 +57,7 @@ function start() {
 }
 
 function saveSettings() {
-	var url, user, password, transition, html_content, groupview, emptygroups;
+	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, sharing_text;
 	
 	url        = $.trim($("#fmjs-fever-url").val());
 	user       = $.trim($("#fmjs-e-mail").val());
@@ -64,7 +66,8 @@ function saveSettings() {
 	html_content = $('input[name=fmjs-setting-html-content]:checked').val();
 	groupview = $('input[name=fmjs-setting-groupview]:checked').val();
 	emptygroups = $('input[name=fmjs-setting-empty-groups]:checked').val();
-
+	share_buttons = $('input[name=fmjs-setting-sharing]:checked').val();
+	sharing_text = $('#fmjs-setting-sharing-msg').val();
 	
 	if ( $.jStorage.storageAvailable() ) {
 		$.jStorage.set("fmjs-url", url);
@@ -79,6 +82,8 @@ function saveSettings() {
 		$.jStorage.set("fmjs-html-content", html_content);
 		$.jStorage.set("fmjs-groupview", groupview);
 		$.jStorage.set("fmjs-show-empty-groups", emptygroups);
+		$.jStorage.set("fmjs-sharing", share_buttons);
+		$.jStorage.set("fmjs-sharing-msg", sharing_text);
 
 	} else {
 		return false;
@@ -86,7 +91,7 @@ function saveSettings() {
 	restart();
 	$.mobile.changePage("#page-home", {transition: transition});
 	$.mobile.silentScroll(0);
-	
+	return false;	
 }
 
 function restart() {
@@ -103,6 +108,8 @@ function logout() {
 	$.jStorage.deleteKey("fmjs-transition");
 	$.jStorage.deleteKey("fmjs-html-content");
 	$.jStorage.deleteKey("fmjs-groupview");
+	$.jStorage.deleteKey("fmjs-sharing");
+	$.jStorage.deleteKey("fmjs-sharing-msg");
 
 	$.jStorage.deleteKey("fmjs-fav-feeds");
 	$.jStorage.deleteKey("fmjs-fav-groups");
@@ -143,6 +150,7 @@ function showSaved() {
 	
 	$.mobile.changePage("#page-saved", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 }
 
 function showHot(page) {
@@ -188,11 +196,11 @@ function showHot(page) {
 					// Add local stuff here, like excerpt an feed name.
 					
 					item +='<p style="max-height:2.8em;overflow:hidden;" class="fmjs-link-'+_.escape(value.item_id)+'-content"></p>';
-					item += '<p style="text-align:right;">posted by <span class="fmjs-link-'+_.escape(value.item_id)+'-favicon"></span> <span class="fmjs-link-'+_.escape(value.item_id)+'-feedname fmjs-hot-links">Feed</span></p><p style="text-align:right;"><a href="'+_.escape(value.url)+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button" data-icon="grid">Open URL</a> <a href="" onclick="saveItem('+_.escape(value.item_id)+');" target="_blank" data-role="button" data-icon="plus" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button">Save</a></p>';
+					item += '<p style="text-align:right;">posted by <span class="fmjs-link-'+_.escape(value.item_id)+'-favicon"></span> <span class="fmjs-link-'+_.escape(value.item_id)+'-feedname fmjs-hot-links">Feed</span></p><p style="text-align:right;"><a href="'+_.escape(value.url)+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" data-icon="grid">Open URL</a> <a href="" onclick="saveItem('+_.escape(value.item_id)+');" target="_blank" data-role="button" data-icon="plus" data-theme="b" data-inline="true" data-mini="true">Save</a></p>';
 				}
 			
 				// Now we show a list of all those items, linking to this hot item...
-				item += '<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-hot-content-link-'+_.escape(value.id)+'" class="fmjs-hot-linkbox fmjs-to-listview">';
+				item += '<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-hot-content-link-'+_.escape(value.id)+'" class="fmjs-hot-linkbox">';
 
 				var links = value.item_ids.split(',');
 				for (var i=0, link_id; link_id=links[i]; i++) {
@@ -204,12 +212,12 @@ function showHot(page) {
 				}	
 				item += '</ul>';
 				//
-				item += '<div style="text-align:right"><a href="" data-role="button" onclick="markItemsRead(\''+_.escape(id_list)+'\');" data-theme="b" data-inline="true" data-mini="true" class="fmjs-hot-to-button" data-icon="check">Mark Links as read</a></div>';
+				item += '<div style="text-align:right"><a href="" data-role="button" onclick="markItemsRead(\''+_.escape(id_list)+'\');" data-theme="b" data-inline="true" data-mini="true" data-icon="check">Mark Links as read</a></div>';
 				//
 				item += '</div>';
 				$("#fmjs-hot-content").append(item);
 
-				$(".fmjs-hot-to-button").button();
+				//$(".fmjs-hot-to-button").button();
 				
 			});	
 
@@ -246,9 +254,11 @@ function showHot(page) {
 				}
 				$.mobile.changePage("#page-hot", {transition: transition});
 				$.mobile.silentScroll(0);
+				return false;
 			} else {
 				//$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
 				$("#page-hot").trigger("create");
+				return false;
 			}
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -291,12 +301,9 @@ function replacePlaceholder(value) {
 	} else {
 		$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-read");
 	}
-	
-	//if ( html_content == "raw" ) {
-		//$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(value.html);
-	//} else {
-		$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
-	//}
+
+	$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
+
 	var feedname = _.findWhere(feeds, {id: value.feed_id});
 	$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="" onclick="showFeed('+_.escape($.trim(feedname.id))+');">'+_.escape(feedname.title)+'</a>');
 
@@ -304,20 +311,6 @@ function replacePlaceholder(value) {
 	$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").append(favicon).removeClass("fmjs-"+class_prefix+"-"+value.id+"-favicon");
 	return true;
 }
-
-/*
-function markGroupAsFav() {
-	var id = $("#fmjs-group-content").data("fmjs-current-group-id");
-
-	if ( _.contains(fav_groups, id) ) {
-		// should be removed, we leave this for a later day
-		$("#fmjs-groups-favmarker").html("Mark group as favourite");
-	} else {
-		$("#fmjs-groups-favmarker").html("Remove group from favourites");
-	}
-	return;
-}
-*/
 
 function showGroup(id) {
 
@@ -363,17 +356,13 @@ function showGroup(id) {
 	if (called_group == false ) {
 		called_group = true;
 	} else {
-		//$("#fmjs-group-view").listview();
-		//$("#fmjs-group-show-feeds").button();
 		$("#page-group").trigger("create");
 	}
 
 	$.mobile.changePage("#page-group", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 }
-
-
-
 
 function showFeed(id) {
 
@@ -409,12 +398,12 @@ function showFeed(id) {
 	if (called_feed == false ) {
 		called_feed = true;
 	} else {
-		//$("#fmjs-feed-view").listview();
 		$("#page-feed").trigger("create");
 	}
 
 	$.mobile.changePage("#page-feed", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 }
 
 
@@ -427,52 +416,43 @@ function refreshFavicons() {
 			$.jStorage.set("fmjs-favicons", favicons);
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+	return false;
 }
 
 function showSingleItem(id) {
 	var item = _.findWhere(items, {id: id});
 
-	if ( item ) {
-		//session_read_items.push(item);
-		renderSingleItem(item);
-	} else {
-		// Could be a saved item...
+	if ( !item ) {
 		item = _.findWhere(saved_items, {id: id});
-		if ( item ) {
-
-			renderSingleItem(item);
-		} else {
-			// Let's check for unread_cache
-			item = _.findWhere(session_read_items, {id: id});
-			if ( item ) {
-
-				renderSingleItem(item);
-			} else {
-				// Nothing, so load item
-
-				showHideLoader("start");
-				$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
-					showHideLoader("stop");
-					if ( checkAuth(data.auth) ) {
-						session_read_items.push(data.items[0]);
-						renderSingleItem(data.items[0]);
-					}
-				}).fail(function(){ showHideLoader("stop"); checkAuth(0); });			
-			}
-		}
-
+	} 
+	
+	if ( !item ) {
+		item = _.findWhere(session_read_items, {id: id});
 	}
+	
+	if ( !item ) {
+		showHideLoader("start");
+		$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
+			showHideLoader("stop");
+			if ( checkAuth(data.auth) ) {
+				session_read_items.push(data.items[0]);
+				renderSingleItem(data.items[0]);
+			}
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });		
+	} else {
+		renderSingleItem(item);
+	}
+	return false;	
 }
 
 function renderSingleItem(data) {
+	console.log(data);
 	if ( html_content == "raw") {
 		$("#fmjs-single-content").html(data.html);
 		$("#fmjs-single-content a").attr("target", "_blank");
 		$("#fmjs-single-content img").attr("height", "");
 		$("#fmjs-single-content img").attr("width", "");
 		$("#fmjs-single-content").fitVids();
-		
-		//$("#fmjs-single-content").imagefit();
 
 	} else {
 		$("#fmjs-single-content").html(_.escape(data.html));
@@ -515,14 +495,48 @@ function renderSingleItem(data) {
 		$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
 		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });	
 	}
+	
+	var sharing_buttons = '';
+	if (sharing == "all" ) {
+		// Add Facebook-Button
+		sharing_buttons += '<iframe src="//www.facebook.com/plugins/like.php?href='+encodeURI(data.url)+'&amp;send=false&amp;layout=button_count&amp;width=250&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px; height:21px;" allowTransparency="true"></iframe>';
+		
+		// Add Twitter-Button
+		sharing_buttons += '<a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-url="'+encodeURI(data.url)+'">Tweet</a>';
+		sharing_buttons += '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+		// Add Google+-Button
+		sharing_buttons += '<div class="g-plus" data-action="share" data-annotation="bubble" data-href="'+encodeURI(data.url)+'"></div>';
+		sharing_buttons += '<script type="text/javascript">';
+		sharing_buttons += '(function() {';
+		sharing_buttons += "var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;";
+		sharing_buttons += "po.src = 'https://apis.google.com/js/plusone.js';";
+		sharing_buttons += "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);";
+		sharing_buttons += '})();';
+		sharing_buttons += '</script>';
+	}
+	
+	if ( sharing == "all" || sharing == "email" ) {
+	
+		// Add E-Mail-Button
+		var e_mail_msg = sharing_msg.split("%url%").join(data.url);
+		sharing_buttons += '<a href="mailto:?subject='+encodeURI('Check it out: '+_.escape(data.title))+'&body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
+	}
+	$("#fmjs-single-sharing-buttons").html(sharing_buttons);
+	
 	if (called_single == false ) {
 		called_single = true;
 	} else {
-		// Nothing special to do here as far as I can see
 		$("#page-single").trigger("create");
-	}	
+		if ( sharing == "all" ) {
+			// twitter button needs to be refreshed
+			twttr.widgets.load();
+		}	
+	}
+	
+
 	$.mobile.changePage("#page-single", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 }
 
 function renderDate(how, timestamp) {
@@ -548,11 +562,11 @@ function renderDate(how, timestamp) {
 	}
 	
 	if ( how == "relative-date" ) {
-	
+		return '';
 	}
 
 	if ( how == "relative-time" ) {
-	
+		return '';
 	}
 }
 
@@ -611,6 +625,7 @@ function showSparks() {
 	}
 	$.mobile.changePage("#page-sparks", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 
 }
 
@@ -645,6 +660,7 @@ function showAllFeeds() {
 
 	$.mobile.changePage("#page-all-feeds", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 }
 
 function showHideLoader(state) {
@@ -687,6 +703,7 @@ function showKindling() {
 
 	$.mobile.changePage("#page-kindling", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 }
 
 function getFavicon(feed, css_classes) {
@@ -718,6 +735,7 @@ function showGroupSelector(id) {
 		// items
 		showGroup(id);
 	}
+	return false;
 }
 
 function showFeedsInGroup(id) {
@@ -753,6 +771,7 @@ function showFeedsInGroup(id) {
 
 	$.mobile.changePage("#page-feedgroup", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 
 }
 
@@ -829,10 +848,7 @@ function showHome() {
 
 	$.mobile.changePage("#page-home", {transition: transition});
 	$.mobile.silentScroll(0);
-}
-
-function createPanels() {
-	prepareHome();
+	return false;
 }
 
 function showGroups() {
@@ -850,13 +866,14 @@ function showGroups() {
 	
 	$.mobile.changePage("#page-groups", {transition: transition});
 	$.mobile.silentScroll(0);
+	return false;
 }
 
 function markFeedAsFav() {
 	var id = $("#fmjs-feed-content").data("fmjs-feed-id");
 
 	if ( _.contains(fav_feeds, id) ) {
-		// should be removed, we leave this for a later day
+		// should be removed
 		fav_feeds = _.without(fav_feeds, id);
 		$.jStorage.set("fmjs-fav-feeds", _.compact(fav_feeds));
 		$("#fmjs-feed-favmarker").html("Mark feed as favourite");
@@ -867,14 +884,14 @@ function markFeedAsFav() {
 		$("#fmjs-feed-favmarker").html("Remove feed from favourites");
 	}
 
-	return;
+	return false;
 }
 
 function markGroupAsFav() {
 	var id = $("#fmjs-group-content").data("fmjs-current-group-id");
 
 	if ( _.contains(fav_groups, id) ) {
-		// should be removed, we leave this for a later day
+		// should be removed
 		fav_groups = _.without(fav_groups, id);
 		$.jStorage.set("fmjs-fav-groups", _.compact(fav_groups));
 		$("#fmjs-group-favmarker").html("Mark group as favourite");
@@ -884,7 +901,7 @@ function markGroupAsFav() {
 		$.jStorage.set("fmjs-fav-groups", _.compact(fav_groups));
 		$("#fmjs-group-favmarker").html("Remove group from favourites");
 	}
-	return;
+	return false;
 }
 
 function countUnreadInGroup(id) {
@@ -918,7 +935,7 @@ function showEditHomescreen() {
 		var field_name = 'fmjs-edit-homescreen-' + value;
 		var field = '<div data-role="fieldcontain">';
 		
-		field += '<label for="'+field_name+'-select">Widget '+value.toUpperCase()+'</label>';  
+		field += '<label for="'+field_name+'-select">Widget&nbsp;'+value.toUpperCase()+':</label><br>';  
 		field += '<select data-native-menu="true" name="'+field_name+'" id="'+field_name+'-select">';
 		field += widget_place_options;
 		field += '</select>';
@@ -940,8 +957,8 @@ function showEditHomescreen() {
 	}	
 	
 	$.mobile.changePage("#page-edit-homescreen", {transition: transition});
-	$.mobile.silentScroll(0);	
-
+	$.mobile.silentScroll(0);
+	return false;
 }
 
 function saveHomescreen() {
