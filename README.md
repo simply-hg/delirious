@@ -13,7 +13,7 @@ How to run it
 - Add md5.js from http://www.webtoolkit.info/javascript-md5.html to your directory
 - Find a nice looking generic rss-icon in the size of 16x16 pixel and upload it as feed-icon-generic.png to your directory.
 
-Please note: I intend to add all these required files into a nice package, but currently do not have time for it. I'm not sure about the redistribution rights either. All files offered in this repository are considered open source and are licensed by MIT terms.
+Please note: I intend to add all these required files into a nice package in the next coming days. All files offered in this repository are considered open source and are licensed by MIT terms.
 
 Fever-js: A small introduction
 ==============================
