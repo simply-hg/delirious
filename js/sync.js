@@ -2,6 +2,7 @@ function syncItems() {
 	syncSavedItems("sync");
 	syncUnreadItems("sync");
 	prepareHome();
+	return false;
 }
 
 function syncSavedItems(what) {
@@ -170,7 +171,7 @@ function loadItems(ids) {
 
 function runAfterItemLoad() {
 	items = _.sortBy(items, "created_on_time");
-	createPanels();
+	prepareHome();
 }
 
 
@@ -402,6 +403,7 @@ function markGroupAsRead() {
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
 	markGroupRead("group", group_id, data);//what, id, ids
 	$.mobile.changePage("#page-home", {transition: "slide"});
+	return false;
 }
 
 function markFeedAsRead() {
@@ -411,4 +413,5 @@ function markFeedAsRead() {
 	$("#fmjs-feed-content").removeData("fmjs-feed-id");
 	markGroupRead("feed", feed_id, data);//what, id, ids
 	$.mobile.changePage("#page-home", {transition: "slide"});
+	return false;
 }
