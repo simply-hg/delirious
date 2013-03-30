@@ -9,7 +9,8 @@ var favicons     = {};
 var transition   = "";
 var html_content = "";
 var show_empty_groups = "false";
-
+var sharing = "email";
+var sharing_msg = "Check out this nice article I found: %url%";
 var started = false;
 
 var items              = [];
@@ -63,7 +64,9 @@ function getSettings() {
 		html_content = $.jStorage.get("fmjs-html-content", "escape");
 		groupview    = $.jStorage.get("fmjs-groupview", "items");
 		show_empty_groups = $.jStorage.get("fmjs-show-empty-groups", "false");
-
+		sharing      = $.jStorage.get("fmjs-sharing", sharing);
+		sharing_msg  = $.jStorage.get("fmjs-sharing-msg", sharing_msg);
+		
 		saved_items = $.jStorage.get("fmjs-local-items", []);
 		widgets     = $.jStorage.get("fmjs-widgets", default_widgets);
 		
