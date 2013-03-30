@@ -43,3 +43,4 @@ Todo and feature list
 - [X] Mark links to a hot item as read (this feature is not found in other clients I am aware of, but I wanted it :D )
 - [X] Load more hot links
 - [X] Support range and offset when loading hot items.
+- [X] Support Sharing of Articles to Facebook, Google+ and Twitter. You can also share any item by E-Mail.
