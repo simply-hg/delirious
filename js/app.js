@@ -265,9 +265,9 @@ function showHot(page) {
 function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
 
-	if ( placeholder_ids.length > 20 ) {
-		var first = _.first(placeholder_ids, 20);
-		var rest  = _.rest(placeholder_ids, 20);
+	if ( placeholder_ids.length > 40 ) {
+		var first = _.first(placeholder_ids, 40);
+		var rest  = _.rest(placeholder_ids, 40);
 	} else {
 		var first = placeholder_ids;
 		var rest = [];
