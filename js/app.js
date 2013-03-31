@@ -1,4 +1,10 @@
 function init() {
+	if ( fm_url != "" ) {
+		$("#fmjs-fever-url").val(fm_url);
+	}
+	if ( fm_user != "" ) {
+		$("#fmjs-e-mail").val(fm_user);
+	}
 	$('input:radio[name="fmjs-setting-transitions"]').filter('[value="'+transition+'"]').prop('checked', true);
 	$('input:radio[name="fmjs-setting-html-content"]').filter('[value="'+html_content+'"]').prop('checked', true);
 	$('input:radio[name="fmjs-setting-groupview"]').filter('[value="'+groupview+'"]').prop('checked', true);
@@ -9,15 +15,7 @@ function init() {
 
 function start() {
 	// Load Config, if any
-	//start();
-	
-	if ( fm_url != "" ) {
-		$("#fmjs-fever-url").val(fm_url);
-	}
-	if ( fm_user != "" ) {
-		$("#fmjs-e-mail").val(fm_user);
-	}
-	//init();
+
 	// Check, if we have all the auth-data
 
 	// test-auth
@@ -25,7 +23,7 @@ function start() {
 		checkAuth(0);
 	}
 	started = true;
-	init();
+	//init();
 	showHideLoader("start");
 	$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
 		showHideLoader("stop");

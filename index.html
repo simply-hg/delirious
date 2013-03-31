@@ -44,6 +44,10 @@
 				e.preventDefault();
 				window.history.back();
 			});
+			$("#page-settings").on("pagebeforeshow", function(e) {
+				init();
+				$("#page-settings").trigger("create");
+			});
 		});
 		</script>
 	</head>
