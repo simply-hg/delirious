@@ -594,21 +594,21 @@ function checkAuth(auth) {
 
 function showSparks() {
 
-	$("fmjs-sparks-content").empty();
-	$("fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-sparks-view"></ul>');
+	$("#fmjs-sparks-content").empty();
+	$("#fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-sparks-view"></ul>');
 
 	var spark_feeds = _.where(feeds, {is_spark: 1});
-	//console.log(spark_feeds);
+	
 	
 	feeds_for_sparks = [];
 	$.each(spark_feeds, function(index, value) {
 		feeds_for_sparks.push(value.id);
 	});
-
+	
 	item_ids_in_sparks = '';
 	$.each(items, function(index, value) {
-		if ( $.inArray(value.feed_id, feeds_for_sparks ) !== -1 && value.is_read == 0 ) {
-
+		if ( $.inArray(value.feed_id, feeds_for_sparks ) == true && value.is_read == 0 ) {
+			//console.log(value.is_read);
 			var item = "";
 			item += renderListviewItem(value, true, false, false);
 			
@@ -616,7 +616,7 @@ function showSparks() {
 			$("#fmjs-sparks-view").append(item);
 		}
 	});
-	$("#fmjs-group").data("fmjs-current-ids", item_ids_in_sparks);
+	$("#fmjs-sparks").data("fmjs-current-ids", item_ids_in_sparks);
 	if (called_sparks == false ) {
 		called_sparks = true;
 	} else {
