@@ -30,7 +30,6 @@ function syncSavedItems(what) {
 
 			delete_em =  _.difference(local_ids, online_ids);
 
-			
 			if ( load_em.length > 0 ) {
 				if ( what == "start" && load_em.length > 50 ) {
 					// too much to load on start, this should be done with a full refresh...
@@ -120,17 +119,20 @@ function syncUnreadItems(what) {
 }
 
 function refreshItems() {
-
-
 	//last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
 	showHideLoader("start");
 	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			var ids = data.unread_item_ids.split(',');
+			ids = _.compact(ids);
 			items = [];
-			afterItemLoad = _.after(ids.length, runAfterItemLoad);
-			loadItems(ids);
+			if ( ids.length == 0 ) {
+				runAfterItemLoad();
+			} else {
+				afterItemLoad = _.after(ids.length, runAfterItemLoad);
+				loadItems(ids);
+			}
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
