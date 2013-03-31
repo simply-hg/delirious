@@ -33,7 +33,9 @@ function widgetSystemGroups() {
 	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showKindling();">Kindling';
 	var unread_items = _.where(items, {is_read:0});
 	sysgroups +=    '<span class="ui-li-count">'+unread_items.length+'</span>'+'</a></li>';
-	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showSparks();">Sparks</a></li>';
+	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showSparks();">Sparks';
+	var unread_sparks = getUnreadSparks();
+	sysgroups += 	'<span class="ui-li-count">'+unread_sparks.counter+'</span>'+'</a></li>';
 	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showSaved();">Saved items</a>';
 	sysgroups +=    '<span class="ui-li-count">'+saved_items.length+'</span>'+'</li>';
 	sysgroups += '<li data-theme="d"><a href="" data-transition="slide" onclick="showAllFeeds();">All Feeds';

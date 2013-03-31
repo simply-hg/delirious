@@ -592,23 +592,35 @@ function checkAuth(auth) {
 	}
 }
 
+function getUnreadSparks() {
+	var spark_feeds = _.where(feeds, {is_spark: 1});
+
+	feeds_for_sparks_unread = [];
+	$.each(spark_feeds, function(index, value) {
+		feeds_for_sparks_unread.push(value.id);
+	});
+	
+	unread_in_sparks_counter = 0;
+	unread_sparks = [];
+	$.each(items, function(index, value) {
+		if ( $.inArray(value.feed_id, feeds_for_sparks_unread ) == true && value.is_read == 0 ) {
+			unread_in_sparks_counter++;
+			unread_sparks.push(value);
+		}
+	});
+	var result = { items: unread_sparks, counter: unread_in_sparks_counter }
+	return result;
+}
+
 function showSparks() {
 
 	$("#fmjs-sparks-content").empty();
 	$("#fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-sparks-view"></ul>');
 
-	var spark_feeds = _.where(feeds, {is_spark: 1});
-	
-	
-	feeds_for_sparks = [];
-	$.each(spark_feeds, function(index, value) {
-		feeds_for_sparks.push(value.id);
-	});
-	
-	item_ids_in_sparks = '';
-	$.each(items, function(index, value) {
-		if ( $.inArray(value.feed_id, feeds_for_sparks ) == true && value.is_read == 0 ) {
-			//console.log(value.is_read);
+	var sparks = getUnreadSparks();
+	item_ids_in_sparks = "";
+	$.each(sparks.items, function(index, value) {
+		if ( value.is_read == 0 ) {
 			var item = "";
 			item += renderListviewItem(value, true, false, false);
 			
