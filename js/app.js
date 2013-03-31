@@ -448,7 +448,6 @@ function renderSingleItem(data) {
 		$("#fmjs-single-content img").attr("height", "");
 		$("#fmjs-single-content img").attr("width", "");
 		$("#fmjs-single-content").fitVids();
-
 	} else {
 		$("#fmjs-single-content").html(_.escape(data.html));
 	}
@@ -494,10 +493,10 @@ function renderSingleItem(data) {
 	var sharing_buttons = '';
 	if (sharing == "all" ) {
 		// Add Facebook-Button
-		sharing_buttons += '<iframe src="//www.facebook.com/plugins/like.php?href='+encodeURI(data.url)+'&amp;send=false&amp;layout=button_count&amp;width=250&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px; height:21px;" allowTransparency="true"></iframe>';
+		sharing_buttons += '<iframe src="//www.facebook.com/plugins/like.php?href='+encodeURI(data.url)+'&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>';
 		
 		// Add Twitter-Button
-		sharing_buttons += '<a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-url="'+encodeURI(data.url)+'">Tweet</a>';
+		sharing_buttons += '<a href="https://twitter.com/share" class="twitter-share-button" data-size="medium" data-url="'+encodeURI(data.url)+'">Tweet</a>';
 		sharing_buttons += '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 		// Add Google+-Button
 		sharing_buttons += '<div class="g-plus" data-action="share" data-annotation="bubble" data-href="'+encodeURI(data.url)+'"></div>';
@@ -516,15 +515,23 @@ function renderSingleItem(data) {
 		var e_mail_msg = sharing_msg.split("%url%").join(data.url);
 		sharing_buttons += '<a href="mailto:?subject='+encodeURI('Check it out: '+_.escape(data.title))+'&body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
 	}
-	$("#fmjs-single-sharing-buttons").html(sharing_buttons);
-	
+	try {
+		$("#fmjs-single-sharing-buttons").html(sharing_buttons);
+	} catch (e) {
+		console.log("sharing buttons caused an error...");
+	}
 	if (called_single == false ) {
 		called_single = true;
 	} else {
 		$("#page-single").trigger("create");
 		if ( sharing == "all" ) {
 			// twitter button needs to be refreshed
-			twttr.widgets.load();
+			try {
+				twttr.widgets.load();
+			} catch (e) {
+				// ignore this one...
+				console.log("twitter object seems to be missing...");
+			} 
 		}	
 	}
 	
