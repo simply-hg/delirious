@@ -37,7 +37,13 @@
 	<script>
 		$(document).ready(function() {
 			start();
-			$("#fmjs-homescreen-message").on("click", function(e) { e.stopPropagation(); $(this).empty(); });
+			$("#fmjs-homescreen-message").on("vclick", function(e) { e.stopPropagation(); $(this).empty(); });
+			
+			$(".fmjs-back-button").on("vclick", function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				window.history.back();
+			});
 		});
 		</script>
 	</head>
@@ -95,7 +101,7 @@
 	<div data-role="page" id="page-hot">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-header">Hot on Fever<span style="color:red">°</span></h3>
 			<a href="" data-icon="refresh" onclick="showHot(1);" data-theme="b">Refresh</a>
 		</div>
@@ -133,7 +139,7 @@
 	 		<button id="fmjs-hot-more" data-role="button" onclick="showHot(2);">Load more</button>
 			<div id="fmjs-hot-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -146,7 +152,7 @@
 	<div data-role="page" id="page-group">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-group-header">Fever<span style="color:red">°</span> Custom Group</h3>
 			<a href="" data-icon="check" data-theme="b" onclick="markGroupAsRead();">Mark Read</a>
 		</div>
@@ -155,7 +161,7 @@
 			<div id="fmjs-group-content"></div>
 			<div id="fmjs-group-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="markGroupAsRead();" >Mark all items as read</a></li>
 					<li data-icon="star"><a href="" id="fmjs-group-favmarker" onclick="markGroupAsFav();">Mark group as favourite</a></li>
@@ -170,7 +176,7 @@
 	<div data-role="page" id="page-feedgroup">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-feedgroup-header">Fever<span style="color:red">°</span> Custom Group</h3>
 		</div>
 		
@@ -178,7 +184,7 @@
 			<div id="fmjs-feedgroup-content"></div>
 			<div id="fmjs-feedgroup-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -191,7 +197,7 @@
 	<div data-role="page" id="page-kindling">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-group-header">Fever<span style="color:red">°</span> Kindling</h3>
 			<a href="" data-icon="check" data-theme="b" onclick="markKindlingRead();">Mark Read</a>
 		</div>
@@ -199,7 +205,7 @@
 			<div id="fmjs-kindling-content"></div>
 			<div id="fmjs-kindling-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -211,7 +217,7 @@
 	<div data-role="page" id="page-feed">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-feed-header">Fever<span style="color:red">°</span> View Feed</h3>
 			<a href="" data-icon="check" data-theme="b" onclick="markFeedAsRead();">Mark Read</a>
 		</div>
@@ -219,7 +225,7 @@
 			<div id="fmjs-feed-content"></div>
 			<div id="fmjs-feed-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="markFeedAsRead();">Mark all items as read</a></li>
 					<li data-icon="star"><a href="" onclick="markFeedAsFav();" id="fmjs-feed-favmarker">Mark feed as favourite</a></li>
@@ -233,7 +239,7 @@
 	<div data-role="page" id="page-saved">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-saved-header">Saved Items</h3>
 			<a href="" data-icon="refresh" data-theme="b" onclick="showSaved();">Refresh</a>
 		</div>
@@ -241,7 +247,7 @@
 			<div id="fmjs-saved-content"></div>
 			<div id="fmjs-saved-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -254,7 +260,7 @@
 	<div data-role="page" id="page-sparks">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-sparks-header">Fever<span style="color:red">°</span> Sparks</h3>
 		</div>
 		<div data-role="content">
@@ -262,7 +268,7 @@
 		
 			<div id="fmjs-sparks-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -275,7 +281,7 @@
 	<div data-role="page" id="page-groups">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-groups-header">Fever<span style="color:red">°</span> Groups</h3>
 		</div>
 		
@@ -285,7 +291,7 @@
 			</div>
 			<div id="fmjs-groups-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -299,7 +305,7 @@
 	<div data-role="page" id="page-settings">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-header">Fever<span style="color:red">°</span> Mobile Settings</h3>
 			<a href="" data-icon="check" data-theme="b" onclick="saveSettings();">Save</a>
 		</div>
@@ -453,7 +459,7 @@
 
 			<div id="fmjs-settings-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="saveSettings();">Save Settings</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
@@ -467,7 +473,7 @@
 	<div data-role="page" id="page-single">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-feed-title">Feed-Name</h3>
 			<a data-icon="plus" data-theme="b" onclick="saveCurrentItem();" id="fmjs-single-btn-save">Save</a>
 		</div>
@@ -483,7 +489,7 @@
 			<a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="" data-icon="forward" data-iconpos="left" id="fmjs-single-url">Open URL</a>
 			<div id="fmjs-single-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -496,14 +502,14 @@
 	<div data-role="page" id="page-all-feeds">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-all-feeds-title">All Feeds</h3>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-all-feeds-content"></div>
 			<div id="fmjs-all-feeds-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -514,7 +520,7 @@
 	<div data-role="page" id="page-support">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-all-feeds-title">Help, Credits and Copyrights <span style="color:red">&copy;</span></h3>
 		</div>
 		<div data-role="content" id="fmjs-support-content" class="fmjs-content">
@@ -547,7 +553,7 @@
 		
 			<div id="fmjs-support-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
+					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
@@ -558,7 +564,7 @@
 	<!-- Edit Homescreen -->
 	<div data-role="page" id="page-edit-homescreen">
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
+			<button class="fmjs-back-button" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-header">Edit Homescreen</h3>
 			<a href="" data-icon="check" data-theme="b" onclick="saveHomescreen();">Save</a>
 		</div>
@@ -587,7 +593,7 @@
 			
 			<div id="fmjs-edithomescreen-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
+					<li data-icon="arrow-u"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-theme="d" data-icon="gear"><a href="" onclick="saveHomescreen();">Save Homescreen</a></li>
 				</ul>
