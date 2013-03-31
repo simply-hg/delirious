@@ -175,7 +175,7 @@ function showHot(page) {
 				item += _.escape( value.temperature ) + '<span style="color:red">°</span>&nbsp;';
 				if (value.is_local == 1 && value.is_item == 1) {
 					load_ids += value.item_id + ",";
-					item += '<a href="" class="fmjs-link-'+value.item_id+' fmjs-hot-links" onclick="showSingleItem('+value.item_id+');">'+_.escape(value.title)+'</a>';
+					item += '<a href="" class="fmjs-link-'+value.item_id+' fmjs-hot-links fmjs-button-show-item" data-fmjs-show-item="'+_.escape(value.item_id)+'">'+_.escape(value.title)+'</a>';
 				} else {
 					item += '<a href="'+value.url+'" class="fmjs-hot-links" target="_blank">'+_.escape(value.title)+'</a>';
 				}
@@ -197,7 +197,7 @@ function showHot(page) {
 					// item is "some", then "example", then "array"
 					// i is the index of item in the array
 					link_id = _.escape(link_id);
-					item += '<li><p><span class="fmjs-link-'+link_id+'-favicon"></span><a href="" class="fmjs-link-'+link_id+' fmjs-hot-links fmjs-single-item-link-'+link_id+'" onclick="showSingleItem('+link_id+');"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links fmjs-single-item-link-'+link_id+'">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
+					item += '<li><p><span class="fmjs-link-'+link_id+'-favicon"></span><a href="" class="fmjs-link-'+link_id+' fmjs-button-show-item fmjs-hot-links fmjs-single-item-link-'+link_id+'" data-fmjs-show-item="'+_.escape(link_id)+'"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links fmjs-single-item-link-'+link_id+'">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
 					id_list += link_id + ",";
 				}	
 				item += '</ul>';
@@ -436,7 +436,7 @@ function showSingleItem(id) {
 }
 
 function renderSingleItem(data) {
-	console.log(data);
+	//console.log(data);
 	if ( html_content == "raw") {
 		try {
 			$("#fmjs-single-content").html(data.html);
@@ -825,8 +825,8 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 	} else {
 		css_classes = 'fmjs-item-is-read';
 	}
-	
-	li += '<a href="" onclick="showSingleItem('+_.escape(item.id)+')" class="fmjs-hot-links fmjs-single-item-link-'+_.escape(item.id)+' '+css_classes+'">' + _.escape(item.title) + '</a>';
+	console.log("checkpoint");
+	li += '<a href="" class="fmjs-button-show-item fmjs-hot-links fmjs-single-item-link-'+_.escape(item.id)+' '+css_classes+'" data-fmjs-show-item="'+_.escape(item.id)+'">' + _.escape(item.title) + '</a>';
 	if ( with_feed == true ) {
 		li += ' by <a href="" onclick="showFeed('+_.escape(feed.id)+');" class="fmjs-hot-links">'+_.escape(feed.title)+'</a>';
 	}

@@ -60,6 +60,16 @@
 				init();
 				$("#page-settings").trigger("create");
 			});
+			$(document).on("vclick", ".fmjs-button-show-hot", function(e) {
+				console.log("yes!!!");
+			});
+			$( document ).on("vclick", ".fmjs-button-show-item", function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				var id = $(this).data("fmjs-show-item");
+				console.log(id);
+				showSingleItem(id);
+			});
 		});
 		</script>
 	</head>
@@ -462,7 +472,7 @@
 			</div>
 			<h1>Save Settings</h1>
 			<a data-role="button" data-icon="check" href="" onclick="saveSettings();">Save Settings</a>
-			<a id="fmjs-cancel-settings" data-role="button" data-icon="delete" href="#page-home">Cancel</a> 
+			<a href="" class="fmjs-to-home-button" data-role="button" data-icon="delete">Cancel</a>
 			
 
 			<h1>Log out</h1>

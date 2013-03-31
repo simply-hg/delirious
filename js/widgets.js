@@ -140,7 +140,7 @@ function widgetButtonSaved() {
 }
 
 function widgetButtonHotView() {
-	return '<a href="" data-role="button" onclick="showHot(1);">Show Hot Items</a>';
+	return '<a href="" data-role="button" onclick="showHot(1);" class="fmjs-button-show-hot">Show Hot Items</a>';
 }
 function widgetButtonAllFeeds() {
 	return '<a href="" data-role="button" onclick="showAllFeeds();">Show All Feeds</a>';
