@@ -73,6 +73,7 @@ function getSettings() {
 		fav_feeds  = $.jStorage.get("fmjs-fav-feeds", []);
 		fav_groups = $.jStorage.get("fmjs-fav-groups", []);
 		$.mobile.defaultPageTransition = transition;
+		//start();
 		return true;
 	} else {
 		return false;
