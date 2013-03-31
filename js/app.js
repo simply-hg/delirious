@@ -14,10 +14,6 @@ function init() {
 }
 
 function start() {
-	// Load Config, if any
-
-	// Check, if we have all the auth-data
-
 	// test-auth
 	if ( fm_url == "" ) {
 		checkAuth(0);
@@ -35,7 +31,6 @@ function start() {
 			$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
 				showHideLoader("stop");
 				if ( checkAuth(data.auth) ) {
-					
 					groups       = _.sortBy(data.groups, "title");
 					feeds_groups = data.feeds_groups;
 					//createGroups(false);
@@ -47,11 +42,8 @@ function start() {
 					});
 				}
 			}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-
 		}
-			
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-	
 }
 
 function saveSettings() {
