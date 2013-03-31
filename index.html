@@ -39,9 +39,8 @@
 			start();
 			$("#fmjs-homescreen-message").on("click", function(e) { e.stopPropagation(); $(this).empty(); });
 		});
-
-	</script>
-</head>
+		</script>
+	</head>
 
 <body>
 	<!-- Home -->
@@ -49,7 +48,7 @@
 	<div data-role="page" id="page-home">
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<h3 id="fmjs-header">Fever<span style="color:red">°</span> Mobile</h3>
-			<a href="" data-icon="refresh" onclick="syncItems();" data-theme="b" class="ui-btn-right">Sync</a>
+			<button onclick="syncItems();" data-theme="b" class="ui-btn-right" data-icon="refresh">Sync</button>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-homescreen-message"></div>
@@ -90,9 +89,6 @@
 				</ul>
 			</div>
 		</div>			
-
-		</div>
-
 	</div><!-- / Home -->
 
 	<!-- Hot-view -->
@@ -134,12 +130,12 @@
 
 			<div id="fmjs-hot-content">
 			</div>
-	 		<a href="" id="fmjs-hot-more" data-role="button" onclick="showHot(2);">Load more</a>
+	 		<button id="fmjs-hot-more" data-role="button" onclick="showHot(2);">Load more</button>
 			<div id="fmjs-hot-bottom" class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -163,7 +159,7 @@
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="markGroupAsRead();" >Mark all items as read</a></li>
 					<li data-icon="star"><a href="" id="fmjs-group-favmarker" onclick="markGroupAsFav();">Mark group as favourite</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -184,7 +180,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -205,7 +201,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -227,7 +223,7 @@
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="markFeedAsRead();">Mark all items as read</a></li>
 					<li data-icon="star"><a href="" onclick="markFeedAsFav();" id="fmjs-feed-favmarker">Mark feed as favourite</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -247,7 +243,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -268,7 +264,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -291,7 +287,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -460,7 +456,7 @@
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="saveSettings();">Save Settings</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -489,7 +485,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -509,7 +505,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -543,6 +539,7 @@
 			<p>fever-js is <strong>not</strong> developed or endorsed by Shaun Inman, please don't bother him with bug reports, complaints or anything else regarding fever-js.</p>
 			<p><a href="http://www.jquery.com/" target="_blank">jQuery</a> is used under its <a href="https://jquery.org/license/" target="_blank">license terms (MIT)</a>.</p>
 			<p><a href="http://www.jstorage.info/" target="_blank">jStorage</a> is licensed under MIT-styled terms. You can <a href="http://www.jstorage.info/static/license.txt" target="_blank">find its license online</a>.</p>
+			<p>fever-js uses the jQuery plugin <a href="http://www.fitvid.com">fitvid.js</a>.</p>
 			<p>RSS icons used in this app are taken from <a href="http://commons.wikimedia.org/wiki/File:Feed-icon.svg" target="_blank">Wikimedia Commons</a> and <a href="http://www.feedicons.com/" target="_blank">feedicon.com</a>.</p>
 			<p>MD5 hashing is done with help from an implementation found on <a href="http://www.webtoolkit.info/javascript-md5.html" target="_blank">webtoolkit.info</a>. Some css code for the single item view is also from there, known as <a href="http://www.webtoolkit.info/css-clearfix.html" target="_blank">clearfix</a>. You can find <a href="http://www.webtoolkit.info/license" target="_blank">their license</a> online. </p>
 			<p>fever-js releases are compressed by <a href="http://www.jscompress.com/" target="_blank">jscompress.com</a></p>
@@ -552,7 +549,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="javascript:window.history.back();" data-icon="arrow-l">Back</a></li>
 					<li data-icon="arrow-u"><a href="" onclick="$.mobile.silentScroll(0);">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a>
+					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -560,8 +557,6 @@
 	
 	<!-- Edit Homescreen -->
 	<div data-role="page" id="page-edit-homescreen">
-	
-
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<a href="javascript:window.history.back();" data-icon="arrow-l">Back</a>
 			<h3 id="fmjs-header">Edit Homescreen</h3>
@@ -598,9 +593,6 @@
 				</ul>
 			</div>
 		</div>			
-
-		</div>
-
 	</div><!-- / Edit Homescreen -->
 </body>
 </html>
