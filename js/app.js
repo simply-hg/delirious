@@ -438,7 +438,12 @@ function showSingleItem(id) {
 function renderSingleItem(data) {
 	console.log(data);
 	if ( html_content == "raw") {
-		$("#fmjs-single-content").html(data.html);
+		try {
+			$("#fmjs-single-content").html(data.html);
+		} catch(e) {
+			console.log("error in html of item");
+			$("#fmjs-single-content").html(_.escape(data.html));
+		}
 		$("#fmjs-single-content a").attr("target", "_blank");
 		$("#fmjs-single-content img").attr("height", "");
 		$("#fmjs-single-content img").attr("width", "");
