@@ -90,7 +90,7 @@ function saveSettings() {
 	}
 	restart();
 	$.mobile.changePage("#page-home", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;	
 }
 
@@ -149,7 +149,7 @@ function showSaved() {
 	}
 	
 	$.mobile.changePage("#page-saved", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -253,7 +253,7 @@ function showHot(page) {
 					$("#page-hot").trigger("create");
 				}
 				$.mobile.changePage("#page-hot", {transition: transition});
-				$.mobile.silentScroll(0);
+				//$.mobile.silentScroll(0);
 				return false;
 			} else {
 				//$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
@@ -360,7 +360,7 @@ function showGroup(id) {
 	}
 
 	$.mobile.changePage("#page-group", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -402,7 +402,7 @@ function showFeed(id) {
 	}
 
 	$.mobile.changePage("#page-feed", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -535,7 +535,7 @@ function renderSingleItem(data) {
 	
 
 	$.mobile.changePage("#page-single", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -585,7 +585,7 @@ function checkAuth(auth) {
 			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");	
 
 			$.mobile.changePage("#page-settings", {transition: transition});
-			$.mobile.silentScroll(0);
+			//$.mobile.silentScroll(0);
 			return false;		
 		}
 
@@ -624,7 +624,7 @@ function showSparks() {
 		$("#page-sparks").trigger("create");
 	}
 	$.mobile.changePage("#page-sparks", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 
 }
@@ -659,7 +659,7 @@ function showAllFeeds() {
 	}
 
 	$.mobile.changePage("#page-all-feeds", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -702,7 +702,7 @@ function showKindling() {
 	}
 
 	$.mobile.changePage("#page-kindling", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -770,7 +770,7 @@ function showFeedsInGroup(id) {
 	}
 
 	$.mobile.changePage("#page-feedgroup", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 
 }
@@ -847,7 +847,7 @@ function showHome() {
 	}
 
 	$.mobile.changePage("#page-home", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -865,7 +865,7 @@ function showGroups() {
 	}	
 	
 	$.mobile.changePage("#page-groups", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -957,7 +957,7 @@ function showEditHomescreen() {
 	}	
 	
 	$.mobile.changePage("#page-edit-homescreen", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
