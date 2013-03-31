@@ -51,6 +51,11 @@
 				e.preventDefault();
 				$.mobile.silentScroll(0);
 			});
+			$(".fmjs-to-home-button").on("vclick", function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				showHome();
+			});
 			$("#page-settings").on("pagebeforeshow", function(e) {
 				init();
 				$("#page-settings").trigger("create");
@@ -152,7 +157,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -176,7 +181,7 @@
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="markGroupAsRead();" >Mark all items as read</a></li>
 					<li data-icon="star"><a href="" id="fmjs-group-favmarker" onclick="markGroupAsFav();">Mark group as favourite</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -197,7 +202,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -218,7 +223,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -240,7 +245,7 @@
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="markFeedAsRead();">Mark all items as read</a></li>
 					<li data-icon="star"><a href="" onclick="markFeedAsFav();" id="fmjs-feed-favmarker">Mark feed as favourite</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -260,7 +265,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -281,7 +286,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -304,7 +309,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -473,7 +478,7 @@
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
 					<li data-icon="check"><a href="" onclick="saveSettings();">Save Settings</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -502,7 +507,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -522,7 +527,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -566,7 +571,7 @@
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
-					<li data-icon="home"><a href="" onclick="showHome();">Go to Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -607,6 +612,7 @@
 					<li data-icon="arrow-l"><a href="" class="fmjs-back-button">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-to-top-button">Back to the top</a></li>
 					<li data-theme="d" data-icon="gear"><a href="" onclick="saveHomescreen();">Save Homescreen</a></li>
+					<li data-icon="home"><a href="" class="fmjs-to-home-button">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>			
