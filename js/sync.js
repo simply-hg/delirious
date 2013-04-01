@@ -321,23 +321,20 @@ function markGroupRead(what, id, ids) {
 	runAfterItemLoad();
 }
 
-
 function saveItem(id) {
-	id = $.trim(id);
-	if ( id != "") {
-
+	//id = $.trim(id);
+	if ( $.trim(id) != "") {
+		console.log(id);
 		//var local_items = $.jStorage.get("fmjs-local-items", []);
 		var item = _.findWhere(items, {id: id});
-
+		console.log(id);
 		if ( item ) {
 			//
 			item.is_saved = 1;
 			saved_items.push(item);
 			$.jStorage.set("fmjs-local-items", saved_items);
 		} else {
-
 			item = _.findWhere(session_read_items, {id: id});
-			
 			if ( item ) {
 				item.is_saved = 1;
 				saved_items.push(item);
@@ -359,6 +356,11 @@ function unsaveItem(id) {
 	if ( $.trim(id) != "") {
 		//var saved_items = $.jStorage.get("fmjs-local-items", []);
 		current_unsave_id = id;
+		var unsave_item = _.findWhere(saved_items, {id:id});
+		
+		unsave_item.id_saved = 0;
+		session_read_items.push(unsave_item);
+		
 		saved_items = _.reject(saved_items, function(item) {
 			if ( item.id != current_unsave_id )  {
 				return false;
@@ -379,21 +381,38 @@ function unsaveItem(id) {
 	}
 }
 
-function saveCurrentItem() {
-	var id = $("#fmjs-single-content").data("fmjs-single-item-current");
+function isItemSaved(id) {
+	var test = _.findWhere(saved_items, {id:id});
+	if (test) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function toggleSaveState(id) {
+	if ( isItemSaved(id) ) {
+		saveCurrentItem(id);
+	} else {
+		unsaveCurrentItem(id);
+	}
+}
+
+function saveCurrentItem(id) {
+	//var id = $("#fmjs-single-btn-save").data("fmjs-save-item-id");
 	saveItem(id);
-	$("#fmjs-single-btn-save .ui-btn-text").html("Unsave");
-	$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
-	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "minus" });
+	//$("#fmjs-single-btn-save .ui-btn-text").html("Unsave");
+	//$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
+	//$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "minus" });
 
 	return false;
 }
-function unsaveCurrentItem() {
-	var id = $("#fmjs-single-content").data("fmjs-single-item-current");
+function unsaveCurrentItem(id) {
+	//var id = $("#fmjs-single-btn-save").data("fmjs-save-item-id");
 	unsaveItem(id);
-	$("#fmjs-single-btn-save .ui-btn-text").html("Save");
-	$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
-	$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });
+	//$("#fmjs-single-btn-save .ui-btn-text").html("Save");
+	//$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
+	//$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });
 
 	return false;
 }

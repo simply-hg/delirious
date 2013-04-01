@@ -1,4 +1,4 @@
-function init() {
+function initSettings() {
 	if ( fm_url != "" ) {
 		$("#fmjs-fever-url").val(fm_url);
 	}
@@ -49,15 +49,15 @@ function start() {
 function saveSettings() {
 	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, sharing_text;
 	
-	url        = $.trim($("#fmjs-fever-url").val());
-	user       = $.trim($("#fmjs-e-mail").val());
-	password   = $.trim($("#fmjs-password").val());
-	transition = $('input[name=fmjs-setting-transitions]:checked').val();
-	html_content = $('input[name=fmjs-setting-html-content]:checked').val();
-	groupview = $('input[name=fmjs-setting-groupview]:checked').val();
-	emptygroups = $('input[name=fmjs-setting-empty-groups]:checked').val();
+	url           = $.trim($("#fmjs-fever-url").val());
+	user          = $.trim($("#fmjs-e-mail").val());
+	password      = $.trim($("#fmjs-password").val());
+	transition    = $('input[name=fmjs-setting-transitions]:checked').val();
+	html_content  = $('input[name=fmjs-setting-html-content]:checked').val();
+	groupview     = $('input[name=fmjs-setting-groupview]:checked').val();
+	emptygroups   = $('input[name=fmjs-setting-empty-groups]:checked').val();
 	share_buttons = $('input[name=fmjs-setting-sharing]:checked').val();
-	sharing_text = $('#fmjs-setting-sharing-msg').val();
+	sharing_text  = $('#fmjs-setting-sharing-msg').val();
 	
 	if ( $.jStorage.storageAvailable() ) {
 		$.jStorage.set("fmjs-url", url);
@@ -148,12 +148,12 @@ function showHot(page) {
 	if ( page == 1 ) {
 		// First page has been called, so do a complete refresh
 		$("#fmjs-hot-content").empty();
-		$("#fmjs-hot-more").attr("onclick", "showHot(2);");
+		//$("#fmjs-hot-more").attr("onclick", "showHot(2);");
 	} else {
 		// another page has been called, so let's append a new one
 		var next_page = page;
 		next_page++;
-		$("#fmjs-hot-more").attr("onclick", "showHot("+next_page+");");
+		//$("#fmjs-hot-more").data("fmjs-hot-more", next_page);
 	}
 	
 	// Get range and offset
@@ -175,7 +175,7 @@ function showHot(page) {
 				item += _.escape( value.temperature ) + '<span style="color:red">°</span>&nbsp;';
 				if (value.is_local == 1 && value.is_item == 1) {
 					load_ids += value.item_id + ",";
-					item += '<a href="" class="fmjs-link-'+value.item_id+' fmjs-hot-links fmjs-button-show-item" data-fmjs-show-item="'+_.escape(value.item_id)+'">'+_.escape(value.title)+'</a>';
+					item += '<a href="" class="fmjs-link-'+value.item_id+' fmjs-hot-links fmjs-button" data-fmjs-fnc="show-item" data-fmjs-show-item="'+_.escape(value.item_id)+'">'+_.escape(value.title)+'</a>';
 				} else {
 					item += '<a href="'+value.url+'" class="fmjs-hot-links" target="_blank">'+_.escape(value.title)+'</a>';
 				}
@@ -186,7 +186,11 @@ function showHot(page) {
 					// Add local stuff here, like excerpt an feed name.
 					
 					item +='<p style="max-height:2.8em;overflow:hidden;" class="fmjs-link-'+_.escape(value.item_id)+'-content"></p>';
-					item += '<p style="text-align:right;">posted by <span class="fmjs-link-'+_.escape(value.item_id)+'-favicon"></span> <span class="fmjs-link-'+_.escape(value.item_id)+'-feedname fmjs-hot-links">Feed</span></p><p style="text-align:right;"><a href="'+_.escape(value.url)+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" data-icon="grid">Open URL</a> <a href="" onclick="saveItem('+_.escape(value.item_id)+');" target="_blank" data-role="button" data-icon="plus" data-theme="b" data-inline="true" data-mini="true">Save</a></p>';
+					item += '<p style="text-align:right;">posted by <span class="fmjs-link-'+_.escape(value.item_id)+'-favicon"></span> ';
+					item += '<span class="fmjs-link-'+_.escape(value.item_id)+'-feedname fmjs-hot-links">Feed</span></p>';
+					item += '<p style="text-align:right;">';
+					item += '<a href="'+_.escape(value.url)+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" data-icon="grid">Open URL</a> ';
+					item += '<a href="" data-fmjs-fnc="toggle-save-item" data-fmjs-save-item-id="'+_.escape(value.item_id)+'" data-role="button" data-icon="plus" data-theme="b" data-inline="true" data-mini="true" class="fmjs-button fmjs-link-'+_.escape(value.item_id)+'-save-button">Save</a></p>';
 				}
 			
 				// Now we show a list of all those items, linking to this hot item...
@@ -197,17 +201,21 @@ function showHot(page) {
 					// item is "some", then "example", then "array"
 					// i is the index of item in the array
 					link_id = _.escape(link_id);
-					item += '<li><p><span class="fmjs-link-'+link_id+'-favicon"></span><a href="" class="fmjs-link-'+link_id+' fmjs-button-show-item fmjs-hot-links fmjs-single-item-link-'+link_id+'" data-fmjs-show-item="'+_.escape(link_id)+'"><span class="fmjs-link-'+link_id+'-title fmjs-hot-links fmjs-single-item-link-'+link_id+'">Link: '+link_id+'</span></a> by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
+					item += '<li><p><span class="fmjs-link-'+link_id+'-favicon"></span>';
+					item += '<a href="" class="fmjs-link-'+link_id+' fmjs-button fmjs-hot-links fmjs-single-item-link-'+link_id+'" data-fmjs-show-item="'+_.escape(link_id)+'" data-fmjs-fnc="show-item">';
+					item += '<span class="fmjs-link-'+link_id+'-title fmjs-hot-links fmjs-single-item-link-'+link_id+'">Link: '+link_id+'</span>';
+					item += '</a> ';
+					item += 'by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
 					id_list += link_id + ",";
 				}	
 				item += '</ul>';
 				//
-				item += '<div style="text-align:right"><a href="" data-role="button" onclick="markItemsRead(\''+_.escape(id_list)+'\');" data-theme="b" data-inline="true" data-mini="true" data-icon="check">Mark Links as read</a></div>';
+				item += '<div style="text-align:right">';
+				item += '<a href="" data-role="button" data-theme="b" data-inline="true" data-mini="true" data-icon="check" class="fmjs-button" data-fmjs-fnc="mark-items-read" data-fmjs-item-ids="'+_.escape(id_list)+'">Mark Links as read</a>';
+				item += '</div>';
 				//
 				item += '</div>';
 				$("#fmjs-hot-content").append(item);
-
-				//$(".fmjs-hot-to-button").button();
 				
 			});	
 
@@ -293,9 +301,22 @@ function replacePlaceholder(value) {
 	}
 
 	$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
+	
+	if ( value.is_saved == 1 ) {
+		console.log("saved");
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').children(".ui-btn-inner").children(".ui-btn-text").html("Unsave");
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "minus" });
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");	
 
+	} else {
+		console.log("unsaved");
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').children(".ui-btn-inner").children(".ui-btn-text").html("Save");
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "plus" });
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");
+	}
+	
 	var feedname = _.findWhere(feeds, {id: value.feed_id});
-	$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="" onclick="showFeed('+_.escape($.trim(feedname.id))+');">'+_.escape(feedname.title)+'</a>');
+	$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="" class="fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feedname.id)+'">'+_.escape(feedname.title)+'</a>');
 
 	var favicon = getFavicon(feedname);
 	$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").append(favicon).removeClass("fmjs-"+class_prefix+"-"+value.id+"-favicon");
@@ -307,7 +328,7 @@ function showGroup(id) {
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
 	$("#fmjs-group-content").empty();
-	$("#fmjs-group-content").append('<a href="" data-role="button" onclick="showFeedsInGroup('+id+')" id="fmjs-group-show-feeds">Show Feeds of group</a>');
+	$("#fmjs-group-content").append('<a href="" data-role="button" data-fmjs-fnc="show-feeds-group" data-fmjs-group-id="'+id+'" id="fmjs-group-show-feeds" class="fmjs-button">Show Feeds of group</a>');
 	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
 
 	var group = _.findWhere(groups, {id: id});
@@ -469,8 +490,10 @@ function renderSingleItem(data) {
 	var favicon_img = getFavicon(feedname);
 
 	$("#fmjs-single-feedname").html(favicon_img + _.escape(feedname.title));
-	$("#fmjs-single-feedname").attr("onclick", "showFeed("+_.escape(data.feed_id)+");");
-
+	$("#fmjs-single-feedname").data("fmjs-show-feed", data.feed_id);
+	
+	$("#fmjs-single-btn-save").data("fmjs-save-item-id", data.id);
+	
 	markItemsRead(data.id.toString());
 	if ( data.is_saved == 1 ) {
 		if ( called_single == true ) {
@@ -478,7 +501,7 @@ function renderSingleItem(data) {
 		} else {
 			$("#fmjs-single-btn-save").html("Unsave");
 		}
-		$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
+		//$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
 		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "minus" });		
 	} else {
 		if ( called_single == true ) {
@@ -486,7 +509,7 @@ function renderSingleItem(data) {
 		} else {
 			$("#fmjs-single-btn-save").html("Save");
 		}
-		$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
+		//$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
 		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });	
 	}
 	
@@ -653,7 +676,7 @@ function showAllFeeds() {
 
 		var item = '';
 		item += '<li>';
-		item += '<a onclick="showFeed('+_.escape(value.id)+')">';
+		item += '<a class="fmjs-button-show-feed" data-fmjs-show-feed="'+_.escape(value.id)+'">';
 		
 		item += getFavicon(value, "ui-li-icon ui-corner-none");
 		var unread = _.where(items, {is_read:0, feed_id:value.id});
@@ -757,7 +780,7 @@ function showFeedsInGroup(id) {
 	//$("#fmjs-feedgroup-content").removeData("fmjs-current-ids");
 	//$("#fmjs-feedgroup-content").removeData("fmjs-current-group-id");
 	$("#fmjs-feedgroup-content").empty();
-	$("#fmjs-feedgroup-content").append('<a href="" data-role="button" onclick="showGroup('+id+')" id="fmjs-feedgroup-show-all">Show all items</a>');
+	$("#fmjs-feedgroup-content").append('<a href="" data-role="button" data-fmjs-show-group="'+id+'" class="fmjs-button" data-fmjs-fnc="show-group" id="fmjs-feedgroup-show-all">Show all items</a>');
 	$("#fmjs-feedgroup-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feedgroup-view"></ul>');
 	
 	var group = _.findWhere(groups, {id: id});
@@ -800,7 +823,7 @@ function renderListviewItemFeed(feed_id) {
 	}
 	var item = '';
 	item += '<li>';
-	item += '<a onclick="showFeed('+_.escape(feed.id)+')">';
+	item += '<a class="fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feed.id)+'">';
 		
 	item += getFavicon(feed, "ui-li-icon ui-corner-none");
 
@@ -826,9 +849,9 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 		css_classes = 'fmjs-item-is-read';
 	}
 	console.log("checkpoint");
-	li += '<a href="" class="fmjs-button-show-item fmjs-hot-links fmjs-single-item-link-'+_.escape(item.id)+' '+css_classes+'" data-fmjs-show-item="'+_.escape(item.id)+'">' + _.escape(item.title) + '</a>';
+	li += '<a href="" class="fmjs-button fmjs-hot-links fmjs-single-item-link-'+_.escape(item.id)+' '+css_classes+'" data-fmjs-show-item="'+_.escape(item.id)+'" data-fmjs-fnc="show-item">' + _.escape(item.title) + '</a>';
 	if ( with_feed == true ) {
-		li += ' by <a href="" onclick="showFeed('+_.escape(feed.id)+');" class="fmjs-hot-links">'+_.escape(feed.title)+'</a>';
+		li += ' by <a href="" class="fmjs-hot-links fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feed.id)+'">'+_.escape(feed.title)+'</a>';
 	}
 	if ( with_author == true && item.author ) {
 		li += ' by '+_.escape(item.author)+'';
