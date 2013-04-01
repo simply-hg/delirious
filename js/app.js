@@ -512,7 +512,7 @@ function renderSingleItem(data) {
 		//$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
 		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });	
 	}
-	
+	$("#fmjs-single-sharing-buttons").empty();
 	//var sharing_buttons = '';
 	if (sharing == "all" ) {
 		// Add Facebook-Button
@@ -550,7 +550,7 @@ function renderSingleItem(data) {
 	if ( sharing == "all" || sharing == "email" ) {
 		// Add E-Mail-Button
 		var e_mail_msg = sharing_msg.split("%url%").join(data.url);
-		var email_button = '<a href="mailto:?subject='+encodeURI('Check it out: '+_.escape(data.title))+'&body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
+		var email_button = '<a href="mailto:user@example.com?subject='+encodeURI('Check it out: '+_.escape(data.title))+'&body='+encodeURI(_.escape(e_mail_msg))+'" data-role="button">Share Link by E-Mail</a>';
 		$("#fmjs-single-sharing-buttons").append(email_button);
 	}
 
