@@ -513,36 +513,47 @@ function renderSingleItem(data) {
 		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });	
 	}
 	
-	var sharing_buttons = '';
+	//var sharing_buttons = '';
 	if (sharing == "all" ) {
 		// Add Facebook-Button
-		sharing_buttons += '<iframe src="//www.facebook.com/plugins/like.php?href='+encodeURI(data.url)+'&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>';
+		var fb_button = '<iframe src="//www.facebook.com/plugins/like.php?href='+encodeURI(data.url)+'&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>';
 		
 		// Add Twitter-Button
-		sharing_buttons += '<a href="https://twitter.com/share" class="twitter-share-button" data-size="medium" data-url="'+encodeURI(data.url)+'">Tweet</a>';
-		sharing_buttons += '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+		var twitter_button = '<a href="https://twitter.com/share" class="twitter-share-button" data-size="medium" data-url="'+encodeURI(data.url)+'">Tweet</a>';
+		twitter_button += '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 		// Add Google+-Button
-		sharing_buttons += '<div class="g-plus" data-action="share" data-annotation="bubble" data-href="'+encodeURI(data.url)+'"></div>';
-		sharing_buttons += '<script type="text/javascript">';
-		sharing_buttons += '(function() {';
-		sharing_buttons += "var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;";
-		sharing_buttons += "po.src = 'https://apis.google.com/js/plusone.js';";
-		sharing_buttons += "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);";
-		sharing_buttons += '})();';
-		sharing_buttons += '</script>';
+		var gplus_button = '<div class="g-plus" data-action="share" data-annotation="bubble" data-href="'+encodeURI(data.url)+'"></div>';
+		gplus_button += '<script type="text/javascript">';
+		gplus_button += '(function() {';
+		gplus_button += "var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;";
+		gplus_button += "po.src = 'https://apis.google.com/js/plusone.js';";
+		gplus_button += "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);";
+		gplus_button += '})();';
+		gplus_button += '</script>';
+		try {
+			$("#fmjs-single-sharing-buttons").append(fb_button);
+		} catch (e) {
+			console.log("fb button caused an error...");
+		}
+		try {
+			$("#fmjs-single-sharing-buttons").append(twitter_button);
+		} catch (e) {
+			console.log("twitter button caused an error...");
+		}
+		try {
+			$("#fmjs-single-sharing-buttons").append(gplus_button);
+		} catch (e) {
+			console.log("g+ button caused an error...");
+		}
 	}
 	
 	if ( sharing == "all" || sharing == "email" ) {
-	
 		// Add E-Mail-Button
 		var e_mail_msg = sharing_msg.split("%url%").join(data.url);
-		sharing_buttons += '<a href="mailto:?subject='+encodeURI('Check it out: '+_.escape(data.title))+'&body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
+		var email_button = '<a href="mailto:?subject='+encodeURI('Check it out: '+_.escape(data.title))+'&body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
+		$("#fmjs-single-sharing-buttons").append(email_button);
 	}
-	try {
-		$("#fmjs-single-sharing-buttons").html(sharing_buttons);
-	} catch (e) {
-		console.log("sharing buttons caused an error...");
-	}
+
 	if (called_single == false ) {
 		called_single = true;
 	} else {
@@ -676,7 +687,7 @@ function showAllFeeds() {
 
 		var item = '';
 		item += '<li>';
-		item += '<a class="fmjs-button-show-feed" data-fmjs-show-feed="'+_.escape(value.id)+'">';
+		item += '<a class="fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(value.id)+'">';
 		
 		item += getFavicon(value, "ui-li-icon ui-corner-none");
 		var unread = _.where(items, {is_read:0, feed_id:value.id});
