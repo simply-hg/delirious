@@ -328,7 +328,7 @@ function showGroup(id) {
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
 	$("#fmjs-group-content").empty();
-	$("#fmjs-group-content").append('<a href="" data-role="button" data-fmjs-fnc="show-feeds-group" data-fmjs-group-id="'+id+'" id="fmjs-group-show-feeds" class="fmjs-button">Show Feeds of group</a>');
+	$("#fmjs-group-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-fnc="show-feeds-group" data-fmjs-group-id="'+id+'" id="fmjs-group-show-feeds" class="fmjs-button">Show Feeds of Group</a></div>');
 	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
 
 	var group = _.findWhere(groups, {id: id});
@@ -791,7 +791,7 @@ function showFeedsInGroup(id) {
 	//$("#fmjs-feedgroup-content").removeData("fmjs-current-ids");
 	//$("#fmjs-feedgroup-content").removeData("fmjs-current-group-id");
 	$("#fmjs-feedgroup-content").empty();
-	$("#fmjs-feedgroup-content").append('<a href="" data-role="button" data-fmjs-show-group="'+id+'" class="fmjs-button" data-fmjs-fnc="show-group" id="fmjs-feedgroup-show-all">Show all items</a>');
+	$("#fmjs-feedgroup-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-show-group="'+id+'" class="fmjs-button" data-fmjs-fnc="show-group" id="fmjs-feedgroup-show-all">Show All Items</a></div>');
 	$("#fmjs-feedgroup-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feedgroup-view"></ul>');
 	
 	var group = _.findWhere(groups, {id: id});
