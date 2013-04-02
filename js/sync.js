@@ -173,6 +173,9 @@ function loadItems(ids) {
 
 function runAfterItemLoad() {
 	items = _.sortBy(items, "created_on_time");
+	if ( order_items == "desc" ) {
+		items.reverse();
+	}
 	prepareHome();
 }
 
@@ -186,7 +189,6 @@ function refreshSavedItems() {
 			saved_items = [];
 			if ( data.saved_item_ids != "") {
 				var ids = data.saved_item_ids.split(',');
-
 				processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
 				loadSavedItems(ids);
 			}
@@ -196,8 +198,10 @@ function refreshSavedItems() {
 
 function storeLoadedSavedItems() {
 	saved_items = _.sortBy(saved_items, "created_on_time");
+	if ( order_items == "desc" ) {
+		saved_items.reverse();
+	}	
 	$.jStorage.set("fmjs-local-items", saved_items);
-
 }
 
 function loadSavedItems(ids) {

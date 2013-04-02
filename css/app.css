@@ -1,7 +1,7 @@
-.fmjs-item-is-unread {
+.fmjs-item-is-unread, .fmjs-is-read {
 	font-weight:bold;
 }
-.fmjs-item-is-read {
+.fmjs-item-is-read, .fmjs-is-read {
 	font-weight:normal !important;
 }
 
@@ -94,4 +94,8 @@ img.fmjs-favicon {
 	width:20em;
 	margin-left:auto;
 	margin-right:auto;
+}
+
+.fmjs-listview-content {
+	white-space:normal;
 }

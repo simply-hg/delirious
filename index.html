@@ -39,7 +39,7 @@
 <body>
 	<!-- Home -->
 
-	<div data-role="page" id="page-home">
+	<div data-role="page" id="page-home" data-title="Fever Mobile">
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<h3 id="fmjs-header">Fever<span style="color:red">°</span> Mobile</h3>
 			<button data-fmjs-fnc="sync-items" data-theme="b" class="ui-btn-right fmjs-button" data-icon="refresh">Sync</button>
@@ -86,7 +86,7 @@
 	</div><!-- / Home -->
 
 	<!-- Hot-view -->
-	<div data-role="page" id="page-hot">
+	<div data-role="page" id="page-hot" data-title="Hot Items">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -137,7 +137,7 @@
 	</div><!-- / Hot view -->
 
 	<!-- A Group -->
-	<div data-role="page" id="page-group">
+	<div data-role="page" id="page-group" data-title="Fever Mobile Group">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -161,7 +161,7 @@
 	</div><!-- / A Group -->
 
 	<!-- A Group of feeds -->
-	<div data-role="page" id="page-feedgroup">
+	<div data-role="page" id="page-feedgroup" data-title="Fever Mobile Group">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -182,7 +182,7 @@
 	</div><!-- / A Group of feeds -->
 
 	<!-- Kindling -->
-	<div data-role="page" id="page-kindling">
+	<div data-role="page" id="page-kindling" data-title="Kindling Items">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -202,7 +202,7 @@
 	</div><!-- / Kindling -->
 	
 	<!-- A Feed -->
-	<div data-role="page" id="page-feed">
+	<div data-role="page" id="page-feed" data-title="A Feed">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -224,7 +224,7 @@
 	</div><!-- / A Feed -->
 
 	<!-- Saved -->
-	<div data-role="page" id="page-saved">
+	<div data-role="page" id="page-saved" data-title="Saved Items">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -245,7 +245,7 @@
 	</div><!-- / Saved -->
 
 	<!-- Sparks -->
-	<div data-role="page" id="page-sparks">
+	<div data-role="page" id="page-sparks" data-title="Sparks">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -266,7 +266,7 @@
 
 
 	<!-- Show Groups -->
-	<div data-role="page" id="page-groups">
+	<div data-role="page" id="page-groups" data-title="Groups">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -290,7 +290,7 @@
 	
 	
 	<!-- Settings -->
-	<div data-role="page" id="page-settings">
+	<div data-role="page" id="page-settings" data-title="Settings">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -360,8 +360,19 @@
 				</label>
 			</fieldset>
 			
+			<h1>Order of Feed Items</h1>
+			<fieldset data-role="controlgroup" data-type="vertical" id="fmjs-setting-order-group">
+				<input id="fmjs-setting-order-1" name="fmjs-setting-order" value="asc" type="radio">
+				<label for="fmjs-setting-order-1">
+					<h3 class="ui-li-heading">Show Oldest Item First</h3>
+				</label>
+				<input id="fmjs-setting-order-2" name="fmjs-setting-order" value="desc" type="radio">
+				<label for="fmjs-setting-order-2">
+					<h3 class="ui-li-heading">Show Newest Item First</h3>
+				</label>
+			</fieldset>			
+			
 			<h1>Show empty groups in overview</h1>
-
 			<fieldset data-role="controlgroup" data-type="vertical" id="fmjs-setting-empty-groups-group">
 				<input id="fmjs-setting-empty-groups-1" name="fmjs-setting-empty-groups" value="false" type="radio">
 				<label for="fmjs-setting-empty-groups-1">
@@ -458,7 +469,7 @@
 	</div><!-- / Settings -->
 
 	<!-- Single Entry -->
-	<div data-role="page" id="page-single">
+	<div data-role="page" id="page-single" data-title="Single Item">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -487,7 +498,7 @@
 	</div><!-- / Single Item -->
 
 	<!-- All feeds -->
-	<div data-role="page" id="page-all-feeds">
+	<div data-role="page" id="page-all-feeds" data-title="All Feeds">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -505,7 +516,7 @@
 		</div>
 	</div><!-- / All feeds -->
 
-	<div data-role="page" id="page-support">
+	<div data-role="page" id="page-support" data-title="Help and Support">
 
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
@@ -550,7 +561,7 @@
 	</div>
 	
 	<!-- Edit Homescreen -->
-	<div data-role="page" id="page-edit-homescreen">
+	<div data-role="page" id="page-edit-homescreen" data-title="Edit Homescreen">
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-header">Edit Homescreen</h3>

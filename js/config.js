@@ -12,6 +12,7 @@ var show_empty_groups = "false";
 var sharing = "email";
 var sharing_msg = "Check out this nice article I found: %url%";
 var started = false;
+var order_items = "asc";
 
 var items              = [];
 var saved_items        = [];
@@ -59,11 +60,12 @@ function getSettings() {
 		fm_key       = $.jStorage.get("fmjs-key", "");
 		fm_url       = $.jStorage.get("fmjs-url", "");
 		fm_user      = $.jStorage.get("fmjs-user", "");
-		favicons     = $.jStorage.get("fmjs-favicons");
+		favicons     = $.jStorage.get("fmjs-favicons", []);
 		transition   = $.jStorage.get("fmjs-transition", "slide");
 		html_content = $.jStorage.get("fmjs-html-content", "escape");
 		groupview    = $.jStorage.get("fmjs-groupview", "items");
 		show_empty_groups = $.jStorage.get("fmjs-show-empty-groups", "false");
+		order_items  = $.jStorage.get("fmjs-order-items", "asc");
 		sharing      = $.jStorage.get("fmjs-sharing", sharing);
 		sharing_msg  = $.jStorage.get("fmjs-sharing-msg", sharing_msg);
 		
@@ -84,6 +86,7 @@ function getSettings() {
 			
 $(document).bind("mobileinit", function(){
 	//apply overrides here
+	console.log("mobilestart");
 	getSettings();
- 	console.log("start");
+ 	//console.log("start");
 });
