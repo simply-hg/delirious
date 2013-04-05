@@ -11,6 +11,7 @@ function initSettings() {
 	$('input:radio[name="fmjs-setting-empty-groups"]').filter('[value="'+show_empty_groups+'"]').prop('checked', true);
 	$('input:radio[name="fmjs-setting-sharing"]').filter('[value="'+sharing+'"]').prop('checked', true);
 	$('input:radio[name="fmjs-setting-order"]').filter('[value="'+order_items+'"]').prop('checked', true);
+	$('input:radio[name="fmjs-setting-paginate-items"]').filter('[value="'+paginate_items+'"]').prop('checked', true);
 	$('#fmjs-setting-sharing-msg').val(sharing_msg);
 }
 
@@ -19,59 +20,60 @@ function start() {
 	console.log("start");
 	if ( fm_url == "" ) {
 		checkAuth(0);
+	} else {
+		started = true;
+
+		showHideLoader("start");
+		$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
+			showHideLoader("stop");
+			if ( checkAuth(data.auth) ) {
+				auth_success = true;
+				// Get groups and build them
+				syncSavedItems("start");
+				showHideLoader("start");
+				$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
+					showHideLoader("stop");
+					if ( checkAuth(data.auth) ) {
+						groups       = _.sortBy(data.groups, "title");
+						groups.sort(function(a,b) {
+							var group_a = a.title.toLowerCase();
+							var group_b = b.title.toLowerCase();
+							if (group_a < group_b) {
+								return -1;
+							}
+							if (group_a > group_b) {
+								return 1;
+							}
+							return 0;
+						});				
+						feeds_groups = data.feeds_groups;
+						//createGroups(false);
+						$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
+							if ( checkAuth(data.auth) ) {
+								feeds = data.feeds;//_.sortBy(data.feeds, "title");
+								feeds.sort(function(a,b) {
+									var feed_a = a.title.toLowerCase();
+									var feed_b = b.title.toLowerCase();
+									if (feed_a < feed_b) {
+										return -1;
+									}
+									if (feed_a > feed_b) {
+										return 1;
+									}
+									return 0;
+								});
+								syncUnreadItems("full");
+							}
+						});
+					}
+				}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+			}
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
-	started = true;
-	//init();
-	showHideLoader("start");
-	$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
-		showHideLoader("stop");
-		if ( checkAuth(data.auth) ) {
-			auth_success = true;
-			// Get groups and build them
-			syncSavedItems("start");
-			showHideLoader("start");
-			$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
-				showHideLoader("stop");
-				if ( checkAuth(data.auth) ) {
-					groups       = _.sortBy(data.groups, "title");
-					groups.sort(function(a,b) {
-						var group_a = a.title.toLowerCase();
-						var group_b = b.title.toLowerCase();
-						if (group_a < group_b) {
-							return -1;
-						}
-						if (group_a > group_b) {
-							return 1;
-						}
-						return 0;
-					});				
-					feeds_groups = data.feeds_groups;
-					//createGroups(false);
-					$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
-						if ( checkAuth(data.auth) ) {
-							feeds = data.feeds;//_.sortBy(data.feeds, "title");
-							feeds.sort(function(a,b) {
-								var feed_a = a.title.toLowerCase();
-								var feed_b = b.title.toLowerCase();
-								if (feed_a < feed_b) {
-									return -1;
-								}
-								if (feed_a > feed_b) {
-									return 1;
-								}
-								return 0;
-							});
-							syncUnreadItems("full");
-						}
-					});
-				}
-			}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-		}
-	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
 function saveSettings() {
-	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, sharing_text, item_order;
+	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, sharing_text, item_order, page;
 	
 	url           = $.trim($("#fmjs-fever-url").val());
 	user          = $.trim($("#fmjs-e-mail").val());
@@ -83,8 +85,9 @@ function saveSettings() {
 	share_buttons = $('input[name=fmjs-setting-sharing]:checked').val();
 	sharing_text  = $('#fmjs-setting-sharing-msg').val();
 	item_order    = $('input[name=fmjs-setting-order]:checked').val();
+	page          = $('input[name=fmjs-setting-paginate-items]:checked').val();
 	
-	if ( $.jStorage.storageAvailable() ) {
+
 		$.jStorage.set("fmjs-url", url);
 		
 		if ( password != "" ) {
@@ -100,10 +103,9 @@ function saveSettings() {
 		$.jStorage.set("fmjs-sharing", share_buttons);
 		$.jStorage.set("fmjs-sharing-msg", sharing_text);
 		$.jStorage.set("fmjs-order-items", item_order);
+		$.jStorage.set("fmjs-paginate-items", page);
 
-	} else {
-		return false;
-	}
+
 	restart();
 	$.mobile.changePage("#page-home", {transition: transition});
 	//$.mobile.silentScroll(0);
@@ -364,9 +366,9 @@ function showGroup(id) {
 	var group = _.findWhere(groups, {id: id});
 	
 
-	var ids_to_show = _.where(feeds_groups, {group_id: id});
+	var ids_to_show = _.findWhere(feeds_groups, {group_id: id});
 	
-	feeds_to_show = ids_to_show[0].feed_ids.split(",");
+	feeds_to_show = ids_to_show.feed_ids.split(",");
 	feeds_for_group = [];
 	$.each(feeds_to_show, function(index, value) {
 		feeds_for_group.push(parseInt(value, 10));
@@ -654,7 +656,7 @@ function checkAuth(auth) {
 		} else {
 			//console.log("Forbidden");
 			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");	
-
+			initSettings();
 			$.mobile.changePage("#page-settings", {transition: transition});
 			//$.mobile.silentScroll(0);
 			return false;		
@@ -771,16 +773,51 @@ function showHideLoader(state) {
 	}
 }
 
-function showKindling() {
+function buildKindling() {
 	$("#fmjs-kindling-content").empty();
 	$("#fmjs-kindling-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-kindling-view"></ul>');
-
-	$.each(items, function(index, value) {
-		if ( value.is_read == 0 ) {
-			var item = renderListviewItem(value, true, true, "long");
-			$("#fmjs-kindling-view").append(item);
+	$("#fmjs-kindling-more").empty();
+	paginated_ids = '';
+	console.log("check2");
+	if ( paginate_items == "all" ) {
+		$.each(items, function(index, value) {
+			if ( value.is_read == 0 ) {
+				var item = renderListviewItem(value, true, true, "long");
+				$("#fmjs-kindling-view").append(item);
+				paginated_ids += item.id + ",";
+			}
+		});
+	} else {
+		var kindling = _.first(items, getNumber(paginate_items));
+		console.log(kindling.length);
+		$.each(kindling, function(index, value) {
+			if ( value.is_read == 0 ) {
+				var item = renderListviewItem(value, true, true, "long");
+				$("#fmjs-kindling-view").append(item);
+				paginated_ids += value.id + ",";
+			}
+		});
+		
+		if ( items.length > getNumber(paginate_items) ) {
+			console.log("check3");
+			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">Show More</button>');
+		} else{
+			console.log("check4");
+			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="mark-kindling-read" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">Mark as Read</button>');
 		}
-	});
+		
+		if (called_kindling == true ) {
+			$("#page-kindling").trigger("create");
+		}
+
+	}
+	
+}
+
+function showKindling() {
+	console.log("check");
+	buildKindling();
+
 
 	if (called_kindling == false ) {
 		called_kindling = true;

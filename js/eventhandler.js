@@ -45,6 +45,12 @@ $(document).ready(function() {
 				$(this).data("fmjs-hot-page", page);
 				showHot(page);
 			break;
+			case "show-kindling-more":
+				markItemsRead( $(this).data("fmjs-ids") );
+				var data = $(this).data("fmjs-ids");
+				console.log( data );
+				buildKindling();
+			break;
 			case "show-home":
 				showHome();
 			break;

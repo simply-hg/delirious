@@ -147,6 +147,7 @@
 		
 		<div data-role="content">
 			<div id="fmjs-group-content"></div>
+			<div id="fmjs-group-show-more"></div>
 			<div class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
@@ -187,14 +188,16 @@
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-group-header">Fever<span style="color:red">°</span> Kindling</h3>
-			<a href="" data-icon="check" data-theme="b" class="fmjs-button" data-fmjs-fnc="mark-kindling-read">Mark Read</a>
+			<a href="" data-icon="check" data-theme="b" class="fmjs-button" id="fmjs-kindling-items" data-fmjs-fnc="mark-kindling-read">Mark Read</a>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-kindling-content"></div>
+			<div id="fmjs-kindling-more"></div>
 			<div class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-kindling-read">Mark Kindling Read</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
@@ -386,7 +389,7 @@
 				</label>
 			</fieldset>
 			
-			<h1>How to view groups</h1>
+			<h1>How to View Groups</h1>
 
 			<fieldset data-role="controlgroup" data-type="vertical" id="fmjs-setting-groupview-group">
 				<input id="fmjs-setting-groupview-1" name="fmjs-setting-groupview" value="items" type="radio">
@@ -401,7 +404,24 @@
 				</label>
 			</fieldset>
 
-			
+			<h1>Paginate Items in Groups</h1>
+
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Maximum number of items to show at once:</legend>
+					<label for="fmjs-setting-paginate-items-1">
+					<input id="fmjs-setting-paginate-items-1" name="fmjs-setting-paginate-items" value="50" type="radio">
+					50</label>
+					<label for="fmjs-setting-paginate-items-2">
+					<input id="fmjs-setting-paginate-items-2" name="fmjs-setting-paginate-items" value="100" type="radio">
+					100</label>
+					<label for="fmjs-setting-paginate-items-3">
+					<input id="fmjs-setting-paginate-items-3" name="fmjs-setting-paginate-items" value="200" type="radio">
+					200</label>
+					<label for="fmjs-setting-paginate-items-4">
+					<input id="fmjs-setting-paginate-items-4" name="fmjs-setting-paginate-items" value="all" type="radio">
+					All</label>
+				</fieldset>
+
 			<h1>Single Item View</h1>
 			<fieldset data-role="controlgroup" id="fmjs-setting-html-content-group"> 
 				<input type="radio" name="fmjs-setting-html-content" id="fmjs-setting-html-content-1" value="escape" />

@@ -6,13 +6,15 @@ var feeds_groups = {};
 var favicons     = {};
 
 // Some settings
-var transition   = "";
-var html_content = "";
+var transition   = "slide";
+var html_content = "escape";
 var show_empty_groups = "false";
 var sharing = "email";
 var sharing_msg = "Check out this nice article I found: %url%";
 var started = false;
 var order_items = "asc";
+var groupview = "items";
+var paginate_items = "100";
 
 var items              = [];
 var saved_items        = [];
@@ -56,30 +58,30 @@ var last_fmjs_refresh   = 0; // unix timestamps in seconds when were items refre
 var last_fever_refresh = 0; // unix timestamps in seconds when Server last refreshed items
 
 function getSettings() {
-	if ( $.jStorage.storageAvailable() ) {
-		fm_key       = $.jStorage.get("fmjs-key", "");
-		fm_url       = $.jStorage.get("fmjs-url", "");
-		fm_user      = $.jStorage.get("fmjs-user", "");
-		favicons     = $.jStorage.get("fmjs-favicons", []);
-		transition   = $.jStorage.get("fmjs-transition", "slide");
-		html_content = $.jStorage.get("fmjs-html-content", "escape");
-		groupview    = $.jStorage.get("fmjs-groupview", "items");
-		show_empty_groups = $.jStorage.get("fmjs-show-empty-groups", "false");
-		order_items  = $.jStorage.get("fmjs-order-items", "asc");
-		sharing      = $.jStorage.get("fmjs-sharing", sharing);
-		sharing_msg  = $.jStorage.get("fmjs-sharing-msg", sharing_msg);
-		
-		saved_items = $.jStorage.get("fmjs-local-items", []);
-		widgets     = $.jStorage.get("fmjs-widgets", default_widgets);
-		
-		fav_feeds  = $.jStorage.get("fmjs-fav-feeds", []);
-		fav_groups = $.jStorage.get("fmjs-fav-groups", []);
-		$.mobile.defaultPageTransition = transition;
-		//start();
-		return true;
-	} else {
-		return false;
-	}
+
+	fm_key            = $.jStorage.get("fmjs-key", "");
+	fm_url            = $.jStorage.get("fmjs-url", "");
+	fm_user           = $.jStorage.get("fmjs-user", "");
+	favicons          = $.jStorage.get("fmjs-favicons", []);
+	transition        = $.jStorage.get("fmjs-transition", transition);
+	html_content      = $.jStorage.get("fmjs-html-content", html_content);
+	groupview         = $.jStorage.get("fmjs-groupview", groupview);
+	show_empty_groups = $.jStorage.get("fmjs-show-empty-groups", show_empty_groups);
+	order_items       = $.jStorage.get("fmjs-order-items", order_items);
+	sharing           = $.jStorage.get("fmjs-sharing", sharing);
+	sharing_msg       = $.jStorage.get("fmjs-sharing-msg", sharing_msg);
+	paginate_items    = $.jStorage.get("fmjs-paginate-items", paginate_items);
+	
+	saved_items  = $.jStorage.get("fmjs-local-items", []);
+	widgets      = $.jStorage.get("fmjs-widgets", default_widgets);
+	
+	fav_feeds  = $.jStorage.get("fmjs-fav-feeds", []);
+	fav_groups = $.jStorage.get("fmjs-fav-groups", []);
+	
+	$.mobile.defaultPageTransition = transition;
+
+	return true;
+
 }
 
 
