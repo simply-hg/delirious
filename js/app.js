@@ -355,43 +355,91 @@ function replacePlaceholder(value) {
 	return true;
 }
 
-function showGroup(id) {
-
-	$("#fmjs-group-content").removeData("fmjs-current-ids");
-	$("#fmjs-group-content").removeData("fmjs-current-group-id");
+function buildGroup(id) {
+	id = getNumber(id);
+	console.log(paginate_items);
 	$("#fmjs-group-content").empty();
+	$("#fmjs-group-more").empty();
 	$("#fmjs-group-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-fnc="show-feeds-group" data-fmjs-group-id="'+id+'" id="fmjs-group-show-feeds" class="fmjs-button">Show Feeds of Group</a></div>');
 	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
-
-	var group = _.findWhere(groups, {id: id});
 	
-
+	// get group items
+	var group = _.findWhere(groups, {id: id});
 	var ids_to_show = _.findWhere(feeds_groups, {group_id: id});
 	
-	feeds_to_show = ids_to_show.feed_ids.split(",");
 	feeds_for_group = [];
-	$.each(feeds_to_show, function(index, value) {
-		feeds_for_group.push(parseInt(value, 10));
+	feeds_for_group = _.map( ids_to_show.feed_ids.split(","), function(id) {
+		return getNumber(id);
 	});
-
-	item_ids_in_group = '';
-	group_item_counter = 0;
-	$.each(items, function(index, value) {
+	
+	var group_items = _.filter(items, function(value) {
 		if ( $.inArray(value.feed_id, feeds_for_group ) !== -1 && value.is_read == 0 ) {
+			return true;
+		} else {
+			return false;		
+		}
+	});
+	var unread = group_items.length;
+	
+	// check if we need to group items...
+	item_ids_in_group = '';
+	//group_item_counter = 0;
+	console.log( getNumber(paginate_items) );
+	if ( paginate_items == "all" || getNumber(paginate_items) > unread ) {
+		//no, just show all items
+		console.log("check all");
+		$.each(group_items, function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, true, true, "long");
 			item_ids_in_group += value.id +",";
-			group_item_counter++;
+			//group_item_counter++;
 			$("#fmjs-group-view").append(item);
-		}
-	});
-
-	var title = group.title + ' ('+group_item_counter+')';
-	$("#page-saved").data("title", title);
+		});
+		$("#fmjs-group-more").append('<button class="fmjs-button" data-fmjs-fnc="mark-group-read" data-fmjs-group-id="'+id+'" data-item-ids="'+item_ids_in_group+'">Mark Items Read</button>');
+		$("#fmjs-group-read").data("fmjs-fnc", "mark-group-read");
+		$("#fmjs-group-read").data("fmjs-group-id", id);
+		$("#fmjs-group-read").data("fmjs-item-ids", item_ids_in_group);
+		
+	} else {
+		// yes, show just some items
+		console.log("check paginate");
+		$.each( _.first(group_items, getNumber(paginate_items) ), function(index, value) {
+			var item = "";
+			item += renderListviewItem(value, true, true, "long");
+			item_ids_in_group += value.id +",";
+			//group_item_counter++;
+			$("#fmjs-group-view").append(item);
+		});
+		$("#fmjs-group-more").append('<button class="fmjs-button" data-fmjs-fnc="show-group-more" data-fmjs-group-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_group+'">Show More</button>');
+		$("#fmjs-group-read").data("fmjs-fnc", "show-group-more");
+		$("#fmjs-group-read").data("fmjs-item-ids", item_ids_in_group);
+		$("#fmjs-group-read").data("fmjs-group-id", id);
+	}
+	var title = group.title + ' ('+unread+')';
+	$("#page-group").data("title", title);
 	$("#fmjs-group-header").html(title);
+
 	$("#fmjs-group-content").data("fmjs-current-ids", item_ids_in_group);
 	$("#fmjs-group-content").data("fmjs-current-group-id", id);
 
+	// build whole group
+	
+	// build part of group
+	if (called_group == true ) {
+		$("#page-group").trigger("create");
+	}
+}
+
+function showGroup(id) {
+	$("#fmjs-group-content").removeData("fmjs-current-ids");
+	$("#fmjs-group-content").removeData("fmjs-current-group-id");
+
+	buildGroup(id);
+
+
+	$("#fmjs-group-favmarker").data("fmjs-group-id", id);
+	$("#fmjs-mark-group-read").data("fmjs-group-id", id);
+	
 	if ( _.contains(fav_groups, id) ) {
 		$("#fmjs-group-favmarker").html("Remove group from favourites");
 	} else {
@@ -414,9 +462,9 @@ function showFeed(id) {
 	$("#fmjs-feed-content").empty();
 	$("#fmjs-feed-content").append('<ul data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feed-view" data-role="listview"></ul>');
 	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
-	$("#fmjs-feed-content").removeData("fmjs-feed-id");	
-	called_feed_info = _.findWhere(feeds, {id: id});
+	$("#fmjs-feed-content").removeData("fmjs-feed-id");
 	
+	called_feed_info = _.findWhere(feeds, {id: id});
 
 	feed_items_shown = '';
 	var items_to_show = _.where(items, {feed_id: id});
@@ -799,12 +847,12 @@ function buildKindling() {
 		});
 		
 		if ( items.length > getNumber(paginate_items) ) {
-			console.log("check3");
-			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">Show More</button>');
-		} else{
-			console.log("check4");
-			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="mark-kindling-read" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">Mark as Read</button>');
+			var btn_text = "Show More";
+		} else {
+			var btn_text = "Mark as Read";
 		}
+		$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
+		$("#fmjs-kindling-items").data('fmjs-ids', paginated_ids);
 		
 		if (called_kindling == true ) {
 			$("#page-kindling").trigger("create");
@@ -1108,5 +1156,15 @@ function getNumber(val) {
 	}
 	if ( type == "string" ) {
 		return parseInt(val, 10);
+	}
+}
+
+function getString(val) {
+	var type = $.type(val);
+	if ( type == "number" ) {
+		return val.toString();
+	}
+	if ( type == "string" ) {
+		return val;
 	}
 }

@@ -48,8 +48,18 @@ $(document).ready(function() {
 			case "show-kindling-more":
 				markItemsRead( $(this).data("fmjs-ids") );
 				var data = $(this).data("fmjs-ids");
-				console.log( data );
+				
+				//console.log( data );
 				buildKindling();
+				$.mobile.silentScroll(0);
+			break;
+			case "show-group-more":
+				markItemsRead( $(this).data("fmjs-item-ids") );
+				var data = $(this).data("fmjs-item-ids");
+				//console.log( data );
+				var group_id = $(this).data("fmjs-group-id");
+				buildGroup(group_id);
+				$.mobile.silentScroll(0);
 			break;
 			case "show-home":
 				showHome();
@@ -95,7 +105,9 @@ $(document).ready(function() {
 				markKindlingRead();
 			break;
 			case "mark-group-read":
-				markGroupAsRead();
+				var ids = $(this).data("fmjs-item-ids");
+				var group_id = $(this).data("fmjs-group-id");
+				markGroupAsRead(group_id, ids);
 			break;
 			case "mark-feed-read":
 				markFeedAsRead();

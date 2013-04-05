@@ -421,12 +421,12 @@ function unsaveCurrentItem(id) {
 	return false;
 }
 
-function markGroupAsRead() {
+function markGroupAsRead(group_id, ids) {
 	var data     = $("#fmjs-group-content").data("fmjs-current-ids");
-	var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
+	//var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
-	markGroupRead("group", group_id, data);//what, id, ids
+	markGroupRead("group", group_id, ids);//what, id, ids
 	$.mobile.changePage("#page-home", {transition: "slide"});
 	return false;
 }
