@@ -395,7 +395,7 @@ function buildGroup(id) {
 			//group_item_counter++;
 			$("#fmjs-group-view").append(item);
 		});
-		$("#fmjs-group-more").append('<button class="fmjs-button" data-fmjs-fnc="mark-group-read" data-fmjs-group-id="'+id+'" data-item-ids="'+item_ids_in_group+'">Mark Items Read</button>');
+		$("#fmjs-group-more").append('<button class="fmjs-button" data-fmjs-fnc="mark-group-read" data-fmjs-group-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_group+'">Mark Items Read</button>');
 		$("#fmjs-group-read").data("fmjs-fnc", "mark-group-read");
 		$("#fmjs-group-read").data("fmjs-group-id", id);
 		$("#fmjs-group-read").data("fmjs-item-ids", item_ids_in_group);
@@ -423,7 +423,8 @@ function buildGroup(id) {
 	$("#fmjs-group-content").data("fmjs-current-group-id", id);
 
 	// build whole group
-	
+	$("#fmjs-mark-group-read").data("fmjs-item-ids", item_ids_in_group);
+	$("#fmjs-mark-group-read").data("ffmjs-group-id", id);
 	// build part of group
 	if (called_group == true ) {
 		$("#page-group").trigger("create");
@@ -457,33 +458,80 @@ function showGroup(id) {
 	return false;
 }
 
-function showFeed(id) {
-
+function buildFeed(id) {
+	id = getNumber(id);
+	console.log(paginate_items);
 	$("#fmjs-feed-content").empty();
-	$("#fmjs-feed-content").append('<ul data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feed-view" data-role="listview"></ul>');
-	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
-	$("#fmjs-feed-content").removeData("fmjs-feed-id");
+	$("#fmjs-feed-more").empty();
+
+	$("#fmjs-feed-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feed-view"></ul>');
 	
-	called_feed_info = _.findWhere(feeds, {id: id});
+	// get group items
+	var feed_items = _.where(items, {feed_id: id});
+	var feed = _.findWhere(feeds, {id:id});
 
-	feed_items_shown = '';
-	var items_to_show = _.where(items, {feed_id: id});
-	items_to_show = _.sortBy(items_to_show, "created_on_time");
-
-	$.each(items_to_show, function(index, value) {
-		if ( value.is_read == "0" ) {
-			feed_items_shown += value.id + ',';
-			var item = renderListviewItem(value, false, true, "long");
+	var unread = feed_items.length;
+	
+	// check if we need to group items...
+	item_ids_in_feed = '';
+	//group_item_counter = 0;
+	//console.log( getNumber(paginate_items) );
+	//console.log(feed_items);
+	if ( paginate_items == "all" || getNumber(paginate_items) > unread ) {
+		//no, just show all items
+		console.log("check all");
+		$.each(feed_items, function(index, value) {
+			var item = "";
+			item += renderListviewItem(value, true, true, "long");
+			item_ids_in_feed += value.id +",";
+			//group_item_counter++;
 			$("#fmjs-feed-view").append(item);
-		}
-	});
-	
-	var title = called_feed_info.title + " (" + items_to_show.length + ")";
+		});
+		$("#fmjs-feed-more").append('<button class="fmjs-button" data-fmjs-fnc="mark-feed-read" data-fmjs-feed-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_feed+'">Mark Items Read</button>');
+		$("#fmjs-feed-read").data("fmjs-fnc", "mark-feed-read");
+		$("#fmjs-feed-read").data("fmjs-feed-id", id);
+		$("#fmjs-feed-read").data("fmjs-item-ids", item_ids_in_feed);
+		
+	} else {
+		// yes, show just some items
+		console.log("check paginate");
+		$.each( _.first(feed_items, getNumber(paginate_items) ), function(index, value) {
+			var item = "";
+			item += renderListviewItem(value, true, true, "long");
+			item_ids_in_feed += value.id +",";
+			//group_item_counter++;
+			$("#fmjs-feed-view").append(item);
+		});
+		$("#fmjs-feed-more").append('<button class="fmjs-button" data-fmjs-fnc="show-feed-more" data-fmjs-feed-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_feed+'">Show More</button>');
+		$("#fmjs-feed-read").data("fmjs-fnc", "show-feed-more");
+		$("#fmjs-feed-read").data("fmjs-item-ids", item_ids_in_feed);
+		$("#fmjs-feed-read").data("fmjs-feed-id", id);
+	}
+	var title = feed.title + ' ('+unread+')';
 	$("#page-feed").data("title", title);
 	$("#fmjs-feed-header").html(title);
-		
-	$("#fmjs-feed-content").data("fmjs-feed-item-ids", feed_items_shown);
+	
+	$("#fmjs-feed-content").data("fmjs-feed-item-ids", item_ids_in_feed);
 	$("#fmjs-feed-content").data("fmjs-feed-id", id);
+	
+	$("#fmjs-feed-content").data("fmjs-current-ids", item_ids_in_feed);
+	$("#fmjs-feed-content").data("fmjs-current-feed-id", id);
+	
+	$("#fmjs-mark-feed-read").data("fmjs-item-ids", item_ids_in_feed);
+	$("#fmjs-mark-feed-read").data("fmjs-feed-id", id);
+	// build whole group
+	
+	// build part of group
+	if (called_feed == true ) {
+		$("#page-feed").trigger("create");
+	}
+}
+
+function showFeed(id) {
+	id = getNumber(id);
+	buildFeed(id);
+	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
+	$("#fmjs-feed-content").removeData("fmjs-feed-id");
 
 	if ( _.contains(fav_feeds, id) ) {
 		$("#fmjs-feed-favmarker").html("Remove Feed from Favourites");

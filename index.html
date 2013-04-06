@@ -210,15 +210,16 @@
 		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
 			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
 			<h3 id="fmjs-feed-header">Fever<span style="color:red">°</span> View Feed</h3>
-			<a href="" data-icon="check" data-theme="b" class="fmjs-button" data-fmjs-fnc="mark-feed-read">Mark Read</a>
+			<a href="" data-icon="check" data-theme="b" class="fmjs-button" data-fmjs-fnc="show-feed-more" id="fmjs-feed-read">Mark Read</a>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-feed-content"></div>
+			<div id="fmjs-feed-more"></div>
 			<div class="fmjs-bottom-menu">
 				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-feed-read">Mark All Items as Read</a></li>
+					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-feed-read" id="fmjs-mark-feed-read">Mark Feed as Read</a></li>
 					<li data-icon="star"><a href="" class="fmjs-button" data-fmjs-fnc="mark-feed-fav" id="fmjs-feed-favmarker">Mark Feed as Favourite</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
 				</ul>

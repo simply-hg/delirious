@@ -55,10 +55,12 @@ $(document).ready(function() {
 			break;
 			case "show-group-more":
 				markItemsRead( $(this).data("fmjs-item-ids") );
-				var data = $(this).data("fmjs-item-ids");
-				//console.log( data );
-				var group_id = $(this).data("fmjs-group-id");
-				buildGroup(group_id);
+				buildGroup( $(this).data("fmjs-group-id") );
+				$.mobile.silentScroll(0);
+			break;
+			case "show-feed-more":
+				markItemsRead( $(this).data("fmjs-item-ids") );
+				buildFeed( $(this).data("fmjs-feed-id") );
 				$.mobile.silentScroll(0);
 			break;
 			case "show-home":
@@ -110,7 +112,9 @@ $(document).ready(function() {
 				markGroupAsRead(group_id, ids);
 			break;
 			case "mark-feed-read":
-				markFeedAsRead();
+				var ids = $(this).data("fmjs-item-ids");
+				var feed_id = $(this).data("fmjs-feed-id");
+				markFeedAsRead(feed_id, ids);
 			break;
 			case "toggle-group-fav":
 			case "mark-group-fav":

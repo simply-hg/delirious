@@ -422,21 +422,21 @@ function unsaveCurrentItem(id) {
 }
 
 function markGroupAsRead(group_id, ids) {
-	var data     = $("#fmjs-group-content").data("fmjs-current-ids");
+	//var data     = $("#fmjs-group-content").data("fmjs-current-ids");
 	//var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
-	markGroupRead("group", group_id, ids);//what, id, ids
+	markGroupRead("group", getNumber(group_id), ids);//what, id, ids
 	$.mobile.changePage("#page-home", {transition: "slide"});
 	return false;
 }
 
-function markFeedAsRead() {
-	var data     = $("#fmjs-feed-content").data("fmjs-feed-item-ids");
-	var feed_id = $("#fmjs-feed-content").data("fmjs-feed-id");
+function markFeedAsRead(feed_id, ids) {
+	//var data     = $("#fmjs-feed-content").data("fmjs-feed-item-ids");
+	//var feed_id = $("#fmjs-feed-content").data("fmjs-feed-id");
 	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
 	$("#fmjs-feed-content").removeData("fmjs-feed-id");
-	markGroupRead("feed", feed_id, data);//what, id, ids
+	markGroupRead("feed", getNumber(feed_id), ids);//what, id, ids
 	$.mobile.changePage("#page-home", {transition: "slide"});
 	return false;
 }

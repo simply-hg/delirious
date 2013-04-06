@@ -88,7 +88,7 @@ function getSettings() {
 			
 $(document).bind("mobileinit", function(){
 	//apply overrides here
-	console.log("mobilestart");
+	//console.log("mobilestart");
 	getSettings();
  	//console.log("start");
 });
