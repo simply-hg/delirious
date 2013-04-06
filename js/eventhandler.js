@@ -107,7 +107,7 @@ $(document).ready(function() {
 				markKindlingRead();
 			break;
 			case "mark-group-read":
-				var ids = $(this).data("fmjs-item-ids");
+				//var ids = $(this).data("fmjs-item-ids");
 				var group_id = $(this).data("fmjs-group-id");
 				markGroupAsRead(group_id, ids);
 			break;

@@ -294,30 +294,41 @@ function markKindlingRead() {
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
-function markGroupRead(what, id, ids) {
-	if ( _.isArray(ids) ) {
-		// An array of ids
-		ids_to_mark_read = ids;
-	} else {
-		// a comma seperated string
-		ids_to_mark_read = ids.split(",");
-	}
+function markGroupAsRead(group_id, ids) {
+	//var data     = $("#fmjs-group-content").data("fmjs-current-ids");
+	//var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
+	//$("#fmjs-group-content").removeData("fmjs-current-ids");
+	$("#fmjs-group-content").removeData("fmjs-current-group-id");
+	markGroupRead("group", getNumber(group_id) );//what, id, ids
+	$.mobile.changePage("#page-home", {transition: "slide"});
+	return false;
+}
 
+function markGroupRead(what, id) {
+	console.log(what + " :" + id);
+	if ( what == "feed" ) {
+		feed_ids_to_mark_read = [ getString(id) ];
+	}
+	if ( what == "group" ) {
+		console.log(feeds_groups);
+		feed_ids_to_mark_read_x = _.findWhere( feeds_groups, {group_id: getNumber(id)} );
+		feed_ids_to_mark_read = feed_ids_to_mark_read_x.feed_ids.split(",");
+	}
+	feed_ids_to_mark_read = _.compact(feed_ids_to_mark_read);
+	console.log(feed_ids_to_mark_read);
 	items = _.reject(items, function(item) {
-		if ( $.inArray(item.id.toString(), ids_to_mark_read ) == -1 )  {
+		if ( $.inArray(item.feed_id.toString(), feed_ids_to_mark_read ) == -1 )  {
 			return false;
 		} else {
-
 			return true;
 		}
 	});
-	
+		
 	if ( $.trim(id) != "") {
 		showHideLoader("start");
 		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_refresh  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-
 				$.mobile.changePage("#page-home", {transition: "slide"});
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -421,15 +432,7 @@ function unsaveCurrentItem(id) {
 	return false;
 }
 
-function markGroupAsRead(group_id, ids) {
-	//var data     = $("#fmjs-group-content").data("fmjs-current-ids");
-	//var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
-	$("#fmjs-group-content").removeData("fmjs-current-ids");
-	$("#fmjs-group-content").removeData("fmjs-current-group-id");
-	markGroupRead("group", getNumber(group_id), ids);//what, id, ids
-	$.mobile.changePage("#page-home", {transition: "slide"});
-	return false;
-}
+
 
 function markFeedAsRead(feed_id, ids) {
 	//var data     = $("#fmjs-feed-content").data("fmjs-feed-item-ids");
