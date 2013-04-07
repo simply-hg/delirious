@@ -482,7 +482,7 @@ function buildFeed(id) {
 		console.log("check all");
 		$.each(feed_items, function(index, value) {
 			var item = "";
-			item += renderListviewItem(value, true, true, "long");
+			item += renderListviewItem(value, false, true, "long");
 			item_ids_in_feed += value.id +",";
 			//group_item_counter++;
 			$("#fmjs-feed-view").append(item);
@@ -977,7 +977,26 @@ function showFeedsInGroup(id) {
 	
 	var feeds_to_show = ids_to_show.feed_ids.split(",");
 	
-	$.each(feeds_to_show, function(index, value) {
+	var gr_feeds = [];
+	
+	for ( feed_id in feeds_to_show) {	
+		gr_feeds.push( _.findWhere(feeds, {id: getNumber( feeds_to_show[feed_id]  )}) );
+	}
+	
+	gr_feeds.sort(function(a,b) {
+		var feed_a = a.title.toLowerCase();
+		var feed_b = b.title.toLowerCase();
+		if (feed_a < feed_b) {
+			return -1;
+		}
+		if (feed_a > feed_b) {
+			return 1;
+		}
+		return 0;
+	});		
+	
+	
+	$.each(gr_feeds, function(index, value) {
 		var item = renderListviewItemFeed(value);
 		if (item) {
 			$("#fmjs-feedgroup-view").append(item);
@@ -998,11 +1017,24 @@ function showFeedsInGroup(id) {
 
 }
 
-function renderListviewItemFeed(feed_id) {
-	var feed = _.findWhere(feeds, {id: parseInt(feed_id, 10)});
+
+function sortHelper(a,b) {
+	var str_a = a.title.toLowerCase();
+	var str_b = b.title.toLowerCase();
+	if (str_a < str_b) {
+		return -1;
+	}
+	if (str_a > str_b) {
+		return 1;
+	}
+	return 0;
+}
+
+function renderListviewItemFeed(feed) {
+	//var feed = _.findWhere(feeds, {id: parseInt(feed_id, 10)});
 	var unread = _.where(items, {is_read:0, feed_id:feed.id});
 	
-	if (unread == 0 ) {
+	if ( unread == 0 ) {
 		if ( show_empty_groups == "false" ) {
 			return '';
 		}
