@@ -96,6 +96,7 @@ $(document).ready(function() {
 			break;
 			case "show-hot":
 				showHot(1);
+				$.mobile.changePage("#page-hot", {transition: transition});
 			break;
 			case "show-hot-more":
 				var page = $(this).data("fmjs-hot-page");

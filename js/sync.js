@@ -141,9 +141,9 @@ function loadItems(ids) {
 
 	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
 
-	if ( ids.length > 20 ) {
-		var first = _.first(ids, 20);
-		var rest  = _.rest(ids, 20);
+	if ( ids.length > 40 ) {
+		var first = _.first(ids, 40);
+		var rest  = _.rest(ids, 40);
 	} else {
 		var first = ids;
 		var rest = [];

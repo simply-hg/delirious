@@ -267,13 +267,13 @@ function showHot(page) {
 			
 			//$("#page-hot").trigger("create");
 			if ( page == 1) {
-				if ( called_hot == false ) {
-					called_hot = true;
-				} else {
+				//if ( called_hot == false ) {
+					//called_hot = true;
+				//} else {
 					//$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
-					$("#page-hot").trigger("create");
-				}
-				$.mobile.changePage("#page-hot", {transition: transition});
+					//$("#page-hot").trigger("create");
+				//}
+				//$.mobile.changePage("#page-hot", {transition: transition});
 				//$.mobile.silentScroll(0);
 				return false;
 			} else {
@@ -310,6 +310,8 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 	
 	if ( rest.length > 0 ) {
 		fillLinkPlaceholder(rest, class_prefix);
+	} else {
+		$("#page-hot").trigger("create");
 	}
 }
 
