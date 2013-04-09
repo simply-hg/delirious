@@ -105,17 +105,13 @@ function widgetShowFavGroups() {
 function widgetShowFavFeeds() {
 	// These feeds are being shown if they have items
 	//
+	countUnreadItems();
 	content_ShowFavFeeds = '';
 	$.each(fav_feeds, function(index, value) {
 
-		value = parseInt(value, 10);
-		var fav_items = _.where(items, {feed_id: value});
+		var feed = _.findWhere(feeds, {id: getNumber(value)});
+		content_ShowFavFeeds += renderListviewItemFeed(feed, false);
 
-		if ( fav_items.length ) {
-			content_ShowFavFeeds += renderListviewItemFeed(value);
-		} else {
-
-		}
 	});
 	if ( content_ShowFavFeeds ) {
 		content_ShowFavFeeds = '<ul data-role="listview" data-theme="d" data-inset="true">' + content_ShowFavFeeds;

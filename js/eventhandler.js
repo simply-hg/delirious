@@ -2,16 +2,57 @@ $(document).ready(function() {
 	start();
 	$("#fmjs-homescreen-message").on("vclick", function(e) { e.stopPropagation(); $(this).empty(); });
 	
-	$("#page-settings").on("pagebeforeshow", function(e) {
-		initSettings();
-		$("#page-settings").trigger("create");
+	$(document).on("pagecreate", ".fmjs-page", function(e) {
+		console.log("pagecreate: " + $(this).attr("id") );
 	});
-	$("#page-home").on("pagebeforeshow", function(e) {
-		prepareHome();
-		$("#page-home").trigger("create");
+	$(document).on("pageinit", ".fmjs-page", function(e) {
+		console.log("pageinit: " + $(this).attr("id") );
+	});
+	$(document).on("pagebeforeshow", ".fmjs-page", function(e) {
+		
+		id = $(this).attr("id");
+		console.log("pagebeforeshow: " + $(this).attr("id") );
+		//console.log("Items loaded: " + items_loaded);
+		//console.log("Items load started: " + started_items_load);
+		switch ( id ) {
+			case "page-home":
+				prepareHome();
+			break;
+			case "page-settings":
+				initSettings();
+			break;
+			case "page-all-feeds":
+				showAllFeeds();
+			break;
+			case "page-saved":
+				showSaved();
+			break;
+			case "page-groups":
+				showGroups();
+			break;
+			case "page-edit-homescreen":
+				showEditHomescreen();
+			break;
+			case "page-feedgroup":
+				var id = $( this ).data("fmjs-group-id");
+				showFeedsInGroup(id);
+			break;
+			case "page-single":
+				var id = $( this ).data("fmjs-item-id");
+				console.log("single-id: "+id);
+				if ( !id ) {
+					console.log("no id");
+					//restart();
+					//showHome();
+				}
+			break;
+		}
+		
+		$(this).trigger("create");
 	});
 	
 	$ ( document ).on("vclick", ".fmjs-button", function(e) {
+		console.log("vclick button");
 		e.stopPropagation();
 		e.preventDefault();
 		var button = $(this).data("fmjs-fnc");
@@ -19,22 +60,39 @@ $(document).ready(function() {
 			case "show-item":
 				var id = $(this).data("fmjs-show-item");
 				//console.log(id);
-				showSingleItem(id);	
+				$( "#page-single" ).data("fmjs-item-id", id);
+				//showSingleItem(id);
+				showSingleItem(id);
+				$.mobile.changePage("#page-single", {transition: transition});
 			break;
 			case "show-group":
 				var id = $(this).data("fmjs-show-group");
 				showGroup(id);
+				$.mobile.changePage("#page-group", {transition: transition});
 			break;
 			case "show-group-selector":
 				var id = $(this).data("fmjs-show-group");
-				showGroupSelector(id);
+				if ( groupview == "feeds" ) {
+					// feeds 
+					//var id = $(this).data("fmjs-group-id");
+					$("#page-feedgroup").data("fmjs-group-id", id);
+					$.mobile.changePage("#page-feedgroup", {transition: transition});
+				} else {
+					// items
+					showGroup(id);
+					$.mobile.changePage("#page-group", {transition: transition});
+				}
+				//showGroupSelector(id);
 			break;
 			case "show-feed":
 				var id = $(this).data("fmjs-show-feed");
+				$("#page-feed").data("fmjs-show-feed-id", id);
 				showFeed(id);
+				$.mobile.changePage("#page-feed", {transition: transition});
+				
 			break;
 			case "show-all-feeds":
-				showAllFeeds();
+				$.mobile.changePage("#page-all-feeds", {transition: transition});
 			break;
 			case "show-hot":
 				showHot(1);
@@ -51,16 +109,21 @@ $(document).ready(function() {
 				
 				//console.log( data );
 				buildKindling();
+				$("#page-kindling").trigger("create");
 				$.mobile.silentScroll(0);
+				
 			break;
 			case "show-group-more":
 				markItemsRead( $(this).data("fmjs-item-ids") );
 				buildGroup( $(this).data("fmjs-group-id") );
+				$("#page-group").trigger("create");
 				$.mobile.silentScroll(0);
+				
 			break;
 			case "show-feed-more":
 				markItemsRead( $(this).data("fmjs-item-ids") );
 				buildFeed( $(this).data("fmjs-feed-id") );
+				$("#page-feed").trigger("create");
 				$.mobile.silentScroll(0);
 			break;
 			case "show-home":
@@ -73,7 +136,7 @@ $(document).ready(function() {
 				window.history.back();
 			break;
 			case "show-groups":
-				showGroups();
+				$.mobile.changePage("#page-groups", {transition: transition});
 			break;
 			case "sync-items":
 				syncItems();
@@ -83,6 +146,7 @@ $(document).ready(function() {
 			break;
 			case "show-kindling":
 				showKindling();
+				$.mobile.changePage("#page-kindling", {transition: transition});
 			break;
 			case "refresh-favicons":
 				refreshFavicons();
@@ -94,10 +158,10 @@ $(document).ready(function() {
 				refreshItems();
 			break;
 			case "show-edit-homescreen":
-				showEditHomescreen();
+				$.mobile.changePage("#page-edit-homescreen", {transition: transition});
 			break;
 			case "show-saved":
-				showSaved();
+				$.mobile.changePage("#page-saved", {transition: transition});
 			break;
 			case "mark-items-read":
 				var ids = $(this).data("fmjs-item-ids");
@@ -159,7 +223,8 @@ $(document).ready(function() {
 			break;			
 			case "show-feeds-group":
 				var id = $(this).data("fmjs-group-id");
-				showFeedsInGroup(id);
+				$("#page-feedgroup").data("fmjs-group-id", id);
+				$.mobile.changePage("#page-feedgroup", {transition: transition});
 			break;
 			case "":
 			break;

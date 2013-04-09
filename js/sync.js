@@ -172,11 +172,21 @@ function loadItems(ids) {
 }
 
 function runAfterItemLoad() {
+	console.log("Finished items load");
 	items = _.sortBy(items, "created_on_time");
 	if ( order_items == "desc" ) {
 		items.reverse();
 	}
+	items_loaded = true;
 	prepareHome();
+}
+function runAfterItemLoadNoHome() {
+	console.log("Finished items load");
+	items = _.sortBy(items, "created_on_time");
+	if ( order_items == "desc" ) {
+		items.reverse();
+	}
+	items_loaded = true;
 }
 
 
@@ -300,7 +310,8 @@ function markGroupAsRead(group_id, ids) {
 	//$("#fmjs-group-content").removeData("fmjs-current-ids");
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
 	markGroupRead("group", getNumber(group_id) );//what, id, ids
-	$.mobile.changePage("#page-home", {transition: "slide"});
+	//$.mobile.changePage("#page-home");
+	window.history.back();
 	return false;
 }
 
@@ -329,11 +340,11 @@ function markGroupRead(what, id) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_refresh  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-				$.mobile.changePage("#page-home", {transition: "slide"});
+				//$.mobile.changePage("#page-home", {transition: "slide"});
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
-	runAfterItemLoad();
+	runAfterItemLoadNoHome();
 }
 
 function saveItem(id) {
@@ -440,6 +451,7 @@ function markFeedAsRead(feed_id, ids) {
 	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
 	$("#fmjs-feed-content").removeData("fmjs-feed-id");
 	markGroupRead("feed", getNumber(feed_id), ids);//what, id, ids
-	$.mobile.changePage("#page-home", {transition: "slide"});
+	//$.mobile.changePage("#page-home");
+	window.history.back();
 	return false;
 }

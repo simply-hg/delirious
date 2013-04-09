@@ -19,6 +19,9 @@ var paginate_items = "100";
 var items              = [];
 var saved_items        = [];
 var session_read_items = [];
+var unread_counter = {};
+var items_loaded = false;
+var started_items_load = false;
 
 var fav_groups = [];
 var fav_feeds  = [];
@@ -88,7 +91,8 @@ function getSettings() {
 			
 $(document).bind("mobileinit", function(){
 	//apply overrides here
-	//console.log("mobilestart");
+	console.log("mobilestart");
 	getSettings();
+	//start();
  	//console.log("start");
 });

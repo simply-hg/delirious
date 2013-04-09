@@ -22,7 +22,7 @@ img.fmjs-favicon {
 	color:steelblue;
 }
 #fmjs-single-content img, #fmjs-single-content object {
-	max-width:100%;
+	max-width:95%;
 }
 
 /* integrated clearfix by: http://www.webtoolkit.info/css-clearfix.html */
