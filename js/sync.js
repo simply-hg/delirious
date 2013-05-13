@@ -263,6 +263,7 @@ function markItemsRead(ids) {
 		}
 	});
 	$.each(read_items, function(index, value) {
+		value.is_read = 1;
 		session_read_items.push(value);
 	});
 	items = _.reject(items, function(item) {
@@ -293,13 +294,21 @@ function markItemRead(id) {
 }
 
 function markKindlingRead() {
+	
+	$.each(items, function(index, value) {
+		value.is_read = 1;
+		session_read_items.push(value);
+	});
+	
 	items = [];
+	
+	
 	showHideLoader("start");
 	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_refresh }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			syncItems();
-			showHome();
+			window.history.back();
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
@@ -326,7 +335,21 @@ function markGroupRead(what, id) {
 		feed_ids_to_mark_read = feed_ids_to_mark_read_x.feed_ids.split(",");
 	}
 	feed_ids_to_mark_read = _.compact(feed_ids_to_mark_read);
-	console.log(feed_ids_to_mark_read);
+	//console.log(feed_ids_to_mark_read);
+	
+	var read_items = [];
+	read_items = _.reject(items, function(item) {
+		if ( $.inArray(item.feed_id.toString(), feed_ids_to_mark_read ) == -1 )  {
+			return true;
+		} else {
+			return false;
+		}
+	});
+	$.each(read_items, function(index, value) {
+		value.is_read = 1;
+		session_read_items.push(value);
+	});
+	
 	items = _.reject(items, function(item) {
 		if ( $.inArray(item.feed_id.toString(), feed_ids_to_mark_read ) == -1 )  {
 			return false;
