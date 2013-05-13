@@ -99,3 +99,8 @@ img.fmjs-favicon {
 .fmjs-listview-content {
 	white-space:normal;
 }
+
+#fmjs-single-title {
+	color:steelblue;
+	text-decoration:none;
+}

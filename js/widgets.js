@@ -85,7 +85,7 @@ function widgetShowFavGroups() {
 		var unread = countUnreadInGroup(value);
 		if ( unread > 0 ) {
 			var group = _.findWhere(groups, {id:value});
-			content_ShowFavGroups = '<li data-theme="d">';
+			content_ShowFavGroups += '<li data-theme="d">';
 			content_ShowFavGroups += '<a href="" data-fmjs-show-group="'+group.id+'" class="fmjs-button" data-fmjs-fnc="show-group-selector">'+ _.escape(group.title) +'</a>';
 			content_ShowFavGroups += '<span class="ui-li-count">'+unread+'</span>'+'</li>';
 		}  
@@ -105,21 +105,20 @@ function widgetShowFavGroups() {
 function widgetShowFavFeeds() {
 	// These feeds are being shown if they have items
 	//
+	var res_ShowFavFeeds = '';
 	countUnreadItems();
 	content_ShowFavFeeds = '';
 	$.each(fav_feeds, function(index, value) {
-
 		var feed = _.findWhere(feeds, {id: getNumber(value)});
 		content_ShowFavFeeds += renderListviewItemFeed(feed, false);
-
 	});
 	if ( content_ShowFavFeeds ) {
-		content_ShowFavFeeds = '<ul data-role="listview" data-theme="d" data-inset="true">' + content_ShowFavFeeds;
-		content_ShowFavFeeds += '</ul>';
+		res_ShowFavFeeds = '<ul data-role="listview" data-theme="d" data-inset="true">' + content_ShowFavFeeds;
+		res_ShowFavFeeds += '</ul>';
 	} else {
-		content_ShowFavFeeds = '<p>No new items in your favourite feeds.</p>';
+		res_ShowFavFeeds = '<p>No new items in your favourite feeds.</p>';
 	}
-	return '<div class="fmjs-widget-container">' + content_ShowFavFeeds + '</div>'; 
+	return '<div class="fmjs-widget-container">' + res_ShowFavFeeds + '</div>'; 
 }
 
 

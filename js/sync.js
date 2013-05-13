@@ -299,7 +299,7 @@ function markKindlingRead() {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			syncItems();
-			$.mobile.changePage("#page-home", {transition: "slide"});
+			showHome();
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
