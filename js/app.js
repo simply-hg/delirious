@@ -582,6 +582,7 @@ function renderSingleItem(data) {
 
 	$("#fmjs-single-content").data("fmjs-single-item-current", data.id);
 	$("#fmjs-single-title").html(_.escape(data.title));
+	$("#fmjs-single-title").attr("href", data.url);
 	$("#page-single").data("title", _.escape(data.title));
 	$("#fmjs-single-url").attr("href", data.url);
 	var meta = '';
