@@ -42,7 +42,7 @@ function widgetSystemGroups() {
 	sysgroups += '<li data-theme="d"><a href="" class="fmjs-button" data-fmjs-fnc="show-all-feeds">All Feeds';
 	sysgroups +=    '<span class="ui-li-count">'+feeds.length+'</span>'+'</a></li>';
 	sysgroups += '</ul>';
-	sysgroups += '<p>Last Fever<span style="color:red">°</span> refresh @ '+renderDate("time", last_fever_refresh)+'</p>';
+	sysgroups += '<p>Last Fever<span style="color:red">°</span> Refresh @ '+renderDate("time", last_fever_refresh)+'</p>';
 	return '<div class="fmjs-widget-container">' + sysgroups + '</div>';
 }
 
