@@ -1,3 +1,22 @@
+function autoSync() {
+	syncSavedItems("sync");
+	syncUnreadItems("sync");
+	console.log("autosync started");
+	console.log($.mobile.activePage.attr("id"));
+	// Now we should reload home, if we are here,
+	// or print out a message, asking for a reload
+	switch($.mobile.activePage.attr("id")) {
+		case "page-home":
+			// reload home
+			prepareHome();
+		break;
+		default:
+			// do nothing for now
+		break;
+	}
+	return false;
+}
+
 function syncItems() {
 	syncSavedItems("sync");
 	syncUnreadItems("sync");
@@ -64,10 +83,11 @@ function syncSavedItems(what) {
 function syncUnreadItems(what) {
 	// This function compares your local unread items with all unread items online.
 	// if some are missing here, we load them.
-	// if some are missing there, we remove our copy (beacuse it was probably unsaved somewhere else...).
+	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
 	// It is done by comparing ids
 	//createGroups(true);
-	last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript	
+	last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
+	console.log(last_fmjs_refresh);
 	if ( what == "full" ) {
 		refreshItems();
 		return;
@@ -78,6 +98,7 @@ function syncUnreadItems(what) {
 		if ( checkAuth(data.auth) ) {
 			var run_anyway = false;
 			var online_unread_ids = data.unread_item_ids.split(',');
+			last_fever_refresh = data.last_refreshed_on_time;
 
 			local_unread_ids = [];
 			$.each(items, function(index, value) {

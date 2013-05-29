@@ -18,6 +18,7 @@ function initSettings() {
 function start() {
 	// test-auth
 	console.log("start");
+	var fmjs_autosync = window.setInterval("autoSync()", 5*60*1000);
 	if ( fm_url == "" ) {
 		checkAuth(0);
 	} else {
@@ -435,9 +436,9 @@ function showGroup(id) {
 	$("#fmjs-mark-group-read").data("fmjs-group-id", id);
 	
 	if ( _.contains(fav_groups, id) ) {
-		$("#fmjs-group-favmarker").html("Remove group from favourites");
+		$("#fmjs-group-favmarker").html("Remove Group from Favourites");
 	} else {
-		$("#fmjs-group-favmarker").html("Mark group as favourite");
+		$("#fmjs-group-favmarker").html("Mark Group as Favourite");
 	}
 
 	return false;
@@ -1023,7 +1024,7 @@ function prepareHome() {
 function showHome() {
 
 	$.mobile.changePage("#page-home", {transition: transition});
-	//$.mobile.silentScroll(0);
+	$.mobile.silentScroll(0);
 	return false;
 }
 
@@ -1042,12 +1043,12 @@ function markFeedAsFav() {
 		// should be removed
 		fav_feeds = _.without(fav_feeds, id);
 		$.jStorage.set("fmjs-fav-feeds", _.compact(fav_feeds));
-		$("#fmjs-feed-favmarker").html("Mark feed as favourite");
+		$("#fmjs-feed-favmarker").html("Mark Feed as Favourite");
 		
 	} else {
 		fav_feeds.push(id);
 		$.jStorage.set("fmjs-fav-feeds", _.compact(fav_feeds));
-		$("#fmjs-feed-favmarker").html("Remove feed from favourites");
+		$("#fmjs-feed-favmarker").html("Remove Feed from Favourites");
 	}
 
 	return false;
@@ -1060,12 +1061,12 @@ function markGroupAsFav() {
 		// should be removed
 		fav_groups = _.without(fav_groups, id);
 		$.jStorage.set("fmjs-fav-groups", _.compact(fav_groups));
-		$("#fmjs-group-favmarker").html("Mark group as favourite");
+		$("#fmjs-group-favmarker").html("Mark Group as Favourite");
 		
 	} else {
 		fav_groups.push(id);
 		$.jStorage.set("fmjs-fav-groups", _.compact(fav_groups));
-		$("#fmjs-group-favmarker").html("Remove group from favourites");
+		$("#fmjs-group-favmarker").html("Remove Group from Favourites");
 	}
 	return false;
 }
