@@ -566,9 +566,11 @@ function showSingleItem(id) {
 
 function renderSingleItem(data) {
 	//console.log(data);
+	$("#fmjs-single-content").empty();
 	if ( html_content == "raw") {
 		try {
-			$("#fmjs-single-content").html(data.html);
+			var content = $.parseHTML(data.html);
+			$("#fmjs-single-content").append(content);
 		} catch(e) {
 			console.log("error in html of item");
 			$("#fmjs-single-content").html(_.escape(data.html));
