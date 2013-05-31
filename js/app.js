@@ -564,6 +564,7 @@ function showSingleItem(id) {
 	} else {
 		renderSingleItem(item);
 	}
+	$.mobile.silentScroll(0);
 	return false;	
 }
 

@@ -86,7 +86,7 @@ function syncUnreadItems(what) {
 	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
 	// It is done by comparing ids
 	//createGroups(true);
-	last_fmjs_refresh = Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
+	last_fmjs_refresh = now();
 	console.log(last_fmjs_refresh);
 	if ( what == "full" ) {
 		refreshItems();
@@ -193,12 +193,7 @@ function loadItems(ids) {
 }
 
 function runAfterItemLoad() {
-	console.log("Finished items load");
-	items = _.sortBy(items, "created_on_time");
-	if ( order_items == "desc" ) {
-		items.reverse();
-	}
-	items_loaded = true;
+	runAfterItemLoadNoHome
 	prepareHome();
 }
 function runAfterItemLoadNoHome() {
@@ -208,6 +203,7 @@ function runAfterItemLoadNoHome() {
 		items.reverse();
 	}
 	items_loaded = true;
+	return true;
 }
 
 
@@ -385,6 +381,8 @@ function markGroupRead(what, id) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				//$.mobile.changePage("#page-home", {transition: "slide"});
+				syncItems();
+				window.history.back();
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
