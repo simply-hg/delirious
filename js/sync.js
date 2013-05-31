@@ -86,7 +86,7 @@ function syncUnreadItems(what) {
 	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
 	// It is done by comparing ids
 	//createGroups(true);
-	last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
+	last_fmjs_refresh = Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
 	console.log(last_fmjs_refresh);
 	if ( what == "full" ) {
 		refreshItems();
@@ -325,7 +325,7 @@ function markKindlingRead() {
 	
 	
 	showHideLoader("start");
-	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_refresh }).done(function(data) {
+	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_group_show }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			syncItems();
@@ -378,10 +378,10 @@ function markGroupRead(what, id) {
 			return true;
 		}
 	});
-		
+
 	if ( $.trim(id) != "") {
 		showHideLoader("start");
-		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_refresh  }).done(function(data) {
+		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_group_show  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				//$.mobile.changePage("#page-home", {transition: "slide"});
@@ -499,3 +499,5 @@ function markFeedAsRead(feed_id, ids) {
 	window.history.back();
 	return false;
 }
+
+

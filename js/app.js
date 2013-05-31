@@ -350,6 +350,7 @@ function replacePlaceholder(value) {
 }
 
 function buildGroup(id) {
+	last_fmjs_group_show = now();
 	id = getNumber(id);
 	console.log(paginate_items);
 	$("#fmjs-group-content").empty();
@@ -426,12 +427,13 @@ function buildGroup(id) {
 }
 
 function showGroup(id) {
+
 	$("#fmjs-group-content").removeData("fmjs-current-ids");
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
 
 	buildGroup(id);
 
-
+	
 	$("#fmjs-group-favmarker").data("fmjs-group-id", id);
 	$("#fmjs-mark-group-read").data("fmjs-group-id", id);
 	
@@ -445,6 +447,7 @@ function showGroup(id) {
 }
 
 function buildFeed(id) {
+	last_fmjs_group_show = now();
 	id = getNumber(id);
 	console.log(paginate_items);
 	$("#fmjs-feed-content").empty();
@@ -744,7 +747,7 @@ function getUnreadSparks() {
 }
 
 function showSparks() {
-
+		last_fmjs_group_show = now();
 	$("#fmjs-sparks-content").empty();
 	$("#fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-sparks-view"></ul>');
 
@@ -829,6 +832,7 @@ function showHideLoader(state) {
 }
 
 function buildKindling() {
+	last_fmjs_group_show = now();
 	$("#fmjs-kindling-content").empty();
 	$("#fmjs-kindling-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-kindling-view"></ul>');
 	$("#fmjs-kindling-more").empty();
@@ -905,7 +909,7 @@ function showGroupSelector(id) {
 }
 
 function showFeedsInGroup(id) {
-
+	last_fmjs_group_show = now();
 	$("#fmjs-feedgroup-content").empty();
 	$("#fmjs-feedgroup-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-show-group="'+id+'" class="fmjs-button" data-fmjs-fnc="show-group" id="fmjs-feedgroup-show-all">Show All Items</a></div>');
 	$("#fmjs-feedgroup-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feedgroup-view"></ul>');
