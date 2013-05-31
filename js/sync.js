@@ -177,7 +177,6 @@ function loadItems(ids) {
 			last_fever_refresh = data.last_refreshed_on_time;
 			$.each(data.items, function(index, value) {
 				// Save each item in cache
-				
 				items.push(value);
 				afterItemLoad();
 			});
@@ -193,9 +192,10 @@ function loadItems(ids) {
 }
 
 function runAfterItemLoad() {
-	runAfterItemLoadNoHome
+	runAfterItemLoadNoHome();
 	prepareHome();
 }
+
 function runAfterItemLoadNoHome() {
 	console.log("Finished items load");
 	items = _.sortBy(items, "created_on_time");
@@ -381,8 +381,8 @@ function markGroupRead(what, id) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				//$.mobile.changePage("#page-home", {transition: "slide"});
-				syncItems();
-				window.history.back();
+				syncUnreadItems("sync");
+				//window.history.back();
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
