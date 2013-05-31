@@ -57,8 +57,9 @@ var called_edit_homescreen = false;
 
 var loading           = 0; // counts current loading processes
 var auth_success      = false; // if a successful auth has been registered this is true. helps on stopped or failed connections. Not (!) used for authentification
-var last_fmjs_refresh   = 0; // unix timestamps in seconds when were items refreshed last time
-var last_fever_refresh = 0; // unix timestamps in seconds when Server last refreshed items
+var last_fmjs_refresh    = 0; // unix timestamps in seconds when were items refreshed last time
+var last_fever_refresh   = 0; // unix timestamps in seconds when Server last refreshed items
+var last_fmjs_group_show = now();
 
 function getSettings() {
 
