@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-var fm_key, fm_url, fm_user;
+var dm_key, dm_url, dm_user;
 
 var groups       = {};
 var feeds        = {};
@@ -81,30 +81,30 @@ var called_edit_homescreen = false;
 
 var loading           = 0; // counts current loading processes
 var auth_success      = false; // if a successful auth has been registered this is true. helps on stopped or failed connections. Not (!) used for authentification
-var last_fmjs_refresh    = 0; // unix timestamps in seconds when were items refreshed last time
-var last_fever_refresh   = 0; // unix timestamps in seconds when Server last refreshed items
-var last_fmjs_group_show = now();
+var last_dm_refresh    = 0; // unix timestamps in seconds when were items refreshed last time
+var last_fever_refresh = 0; // unix timestamps in seconds when Server last refreshed items
+var last_dm_group_show = now();
 
 function getSettings() {
 
-	fm_key            = $.jStorage.get("fmjs-key", "");
-	fm_url            = $.jStorage.get("fmjs-url", "");
-	fm_user           = $.jStorage.get("fmjs-user", "");
-	favicons          = $.jStorage.get("fmjs-favicons", []);
-	transition        = $.jStorage.get("fmjs-transition", transition);
-	html_content      = $.jStorage.get("fmjs-html-content", html_content);
-	groupview         = $.jStorage.get("fmjs-groupview", groupview);
-	show_empty_groups = $.jStorage.get("fmjs-show-empty-groups", show_empty_groups);
-	order_items       = $.jStorage.get("fmjs-order-items", order_items);
-	sharing           = $.jStorage.get("fmjs-sharing", sharing);
-	sharing_msg       = $.jStorage.get("fmjs-sharing-msg", sharing_msg);
-	paginate_items    = $.jStorage.get("fmjs-paginate-items", paginate_items);
+	dm_key            = $.jStorage.get("dm-key", "");
+	dm_url            = $.jStorage.get("dm-url", "");
+	dm_user           = $.jStorage.get("dm-user", "");
+	favicons          = $.jStorage.get("dm-favicons", []);
+	transition        = $.jStorage.get("dm-transition", transition);
+	html_content      = $.jStorage.get("dm-html-content", html_content);
+	groupview         = $.jStorage.get("dm-groupview", groupview);
+	show_empty_groups = $.jStorage.get("dm-show-empty-groups", show_empty_groups);
+	order_items       = $.jStorage.get("dm-order-items", order_items);
+	sharing           = $.jStorage.get("dm-sharing", sharing);
+	sharing_msg       = $.jStorage.get("dm-sharing-msg", sharing_msg);
+	paginate_items    = $.jStorage.get("dm-paginate-items", paginate_items);
 	
-	saved_items  = $.jStorage.get("fmjs-local-items", []);
-	widgets      = $.jStorage.get("fmjs-widgets", default_widgets);
+	saved_items  = $.jStorage.get("dm-local-items", []);
+	widgets      = $.jStorage.get("dm-widgets", default_widgets);
 	
-	fav_feeds  = $.jStorage.get("fmjs-fav-feeds", []);
-	fav_groups = $.jStorage.get("fmjs-fav-groups", []);
+	fav_feeds  = $.jStorage.get("dm-fav-feeds", []);
+	fav_groups = $.jStorage.get("dm-fav-groups", []);
 	
 	$.mobile.defaultPageTransition = transition;
 

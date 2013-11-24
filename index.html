@@ -29,13 +29,14 @@
 	<script src="lib/fitvid.min.js"></script>
 	<script src="lib/md5.min.js"></script>
 	<script src="js/functions.js"></script>
-	
+	<script src="js/config.js"></script>
+		
 	<script src="js/app.js"></script>
 	<script src="js/sync.js"></script>
 	<script src="js/widgets.js"></script>
 	
-	<script src="js/config.js"></script>
 	<script src="js/eventhandler.js"></script>
+	
 	<script src="//code.jquery.com/mobile/1.4.0-rc.1/jquery.mobile-1.4.0-rc.1.min.js"></script>
 
 </head>
@@ -43,71 +44,71 @@
 <body>
 	<!-- Home -->
 
-	<div data-role="page" id="page-home" data-title="Delirious°" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-home" data-title="Delirious°" class="dm-page" data-theme="a">
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<!--a href="#fmjs-panel" class="fmjs-button ui-btn-left ui-btn ui-icon-grid ui-btn-icon-notext">Show Panel</a>-->
-			<h1 id="fmjs-header">Delirious<span style="color:red">°</span></h1>
-			<button data-fmjs-fnc="sync-items" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh">Sync</button>
+			<!--a href="#dm-panel" class="dm-button ui-btn-left ui-btn ui-icon-grid ui-btn-icon-notext">Show Panel</a>-->
+			<h1 id="dm-header">Delirious<span style="color:red">°</span></h1>
+			<button data-dm-fnc="sync-items" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh">Sync</button>
 		</div>
 		<div data-role="content">
-			<div id="fmjs-homescreen-message"></div>
+			<div id="dm-homescreen-message"></div>
 			
 			<div class="ui-grid-a ui-responsive">
-				<div class="ui-block-a"><div id="fmjs-widget-place-a1"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b1"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a1"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b1"></div></div>
 
-				<div class="ui-block-a"><div id="fmjs-widget-place-a2"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b2"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a2"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b2"></div></div>
 				
-				<div class="ui-block-a"><div id="fmjs-widget-place-a3"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b3"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a3"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b3"></div></div>
 				
-				<div class="ui-block-a"><div id="fmjs-widget-place-a4"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b4"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a4"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b4"></div></div>
 					
-				<div class="ui-block-a"><div id="fmjs-widget-place-a5"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b5"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a5"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b5"></div></div>
 				
-				<div class="ui-block-a"><div id="fmjs-widget-place-a6"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b6"></div></div>
-				<div class="ui-block-a"><div id="fmjs-widget-place-a7"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b7"></div></div>
-				<div class="ui-block-a"><div id="fmjs-widget-place-a8"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b8"></div></div>
-				<div class="ui-block-a"><div id="fmjs-widget-place-a9"></div></div>
-				<div class="ui-block-b"><div id="fmjs-widget-place-b9"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a6"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b6"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a7"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b7"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a8"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b8"></div></div>
+				<div class="ui-block-a"><div id="dm-widget-place-a9"></div></div>
+				<div class="ui-block-b"><div id="dm-widget-place-b9"></div></div>
 			</div><!-- /grid-c -->
 			
-			<div class="fmjs-bottom-menu">
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="gear"><a href="#page-settings">Settings</a></li>
-					<li data-icon="grid"><a href="" class="fmjs-button" data-fmjs-fnc="show-edit-homescreen">Edit Homescreen</a></li>
+					<li data-icon="grid"><a href="" class="dm-button" data-dm-fnc="show-edit-homescreen">Edit Homescreen</a></li>
 					<li data-icon="info"><a href="#page-support">Help &amp; Credits</a></li>
-					<li data-icon="refresh"><a href="" class="fmjs-button" data-fmjs-fnc="sync-items">Sync Items</a></li>
+					<li data-icon="refresh"><a href="" class="dm-button" data-dm-fnc="sync-items">Sync Items</a></li>
 				</ul>
 			</div>
 		</div>			
 	</div><!-- / Home -->
 
 	<!-- Hot-view -->
-	<div data-role="page" id="page-hot" data-title="Hot Items" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-hot" data-title="Hot Items" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<!--<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-				<a href="#fmjs-panel" class="ui-btn ui-icon-grid ui-btn-icon-notext">Show Panel</a>
+				<a href="#dm-panel" class="ui-btn ui-icon-grid ui-btn-icon-notext">Show Panel</a>
 				<a href="#" class="ui-btn ui-btn-icon-left ui-icon-arrow-l" data-rel="back">Back</a>
 			</div>-->
 			
-			<h1 id="fmjs-header">Hot on Fever<span style="color:red">°</span></h1>
-			<a href="" data-fmjs-fnc="show-hot" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh" data-theme="b">Refresh</a>
+			<h1 id="dm-header">Hot on Fever<span style="color:red">°</span></h1>
+			<a href="" data-dm-fnc="show-hot" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh" data-theme="b">Refresh</a>
 			
 		</div>
 		<div data-role="content">
 			<div data-role="fieldcontain">
-				<label for="fmjs-hot-range">Links from the last ...</label>
-				<select name="fmjs-hot-range" id="fmjs-hot-range" data-mini="true">
+				<label for="dm-hot-range">Links from the last ...</label>
+				<select name="dm-hot-range" id="dm-hot-range" data-mini="true">
 					<option value="1">day</option>
 					<option value="2">2 days</option>
 					<option value="3">3 days</option>
@@ -119,8 +120,8 @@
 				</select>
 			</div>
 			<div data-role="fieldcontain">
-				<label for="fmjs-hot-offset">... starting ...</label>
-				<select name="fmjs-hot-offset" id="fmjs-hot-offset" data-mini="true">
+				<label for="dm-hot-offset">... starting ...</label>
+				<select name="dm-hot-offset" id="dm-hot-offset" data-mini="true">
 					<option value="0">Now</option>
 					<option value="1">Yesterday</option>
 					<option value="2">2 days ago</option>
@@ -133,14 +134,14 @@
 				</select>
 			</div>
 
-			<div id="fmjs-hot-content">
+			<div id="dm-hot-content">
 			</div>
-	 		<button id="fmjs-hot-more" data-role="button" class="fmjs-button" data-fmjs-fnc="show-hot-more" data-fmjs-hot-page="2">Load More</button>
-			<div class="fmjs-bottom-menu">
+	 		<button id="dm-hot-more" data-role="button" class="dm-button" data-dm-fnc="show-hot-more" data-dm-hot-page="2">Load More</button>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -148,24 +149,24 @@
 	</div><!-- / Hot view -->
 
 	<!-- A Group -->
-	<div data-role="page" id="page-group" data-title="Fever Mobile Group" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-group" data-title="Fever Mobile Group" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-group-header">Fever<span style="color:red">°</span> Custom Group</h1>
-			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="mark-items-read" id="fmjs-group-read">Mark Read</a>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-group-header">Fever<span style="color:red">°</span> Custom Group</h1>
+			<a href="" data-theme="b" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="mark-items-read" id="dm-group-read">Mark Read</a>
 		</div>
 		
 		<div data-role="content">
-			<div id="fmjs-group-content"></div>
-			<div id="fmjs-group-more"></div>
-			<div class="fmjs-bottom-menu">
+			<div id="dm-group-content"></div>
+			<div id="dm-group-more"></div>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-group-read" id="fmjs-mark-group-read">Mark Whole Group as Read</a></li>
-					<li data-icon="star"><a href="" id="fmjs-group-favmarker" class="fmjs-button" data-fmjs-fnc="mark-group-fav">Mark Group as Favourite</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-group-read" id="dm-mark-group-read">Mark Whole Group as Read</a></li>
+					<li data-icon="star"><a href="" id="dm-group-favmarker" class="dm-button" data-dm-fnc="mark-group-fav">Mark Group as Favourite</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -173,20 +174,20 @@
 	</div><!-- / A Group -->
 
 	<!-- A Group of feeds -->
-	<div data-role="page" id="page-feedgroup" data-title="Fever Mobile Group" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-feedgroup" data-title="Fever Mobile Group" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-feedgroup-header">Fever<span style="color:red">°</span> Custom Group</h1>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-feedgroup-header">Fever<span style="color:red">°</span> Custom Group</h1>
 		</div>
 		
 		<div data-role="content">
-			<div id="fmjs-feedgroup-content"></div>
-			<div class="fmjs-bottom-menu">
+			<div id="dm-feedgroup-content"></div>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -194,65 +195,65 @@
 	</div><!-- / A Group of feeds -->
 
 	<!-- Kindling -->
-	<div data-role="page" id="page-kindling" data-title="Kindling Items" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-kindling" data-title="Kindling Items" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-group-header">Fever<span style="color:red">°</span> Kindling</h1>
-			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" id="fmjs-kindling-items" data-fmjs-fnc="show-kindling-more">Show More</a>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-group-header">Fever<span style="color:red">°</span> Kindling</h1>
+			<a href="" data-theme="b" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" id="dm-kindling-items" data-dm-fnc="show-kindling-more">Show More</a>
 		</div>
 		<div data-role="content">
-			<div id="fmjs-kindling-content"></div>
-			<div id="fmjs-kindling-more"></div>
-			<div class="fmjs-bottom-menu">
+			<div id="dm-kindling-content"></div>
+			<div id="dm-kindling-more"></div>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-kindling-read">Mark Kindling Read</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-kindling-read">Mark Kindling Read</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
 	</div><!-- / Kindling -->
 	
 	<!-- A Feed -->
-	<div data-role="page" id="page-feed" data-title="A Feed" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-feed" data-title="A Feed" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-feed-header">Fever<span style="color:red">°</span> View Feed</h1>
-			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="show-feed-more" id="fmjs-feed-read">Mark Read</a>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-feed-header">Fever<span style="color:red">°</span> View Feed</h1>
+			<a href="" data-theme="b" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="show-feed-more" id="dm-feed-read">Mark Read</a>
 		</div>
 		<div data-role="content">
-			<div id="fmjs-feed-content"></div>
-			<div id="fmjs-feed-more"></div>
-			<div class="fmjs-bottom-menu">
+			<div id="dm-feed-content"></div>
+			<div id="dm-feed-more"></div>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-feed-read" id="fmjs-mark-feed-read">Mark Feed as Read</a></li>
-					<li data-icon="star"><a href="" class="fmjs-button" data-fmjs-fnc="mark-feed-fav" id="fmjs-feed-favmarker">Mark Feed as Favourite</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-feed-read" id="dm-mark-feed-read">Mark Feed as Read</a></li>
+					<li data-icon="star"><a href="" class="dm-button" data-dm-fnc="mark-feed-fav" id="dm-feed-favmarker">Mark Feed as Favourite</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
 	</div><!-- / A Feed -->
 
 	<!-- Saved -->
-	<div data-role="page" id="page-saved" data-title="Saved Items" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-saved" data-title="Saved Items" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-saved-header">Saved Items</h1>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-saved-header">Saved Items</h1>
 
 		</div>
 		<div data-role="content">
-			<div id="fmjs-saved-content"></div>
-			<div class="fmjs-bottom-menu">
+			<div id="dm-saved-content"></div>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -260,20 +261,20 @@
 	</div><!-- / Saved -->
 
 	<!-- Sparks -->
-	<div data-role="page" id="page-sparks" data-title="Sparks" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-sparks" data-title="Sparks" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-sparks-header">Fever<span style="color:red">°</span> Sparks</h1>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-sparks-header">Fever<span style="color:red">°</span> Sparks</h1>
 		</div>
 		<div data-role="content">
-			<div id="fmjs-sparks-content"></div>
+			<div id="dm-sparks-content"></div>
 		
-			<div class="fmjs-bottom-menu">
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -281,22 +282,22 @@
 
 
 	<!-- Show Groups -->
-	<div data-role="page" id="page-groups" data-title="Fever° Groups" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-groups" data-title="Fever° Groups" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-groups-header">Fever<span style="color:red">°</span> Groups</h1>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-groups-header">Fever<span style="color:red">°</span> Groups</h1>
 		</div>
 		
 		<div data-role="content">
-			<div id="fmjs-groups-content">
+			<div id="dm-groups-content">
 
 			</div>
-			<div class="fmjs-bottom-menu">
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -305,97 +306,97 @@
 	
 	
 	<!-- Settings -->
-	<div data-role="page" id="page-settings" data-title="Settings" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-settings" data-title="Settings" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-header">Delirious<span style="color:red">°</span> Settings</h1>
-			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="save-settings">Save</a>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-header">Delirious<span style="color:red">°</span> Settings</h1>
+			<a href="" data-theme="b" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="save-settings">Save</a>
 		</div>
 		<div data-role="content">
 			<h1>Authentification</h1>
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup">
-					<label for="fmjs-fever-url">Fever<span style="color:red">°</span>-URL</label>
-					<input name="fmjs-fever-url" id="fmjs-fever-url" placeholder="http://www.host.example/path/to/fever/" value="" type="url" />
+					<label for="dm-fever-url">Fever<span style="color:red">°</span>-URL</label>
+					<input name="dm-fever-url" id="dm-fever-url" placeholder="http://www.host.example/path/to/fever/" value="" type="url" />
 				</fieldset>
 			</div>
 			
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup">
-					<label for="fmjs-e-mail">E-Mail / Username</label>
-					<input name="fmjs-e-mail" id="fmjs-e-mail" placeholder="user@example.com" value="" type="email" />
+					<label for="dm-e-mail">E-Mail / Username</label>
+					<input name="dm-e-mail" id="dm-e-mail" placeholder="user@example.com" value="" type="email" />
 				</fieldset>
 			</div>
 			
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup">
-					<label for="fmjs-password">Password</label>
-					<input name="fmjs-password" id="fmjs-password" placeholder="" value="" type="password" />
+					<label for="dm-password">Password</label>
+					<input name="dm-password" id="dm-password" placeholder="" value="" type="password" />
 				</fieldset>
 			</div>
 			<p><strong>Please note</strong>: In order to change your E-Mail, you also need to provide your password, because your login changes with your e-mail. Your password is <strong>not stored</strong> on your device.</p>
 			<h1>Page transitions</h1>
 
-			<fieldset data-role="controlgroup" data-type="vertical" id="fmjs-setting-transitions-group">
-				<input id="fmjs-setting-transitions-1" name="fmjs-setting-transitions" value="none" type="radio">
-				<label for="fmjs-setting-transitions-1">
+			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-transitions-group">
+				<input id="dm-setting-transitions-1" name="dm-setting-transitions" value="none" type="radio">
+				<label for="dm-setting-transitions-1">
 					<h3 class="ui-li-heading">None</h3>
 					<p class="ui-li-desc">No animations. Best speed.</p>
 				</label>
-				<input id="fmjs-setting-transitions-2" name="fmjs-setting-transitions" value="slide" type="radio">
-				<label for="fmjs-setting-transitions-2">
+				<input id="dm-setting-transitions-2" name="dm-setting-transitions" value="slide" type="radio">
+				<label for="dm-setting-transitions-2">
 					<h3 class="ui-li-heading">Slide</h3>
 					<p class="ui-li-desc">Looks ok and makes sense.</p>
 				</label>				
-				<input id="fmjs-setting-transitions-3" name="fmjs-setting-transitions" value="slidefade" type="radio">
-				<label for="fmjs-setting-transitions-3">
+				<input id="dm-setting-transitions-3" name="dm-setting-transitions" value="slidefade" type="radio">
+				<label for="dm-setting-transitions-3">
 					<h3 class="ui-li-heading">Slide'n'Fade</h3>
 					<p class="ui-li-desc">Super awesome look.</p>
 				</label>
-				<input id="fmjs-setting-transitions-4" name="fmjs-setting-transitions" value="fade" type="radio">
-				<label for="fmjs-setting-transitions-4">
+				<input id="dm-setting-transitions-4" name="dm-setting-transitions" value="fade" type="radio">
+				<label for="dm-setting-transitions-4">
 					<h3 class="ui-li-heading">Fade</h3>
 				</label>
-				<input id="fmjs-setting-transitions-5" name="fmjs-setting-transitions" value="pop" type="radio">
-				<label for="fmjs-setting-transitions-5">
+				<input id="dm-setting-transitions-5" name="dm-setting-transitions" value="pop" type="radio">
+				<label for="dm-setting-transitions-5">
 					<h3 class="ui-li-heading">Pop</h3>
 				</label>
-				<input id="fmjs-setting-transitions-6" name="fmjs-setting-transitions" value="flow" type="radio">
-				<label for="fmjs-setting-transitions-6">
+				<input id="dm-setting-transitions-6" name="dm-setting-transitions" value="flow" type="radio">
+				<label for="dm-setting-transitions-6">
 					<h3 class="ui-li-heading">Flow</h3>
 				</label>
-				<input id="fmjs-setting-transitions-7" name="fmjs-setting-transitions" value="flip" type="radio">
-				<label for="fmjs-setting-transitions-7">
+				<input id="dm-setting-transitions-7" name="dm-setting-transitions" value="flip" type="radio">
+				<label for="dm-setting-transitions-7">
 					<h3 class="ui-li-heading">Flip</h3>
 				</label>
-				<input id="fmjs-setting-transitions-8" name="fmjs-setting-transitions" value="turn" type="radio">
-				<label for="fmjs-setting-transitions-8">
+				<input id="dm-setting-transitions-8" name="dm-setting-transitions" value="turn" type="radio">
+				<label for="dm-setting-transitions-8">
 					<h3 class="ui-li-heading">Turn</h3>
 				</label>
 			</fieldset>
 			
 			<h1>Order of Feed Items</h1>
-			<fieldset data-role="controlgroup" data-type="vertical" id="fmjs-setting-order-group">
-				<input id="fmjs-setting-order-1" name="fmjs-setting-order" value="asc" type="radio">
-				<label for="fmjs-setting-order-1">
+			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-order-group">
+				<input id="dm-setting-order-1" name="dm-setting-order" value="asc" type="radio">
+				<label for="dm-setting-order-1">
 					<h3 class="ui-li-heading">Show Oldest Item First</h3>
 				</label>
-				<input id="fmjs-setting-order-2" name="fmjs-setting-order" value="desc" type="radio">
-				<label for="fmjs-setting-order-2">
+				<input id="dm-setting-order-2" name="dm-setting-order" value="desc" type="radio">
+				<label for="dm-setting-order-2">
 					<h3 class="ui-li-heading">Show Newest Item First</h3>
 				</label>
 			</fieldset>			
 			
 			<h1>Show empty groups in overview</h1>
-			<fieldset data-role="controlgroup" data-type="vertical" id="fmjs-setting-empty-groups-group">
-				<input id="fmjs-setting-empty-groups-1" name="fmjs-setting-empty-groups" value="false" type="radio">
-				<label for="fmjs-setting-empty-groups-1">
+			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-empty-groups-group">
+				<input id="dm-setting-empty-groups-1" name="dm-setting-empty-groups" value="false" type="radio">
+				<label for="dm-setting-empty-groups-1">
 					<h3 class="ui-li-heading">Don't show empty groups</h3>
 					<p class="ui-li-desc">Makes the list a bit smaller.</p>
 				</label>
-				<input id="fmjs-setting-empty-groups-2" name="fmjs-setting-empty-groups" value="true" type="radio">
-				<label for="fmjs-setting-empty-groups-2">
+				<input id="dm-setting-empty-groups-2" name="dm-setting-empty-groups" value="true" type="radio">
+				<label for="dm-setting-empty-groups-2">
 					<h3 class="ui-li-heading">Show all groups</h3>
 					<p class="ui-li-desc">You can see even groups with no unread items.</p>
 				</label>
@@ -403,14 +404,14 @@
 			
 			<h1>How to View Groups</h1>
 
-			<fieldset data-role="controlgroup" data-type="vertical" id="fmjs-setting-groupview-group">
-				<input id="fmjs-setting-groupview-1" name="fmjs-setting-groupview" value="items" type="radio">
-				<label for="fmjs-setting-groupview-1">
+			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-groupview-group">
+				<input id="dm-setting-groupview-1" name="dm-setting-groupview" value="items" type="radio">
+				<label for="dm-setting-groupview-1">
 					<h3 class="ui-li-heading">Show all items</h3>
 					<p class="ui-li-desc">Combines all items in a group and shows them.</p>
 				</label>
-				<input id="fmjs-setting-groupview-2" name="fmjs-setting-groupview" value="feeds" type="radio">
-				<label for="fmjs-setting-groupview-2">
+				<input id="dm-setting-groupview-2" name="dm-setting-groupview" value="feeds" type="radio">
+				<label for="dm-setting-groupview-2">
 					<h3 class="ui-li-heading">Show feeds in groups</h3>
 					<p class="ui-li-desc">Allows you to browse each feed in a group.</p>
 				</label>
@@ -420,48 +421,48 @@
 
 				<fieldset data-role="controlgroup" data-type="horizontal">
 					<legend>Maximum number of items to show at once:</legend>
-					<label for="fmjs-setting-paginate-items-1">
-					<input id="fmjs-setting-paginate-items-1" name="fmjs-setting-paginate-items" value="50" type="radio">
+					<label for="dm-setting-paginate-items-1">
+					<input id="dm-setting-paginate-items-1" name="dm-setting-paginate-items" value="50" type="radio">
 					50</label>
-					<label for="fmjs-setting-paginate-items-2">
-					<input id="fmjs-setting-paginate-items-2" name="fmjs-setting-paginate-items" value="100" type="radio">
+					<label for="dm-setting-paginate-items-2">
+					<input id="dm-setting-paginate-items-2" name="dm-setting-paginate-items" value="100" type="radio">
 					100</label>
-					<label for="fmjs-setting-paginate-items-3">
-					<input id="fmjs-setting-paginate-items-3" name="fmjs-setting-paginate-items" value="200" type="radio">
+					<label for="dm-setting-paginate-items-3">
+					<input id="dm-setting-paginate-items-3" name="dm-setting-paginate-items" value="200" type="radio">
 					200</label>
-					<label for="fmjs-setting-paginate-items-4">
-					<input id="fmjs-setting-paginate-items-4" name="fmjs-setting-paginate-items" value="all" type="radio">
+					<label for="dm-setting-paginate-items-4">
+					<input id="dm-setting-paginate-items-4" name="dm-setting-paginate-items" value="all" type="radio">
 					All</label>
 				</fieldset>
 
 			<h1>Single Item View</h1>
-			<fieldset data-role="controlgroup" id="fmjs-setting-html-content-group"> 
-				<input type="radio" name="fmjs-setting-html-content" id="fmjs-setting-html-content-1" value="escape" />
-				<label for="fmjs-setting-html-content-1">
+			<fieldset data-role="controlgroup" id="dm-setting-html-content-group"> 
+				<input type="radio" name="dm-setting-html-content" id="dm-setting-html-content-1" value="escape" />
+				<label for="dm-setting-html-content-1">
 					<h3 class="ui-li-heading">Escaped HTML</h3>
 					<p class="ui-li-desc">Secure but doesn't look that good.</p>
 				</label>
-				<input type="radio" name="fmjs-setting-html-content" id="fmjs-setting-html-content-2" value="raw" />       	
-				<label for="fmjs-setting-html-content-2">
+				<input type="radio" name="dm-setting-html-content" id="dm-setting-html-content-2" value="raw" />       	
+				<label for="dm-setting-html-content-2">
 					<h3 class="ui-li-heading">Raw (parsed) HTML</h3>
 					<p class="ui-li-desc">Looks best, but might raise security issues.</p>
 				</label>     	
 			</fieldset>
 			
 			<h1>Show Sharing Buttons</h1>
-			<fieldset data-role="controlgroup" id="fmjs-setting-sharing-group"> 
-				<input type="radio" name="fmjs-setting-sharing" id="fmjs-setting-sharing-1" value="all" />
-				<label for="fmjs-setting-sharing-1">
+			<fieldset data-role="controlgroup" id="dm-setting-sharing-group"> 
+				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-1" value="all" />
+				<label for="dm-setting-sharing-1">
 					<h3 class="ui-li-heading">All Services</h3>
 					<p class="ui-li-desc">ATM: Facebook, Google+, Twitter, E-Mail. Some data might be sent over to the networks.</p>
 				</label>
-				<input type="radio" name="fmjs-setting-sharing" id="fmjs-setting-sharing-2" value="email" />       	
-				<label for="fmjs-setting-sharing-2">
+				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-2" value="email" />       	
+				<label for="dm-setting-sharing-2">
 					<h3 class="ui-li-heading">Show Only E-Mail Button</h3>
 					<p class="ui-li-desc">Just offer sharing by E-Mail. No privacy concerns here.</p>
 				</label>
-				<input type="radio" name="fmjs-setting-sharing" id="fmjs-setting-sharing-3" value="none" />       	
-				<label for="fmjs-setting-sharing-3">
+				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-3" value="none" />       	
+				<label for="dm-setting-sharing-3">
 					<h3 class="ui-li-heading">No Sharing</h3>
 					<p class="ui-li-desc">If you do not want to show or use any sharing buttons, choose this.</p>
 				</label>
@@ -471,29 +472,29 @@
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup">
 					<p>Always start with this text, when sharing an item:</p>
-					<textarea name="fmjs-setting-sharing-msg" id="fmjs-setting-sharing-msg" placeholder=""></textarea>
+					<textarea name="dm-setting-sharing-msg" id="dm-setting-sharing-msg" placeholder=""></textarea>
 				</fieldset>
 				<p>Please Note: %url% gets replaced with the url of the item.</p>
 			</div>
 			<h1>Save Settings</h1>
-			<a data-role="button" data-icon="check" href="" class="fmjs-button" data-fmjs-fnc="save-settings">Save Settings</a>
-			<a href="" class="fmjs-to-home-button" data-role="button" data-icon="delete">Cancel</a>
+			<a data-role="button" data-icon="check" href="" class="dm-button" data-dm-fnc="save-settings">Save Settings</a>
+			<a href="" class="dm-to-home-button" data-role="button" data-icon="delete">Cancel</a>
 			
 
 			<h1>Log out</h1>
-			<a data-role="button" data-icon="delete" href="" class="fmjs-button" data-fmjs-fnc="logout">Log Out and Delete Data</a>
+			<a data-role="button" data-icon="delete" href="" class="dm-button" data-dm-fnc="logout">Log Out and Delete Data</a>
 			
 			<h1>Tools</h1>
-			<a data-role="button" data-icon="refresh" href="" class="fmjs-button" data-fmjs-fnc="refresh-saved-items">Reload All Saved Items</a>
-			<a data-role="button" data-icon="refresh" href="" class="fmjs-button" data-fmjs-fnc="refresh-items">Reload All Unread Items</a>
-			<a data-role="button" data-icon="refresh" href="" class="fmjs-button" data-fmjs-fnc="refresh-favicons">Refresh Favicons</a>
+			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-saved-items">Reload All Saved Items</a>
+			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-items">Reload All Unread Items</a>
+			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-favicons">Refresh Favicons</a>
 
-			<div class="fmjs-bottom-menu">
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="save-settings">Save Settings</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="save-settings">Save Settings</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -501,28 +502,28 @@
 	</div><!-- / Settings -->
 
 	<!-- Single Entry -->
-	<div data-role="page" id="page-single" data-title="Single Item" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-single" data-title="Single Item" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h3 id="fmjs-feed-title">Feed-Name</h3>
-			<a data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-plus" data-fmjs-fnc="toggle-save-item" data-fmjs-save-item-id="fmjs-single-btn-save" id="fmjs-single-btn-save">Save</a>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h3 id="dm-feed-title">Feed-Name</h3>
+			<a data-theme="b" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-plus" data-dm-fnc="toggle-save-item" data-dm-save-item-id="dm-single-btn-save" id="dm-single-btn-save">Save</a>
 		</div>
 		<div data-role="content">
-			<h2><a href="" id="fmjs-single-title" target="_blank">Title</a></h2>
-			<div id="fmjs-single-content"></div>
-			<div class="fmjs-single-below-content">posted on
-				<a id="fmjs-single-feedname" href="" class="fmjs-hot-links fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="">(Feed-Name)</a>
+			<h2><a href="" id="dm-single-title" target="_blank">Title</a></h2>
+			<div id="dm-single-content"></div>
+			<div class="dm-single-below-content">posted on
+				<a id="dm-single-feedname" href="" class="dm-hot-links dm-button" data-dm-fnc="show-feed" data-dm-show-feed="">(Feed-Name)</a>
 			</div>
 			
-			<div id="fmjs-single-meta" class="fmjs-single-below-content"></div>
-			<div id="fmjs-single-sharing-buttons"></div>
-			<a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="" data-iconpos="left" id="fmjs-single-url">Open URL</a>
-			<div class="fmjs-bottom-menu">
+			<div id="dm-single-meta" class="dm-single-below-content"></div>
+			<div id="dm-single-sharing-buttons"></div>
+			<a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="" data-iconpos="left" id="dm-single-url">Open URL</a>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
@@ -530,32 +531,32 @@
 	</div><!-- / Single Item -->
 
 	<!-- All feeds -->
-	<div data-role="page" id="page-all-feeds" data-title="All Feeds" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-all-feeds" data-title="All Feeds" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h1 id="fmjs-all-feeds-title">All Feeds</h1>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1 id="dm-all-feeds-title">All Feeds</h1>
 		</div>
 		<div data-role="content">
-			<div id="fmjs-all-feeds-content"></div>
-			<div class="fmjs-bottom-menu">
+			<div id="dm-all-feeds-content"></div>
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
 	</div><!-- / All feeds -->
 
-	<div data-role="page" id="page-support" data-title="Help and Support" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-support" data-title="Help and Support" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 
 			<h1>Help, Credits and Copyrights <span style="color:red">&copy;</span></h1>
 		</div>
-		<div data-role="content" class="fmjs-content">
+		<div data-role="content" class="dm-content">
 			<h2>Support, Bug Reports et. al.</h2>
 			<p>This app is still a work in progress. It works quite well, but has not been fully tested for security, compatibility and such aspects.</p>
 			<p>If you encounter bugs, miss features or have a comment about Delirious<span style="color:red">°</span>, go to <a href="https://github.com/simply-hg/delirious" target="_blank">Delirious<span style="color:red">°</span> on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to Delirious<span style="color:red">°</span> on github.com in any way you find fitting. If you want to make your own adjustments to Delirious<span style="color:red">°</span> I suggest to fork it on github. That way your features may flow back into Delirious<span style="color:red">°</span>.</p>
@@ -583,59 +584,59 @@
 			<p>Delirious<span style="color:red">°</span> releases will be compressed by <a href="http://www.jscompress.com/" target="_blank">jscompress.com</a>. </p>
 			<p>Some nicer looking parts of the settings screen have been adapted from <a href="http://roughlybrilliant.com/jquery_mobile_best_practices" target="_blank">Roughly Brilliant</a>.</sp>
 		
-			<div class="fmjs-bottom-menu">
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Edit Homescreen -->
-	<div data-role="page" id="page-edit-homescreen" data-title="Edit Homescreen" class="fmjs-page" data-theme="a">
+	<div data-role="page" id="page-edit-homescreen" data-title="Edit Homescreen" class="dm-page" data-theme="a">
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
-			<h3 id="fmjs-header">Edit Homescreen</h3>
-			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="save-homescreen">Save</a>
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h3 id="dm-header">Edit Homescreen</h3>
+			<a href="" data-theme="b" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="save-homescreen">Save</a>
 		</div>
 		<div data-role="content">
 			
-			<div class="ui-grid-a ui-responsive" id="fmjs-edit-widget-place-grid">
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a1" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b1" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a2" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b2" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a3" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b3" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a4" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b4" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a5" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b5" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a6" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b6" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a7" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b7" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a8" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b8" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-a"><div id="fmjs-edit-widget-place-a9" class="fmjs-widget-container"></div></div>
-				<div class="ui-block-b"><div id="fmjs-edit-widget-place-b9" class="fmjs-widget-container"></div></div>
+			<div class="ui-grid-a ui-responsive" id="dm-edit-widget-place-grid">
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a1" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b1" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a2" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b2" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a3" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b3" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a4" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b4" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a5" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b5" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a6" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b6" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a7" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b7" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a8" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b8" class="dm-widget-container"></div></div>
+				<div class="ui-block-a"><div id="dm-edit-widget-place-a9" class="dm-widget-container"></div></div>
+				<div class="ui-block-b"><div id="dm-edit-widget-place-b9" class="dm-widget-container"></div></div>
 			</div><!-- /grid-c -->
 			
-			<div class="fmjs-bottom-menu">
+			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="gear"><a href="" class="fmjs-button" data-fmjs-fnc="save-homescreen">Save Homescreen</a></li>
-					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
+					<li data-icon="gear"><a href="" class="dm-button" data-dm-fnc="save-homescreen">Save Homescreen</a></li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>			
 	</div><!-- / Edit Homescreen -->
 	
-	<!--<div data-role="panel" id="fmjs-panel" data-position="left" data-display="push" data-theme="b">
-		<div id="fmjs-panel-content">
+	<!--<div data-role="panel" id="dm-panel" data-position="left" data-display="push" data-theme="b">
+		<div id="dm-panel-content">
 			<h3>Left Panel: Reveal</h3>
 			<p>This panel is positioned on the left with the reveal display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
 			<p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>

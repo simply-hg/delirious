@@ -24,19 +24,19 @@ THE SOFTWARE.
 
 function registerEventHandlers() { 
 
-	$("#fmjs-homescreen-message").on("vclick", function(e) { e.stopPropagation(); $(this).empty(); });
+	$("#dm-homescreen-message").on("vclick", function(e) { e.stopPropagation(); $(this).empty(); });
 	
-	$(document).on("pagecreate", ".fmjs-page", function(e) {
+	$(document).on("pagecreate", ".dm-page", function(e) {
 		console.log("pagecreate: " + $(this).attr("id") );
 	});
-	$(document).on("pageinit", ".fmjs-page", function(e) {
+	$(document).on("pageinit", ".dm-page", function(e) {
 		console.log("pageinit: " + $(this).attr("id") );
 	});
-	//$( "#fmjs-panel" ).on( "panelbeforeopen", function( event, ui ) {
+	//$( "#dm-panel" ).on( "panelbeforeopen", function( event, ui ) {
 	//	buildPanel();
 	//});
 	
-	$(document).on("pagebeforeshow", ".fmjs-page", function(e, o) {
+	$(document).on("pagebeforeshow", ".dm-page", function(e, o) {
 		
 		id = $(this).attr("id");
 		
@@ -44,11 +44,17 @@ function registerEventHandlers() {
 			console.log("prev page is empty, startup assumed");
 			if ( id != "page-home" ) {
 				console.log("show home instead");
-				showHome();
+				if ( dm_url != "" && id != "page-settings" ) {
+					// if no url is given, chences are,
+					// we are running into settings screen
+					showHome();
+				}
 			} else {
 				// home is shown...
+
 				// return and don't do anything, because
 				// home is created after item load
+				console.log("was in pagebeforeshow for " + id);
 				return;
 			}
 		} else {
@@ -78,11 +84,11 @@ function registerEventHandlers() {
 				showEditHomescreen();
 			break;
 			case "page-feedgroup":
-				var id = $( this ).data("fmjs-group-id");
+				var id = $( this ).data("dm-group-id");
 				showFeedsInGroup(id);
 			break;
 			case "page-single":
-				var id = $( this ).data("fmjs-item-id");
+				var id = $( this ).data("dm-item-id");
 				console.log("single-id: "+id);
 			break;
 		}
@@ -90,31 +96,31 @@ function registerEventHandlers() {
 		$(this).enhanceWithin();
 	});
 	
-	$ ( document ).on("vclick", ".fmjs-button", function(e) {
+	$ ( document ).on("vclick", ".dm-button", function(e) {
 		console.log("vclick button");
 		e.stopPropagation();
 		e.preventDefault();
-		var button = $(this).data("fmjs-fnc");
+		var button = $(this).data("dm-fnc");
 		switch (button) {
 			case "show-item":
-				var id = $(this).data("fmjs-show-item");
+				var id = $(this).data("dm-show-item");
 				//console.log(id);
-				$( "#page-single" ).data("fmjs-item-id", id);
+				$( "#page-single" ).data("dm-item-id", id);
 				//showSingleItem(id);
 				showSingleItem(id);
 				$.mobile.navigate("#page-single", {transition: transition});
 			break;
 			case "show-group":
-				var id = $(this).data("fmjs-show-group");
+				var id = $(this).data("dm-show-group");
 				showGroup(id);
 				$.mobile.navigate("#page-group", {transition: transition});
 			break;
 			case "show-group-selector":
-				var id = $(this).data("fmjs-show-group");
+				var id = $(this).data("dm-show-group");
 				if ( groupview == "feeds" ) {
 					// feeds 
-					//var id = $(this).data("fmjs-group-id");
-					$("#page-feedgroup").data("fmjs-group-id", id);
+					//var id = $(this).data("dm-group-id");
+					$("#page-feedgroup").data("dm-group-id", id);
 					$.mobile.navigate("#page-feedgroup", {transition: transition});
 				} else {
 					// items
@@ -124,8 +130,8 @@ function registerEventHandlers() {
 				//showGroupSelector(id);
 			break;
 			case "show-feed":
-				var id = $(this).data("fmjs-show-feed");
-				$("#page-feed").data("fmjs-show-feed-id", id);
+				var id = $(this).data("dm-show-feed");
+				$("#page-feed").data("dm-show-feed-id", id);
 				showFeed(id);
 				$.mobile.navigate("#page-feed", {transition: transition});
 				
@@ -134,19 +140,19 @@ function registerEventHandlers() {
 				$.mobile.navigate("#page-all-feeds", {transition: transition});
 			break;
 			case "show-hot":
-				//$("#fmjs-panel").panel( "close" );
+				//$("#dm-panel").panel( "close" );
 				showHot(1);
 				$.mobile.navigate("#page-hot", {transition: transition});
 			break;
 			case "show-hot-more":
-				var page = $(this).data("fmjs-hot-page");
+				var page = $(this).data("dm-hot-page");
 				page++;
-				$(this).data("fmjs-hot-page", page);
+				$(this).data("dm-hot-page", page);
 				showHot(page);
 			break;
 			case "show-kindling-more":
-				markItemsRead( $(this).data("fmjs-ids") );
-				var data = $(this).data("fmjs-ids");
+				markItemsRead( $(this).data("dm-ids") );
+				var data = $(this).data("dm-ids");
 				
 				//console.log( data );
 				buildKindling();
@@ -155,15 +161,15 @@ function registerEventHandlers() {
 				
 			break;
 			case "show-group-more":
-				markItemsRead( $(this).data("fmjs-item-ids") );
-				buildGroup( $(this).data("fmjs-group-id") );
+				markItemsRead( $(this).data("dm-item-ids") );
+				buildGroup( $(this).data("dm-group-id") );
 				$("#page-group").enhanceWithin();
 				$.mobile.silentScroll(0);
 				
 			break;
 			case "show-feed-more":
-				markItemsRead( $(this).data("fmjs-item-ids") );
-				buildFeed( $(this).data("fmjs-feed-id") );
+				markItemsRead( $(this).data("dm-item-ids") );
+				buildFeed( $(this).data("dm-feed-id") );
 				$("#page-feed").enhanceWithin();
 				$.mobile.silentScroll(0);
 			break;
@@ -205,7 +211,7 @@ function registerEventHandlers() {
 				$.mobile.navigate("#page-saved", {transition: transition});
 			break;
 			case "mark-items-read":
-				var ids = $(this).data("fmjs-item-ids");
+				var ids = $(this).data("dm-item-ids");
 				markItemsRead(ids);
 			break;
 			case "mark-kindling-read":
@@ -215,13 +221,13 @@ function registerEventHandlers() {
 				markAllRead();
 			break;
 			case "mark-group-read":
-				//var ids = $(this).data("fmjs-item-ids");
-				var group_id = $(this).data("fmjs-group-id");
+				//var ids = $(this).data("dm-item-ids");
+				var group_id = $(this).data("dm-group-id");
 				markGroupAsRead(group_id, ids);
 			break;
 			case "mark-feed-read":
-				var ids = $(this).data("fmjs-item-ids");
-				var feed_id = $(this).data("fmjs-feed-id");
+				var ids = $(this).data("dm-item-ids");
+				var feed_id = $(this).data("dm-feed-id");
 				markFeedAsRead(feed_id, ids);
 			break;
 			case "toggle-group-fav":
@@ -243,7 +249,7 @@ function registerEventHandlers() {
 			break;
 			case "toggle-save-item":
 			case "save-item":
-				var id = $(this).data("fmjs-save-item-id");
+				var id = $(this).data("dm-save-item-id");
 				id = parseInt(id, 10);
 				console.log(id);
 				
@@ -266,8 +272,8 @@ function registerEventHandlers() {
 				//toggleSaveState(id);
 			break;			
 			case "show-feeds-group":
-				var id = $(this).data("fmjs-group-id");
-				$("#page-feedgroup").data("fmjs-group-id", id);
+				var id = $(this).data("dm-group-id");
+				$("#page-feedgroup").data("dm-group-id", id);
 				$.mobile.navigate("#page-feedgroup", {transition: transition});
 			break;
 			case "":

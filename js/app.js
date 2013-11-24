@@ -23,33 +23,34 @@ THE SOFTWARE.
 */
 
 function initSettings() {
-	if ( fm_url != "" ) {
-		$("#fmjs-fever-url").val(fm_url);
+	if ( dm_url != "" ) {
+		$("#dm-fever-url").val(dm_url);
 	}
-	if ( fm_user != "" ) {
-		$("#fmjs-e-mail").val(fm_user);
+	if ( dm_user != "" ) {
+		$("#dm-e-mail").val(dm_user);
 	}
-	$('input:radio[name="fmjs-setting-transitions"]').filter('[value="'+transition+'"]').prop('checked', true);
-	$('input:radio[name="fmjs-setting-html-content"]').filter('[value="'+html_content+'"]').prop('checked', true);
-	$('input:radio[name="fmjs-setting-groupview"]').filter('[value="'+groupview+'"]').prop('checked', true);
-	$('input:radio[name="fmjs-setting-empty-groups"]').filter('[value="'+show_empty_groups+'"]').prop('checked', true);
-	$('input:radio[name="fmjs-setting-sharing"]').filter('[value="'+sharing+'"]').prop('checked', true);
-	$('input:radio[name="fmjs-setting-order"]').filter('[value="'+order_items+'"]').prop('checked', true);
-	$('input:radio[name="fmjs-setting-paginate-items"]').filter('[value="'+paginate_items+'"]').prop('checked', true);
-	$('#fmjs-setting-sharing-msg').val(sharing_msg);
+	$('input:radio[name="dm-setting-transitions"]').filter('[value="'+transition+'"]').prop('checked', true);
+	$('input:radio[name="dm-setting-html-content"]').filter('[value="'+html_content+'"]').prop('checked', true);
+	$('input:radio[name="dm-setting-groupview"]').filter('[value="'+groupview+'"]').prop('checked', true);
+	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="'+show_empty_groups+'"]').prop('checked', true);
+	$('input:radio[name="dm-setting-sharing"]').filter('[value="'+sharing+'"]').prop('checked', true);
+	$('input:radio[name="dm-setting-order"]').filter('[value="'+order_items+'"]').prop('checked', true);
+	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="'+paginate_items+'"]').prop('checked', true);
+	$('#dm-setting-sharing-msg').val(sharing_msg);
 }
 
 function start() {
 	// test-auth
 	console.log("start");
 
-	if ( fm_url == "" ) {
+	if ( dm_url == "" ) {
+		console.log("start gone");
 		checkAuth(0);
 	} else {
 		started_items_load = true;
-		console.log("start aoi call");
+		console.log("start api call");
 		showHideLoader("start");
-		$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
+		$.post(dm_url + "?api", { api_key: dm_key }).done(function(data) {
 			showHideLoader("stop");
 			console.log("end api call");
 			if ( checkAuth(data.auth) ) {
@@ -57,7 +58,7 @@ function start() {
 				// Get groups and build them
 				console.log("first success");
 				showHideLoader("start");
-				$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
+				$.post(dm_url + "?api&groups", { api_key: dm_key }).done(function(data) {
 					showHideLoader("stop");
 					if ( checkAuth(data.auth) ) {
 						groups       = _.sortBy(data.groups, "title");
@@ -74,7 +75,7 @@ function start() {
 						});				
 						feeds_groups = data.feeds_groups;
 						//createGroups(false);
-						$.post(fm_url + "?api&feeds", { api_key: fm_key }).done(function(data) {
+						$.post(dm_url + "?api&feeds", { api_key: dm_key }).done(function(data) {
 							if ( checkAuth(data.auth) ) {
 								feeds = data.feeds;//_.sortBy(data.feeds, "title");
 								feeds.sort(function(a,b) {
@@ -90,7 +91,8 @@ function start() {
 								});
 								syncUnreadItems("full");
 								syncSavedItems("start");
-								fmjs_autosync = window.setInterval("autoSync()", 5*60*1000);
+								dm_autosync = window.setInterval("autoSync()", 5*60*1000);
+								prepareHome();
 							}
 						});
 					}
@@ -105,35 +107,35 @@ function start() {
 function saveSettings() {
 	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, sharing_text, item_order, page;
 	
-	url           = $.trim($("#fmjs-fever-url").val());
-	user          = $.trim($("#fmjs-e-mail").val());
-	password      = $.trim($("#fmjs-password").val());
-	transition    = $('input[name=fmjs-setting-transitions]:checked').val();
-	html_content  = $('input[name=fmjs-setting-html-content]:checked').val();
-	groupview     = $('input[name=fmjs-setting-groupview]:checked').val();
-	emptygroups   = $('input[name=fmjs-setting-empty-groups]:checked').val();
-	share_buttons = $('input[name=fmjs-setting-sharing]:checked').val();
-	sharing_text  = $('#fmjs-setting-sharing-msg').val();
-	item_order    = $('input[name=fmjs-setting-order]:checked').val();
-	page          = $('input[name=fmjs-setting-paginate-items]:checked').val();
+	url           = $.trim($("#dm-fever-url").val());
+	user          = $.trim($("#dm-e-mail").val());
+	password      = $.trim($("#dm-password").val());
+	transition    = $('input[name=dm-setting-transitions]:checked').val();
+	html_content  = $('input[name=dm-setting-html-content]:checked').val();
+	groupview     = $('input[name=dm-setting-groupview]:checked').val();
+	emptygroups   = $('input[name=dm-setting-empty-groups]:checked').val();
+	share_buttons = $('input[name=dm-setting-sharing]:checked').val();
+	sharing_text  = $('#dm-setting-sharing-msg').val();
+	item_order    = $('input[name=dm-setting-order]:checked').val();
+	page          = $('input[name=dm-setting-paginate-items]:checked').val();
 	
 
-		$.jStorage.set("fmjs-url", url);
+		$.jStorage.set("dm-url", url);
 		
 		if ( password != "" ) {
 			key = MD5(user + ":" + password);
-			$.jStorage.set("fmjs-user", user);
-			$.jStorage.set("fmjs-key", key);
+			$.jStorage.set("dm-user", user);
+			$.jStorage.set("dm-key", key);
 		}
 		
-		$.jStorage.set("fmjs-transition", transition);
-		$.jStorage.set("fmjs-html-content", html_content);
-		$.jStorage.set("fmjs-groupview", groupview);
-		$.jStorage.set("fmjs-show-empty-groups", emptygroups);
-		$.jStorage.set("fmjs-sharing", share_buttons);
-		$.jStorage.set("fmjs-sharing-msg", sharing_text);
-		$.jStorage.set("fmjs-order-items", item_order);
-		$.jStorage.set("fmjs-paginate-items", page);
+		$.jStorage.set("dm-transition", transition);
+		$.jStorage.set("dm-html-content", html_content);
+		$.jStorage.set("dm-groupview", groupview);
+		$.jStorage.set("dm-show-empty-groups", emptygroups);
+		$.jStorage.set("dm-sharing", share_buttons);
+		$.jStorage.set("dm-sharing-msg", sharing_text);
+		$.jStorage.set("dm-order-items", item_order);
+		$.jStorage.set("dm-paginate-items", page);
 
 
 	restart();
@@ -148,25 +150,25 @@ function restart() {
 }
 
 function logout() {
-	$.jStorage.deleteKey("fmjs-key");
-	$.jStorage.deleteKey("fmjs-url");
-	$.jStorage.deleteKey("fmjs-user");
-	$.jStorage.deleteKey("fmjs-favicons");
-	$.jStorage.deleteKey("fmjs-local-items");
-	$.jStorage.deleteKey("fmjs-transition");
-	$.jStorage.deleteKey("fmjs-html-content");
-	$.jStorage.deleteKey("fmjs-groupview");
-	$.jStorage.deleteKey("fmjs-sharing");
-	$.jStorage.deleteKey("fmjs-sharing-msg");
-	$.jStorage.deleteKey("fmjs-order-items");
+	$.jStorage.deleteKey("dm-key");
+	$.jStorage.deleteKey("dm-url");
+	$.jStorage.deleteKey("dm-user");
+	$.jStorage.deleteKey("dm-favicons");
+	$.jStorage.deleteKey("dm-local-items");
+	$.jStorage.deleteKey("dm-transition");
+	$.jStorage.deleteKey("dm-html-content");
+	$.jStorage.deleteKey("dm-groupview");
+	$.jStorage.deleteKey("dm-sharing");
+	$.jStorage.deleteKey("dm-sharing-msg");
+	$.jStorage.deleteKey("dm-order-items");
 
-	$.jStorage.deleteKey("fmjs-fav-feeds");
-	$.jStorage.deleteKey("fmjs-fav-groups");
-	$.jStorage.deleteKey("fmjs-widgets");
-	$.jStorage.deleteKey("fmjs-show-empty-groups");
-	fm_key   = '';
-	fm_url   = '';
-	fm_user  = '';
+	$.jStorage.deleteKey("dm-fav-feeds");
+	$.jStorage.deleteKey("dm-fav-groups");
+	$.jStorage.deleteKey("dm-widgets");
+	$.jStorage.deleteKey("dm-show-empty-groups");
+	dm_key   = '';
+	dm_url   = '';
+	dm_user  = '';
 	favicons = '';
 	items = [];
 	saved_items = [];
@@ -177,18 +179,18 @@ function logout() {
 
 function showSaved() {
 
-	$("#fmjs-saved-content").empty();
-	$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true"></ul>');
-	//var local_items = $.jStorage.get("fmjs-local-items", []);
+	$("#dm-saved-content").empty();
+	$("#dm-saved-content").append('<ul id="dm-saved-view" data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true"></ul>');
+	//var local_items = $.jStorage.get("dm-local-items", []);
 	var title = "Saved Items (" +  saved_items.length + ")";
 	$("#page-saved").data("title", title);
-	$("#fmjs-saved-header").html(title);
+	$("#dm-saved-header").html(title);
 	if ( saved_items.length > 0 ) {
 		//local_items = _.sortBy(local_items, "created_on_time");
 		$.each(saved_items, function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, true, true, "long");
-			$("#fmjs-saved-view").append(item);
+			$("#dm-saved-view").append(item);
 
 		});
 	}
@@ -200,21 +202,21 @@ function showHot(page) {
 
 	if ( page == 1 ) {
 		// First page has been called, so do a complete refresh
-		$("#fmjs-hot-content").empty();
-		//$("#fmjs-hot-more").attr("onclick", "showHot(2);");
+		$("#dm-hot-content").empty();
+		//$("#dm-hot-more").attr("onclick", "showHot(2);");
 	} else {
 		// another page has been called, so let's append a new one
 		var next_page = page;
 		next_page++;
-		//$("#fmjs-hot-more").data("fmjs-hot-more", next_page);
+		//$("#dm-hot-more").data("dm-hot-more", next_page);
 	}
 	
 	// Get range and offset
-	var range  = $("#fmjs-hot-range option:selected").val();//attr("value");
-	var offset = $("#fmjs-hot-offset option:selected").val();//attr("value");
+	var range  = $("#dm-hot-range option:selected").val();//attr("value");
+	var offset = $("#dm-hot-offset option:selected").val();//attr("value");
 
 	showHideLoader("start");
-	$.post(fm_url + "?api&links&offset="+offset+"&range="+range+"&page="+page, { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&links&offset="+offset+"&range="+range+"&page="+page, { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 		
@@ -228,9 +230,9 @@ function showHot(page) {
 				item += _.escape( value.temperature ) + '<span style="color:red">°</span>&nbsp;';
 				if (value.is_local == 1 && value.is_item == 1) {
 					load_ids += value.item_id + ",";
-					item += '<a href="" class="fmjs-link-'+value.item_id+' fmjs-hot-links fmjs-button" data-fmjs-fnc="show-item" data-fmjs-show-item="'+_.escape(value.item_id)+'">'+_.escape(value.title)+'</a>';
+					item += '<a href="" class="dm-link-'+value.item_id+' dm-hot-links dm-button" data-dm-fnc="show-item" data-dm-show-item="'+_.escape(value.item_id)+'">'+_.escape(value.title)+'</a>';
 				} else {
-					item += '<a href="'+value.url+'" class="fmjs-hot-links" target="_blank">'+_.escape(value.title)+'</a>';
+					item += '<a href="'+value.url+'" class="dm-hot-links" target="_blank">'+_.escape(value.title)+'</a>';
 				}
 				
 				item += '</h2>';
@@ -238,37 +240,37 @@ function showHot(page) {
 				if (value.is_local == 1 && value.is_item == 1) {
 					// Add local stuff here, like excerpt an feed name.
 					
-					item +='<p style="max-height:2.8em;overflow:hidden;" class="fmjs-link-'+_.escape(value.item_id)+'-content"></p>';
-					item += '<p style="text-align:right;">posted by <span class="fmjs-link-'+_.escape(value.item_id)+'-favicon"></span> ';
-					item += '<span class="fmjs-link-'+_.escape(value.item_id)+'-feedname fmjs-hot-links">Feed</span></p>';
+					item +='<p style="max-height:2.8em;overflow:hidden;" class="dm-link-'+_.escape(value.item_id)+'-content"></p>';
+					item += '<p style="text-align:right;">posted by <span class="dm-link-'+_.escape(value.item_id)+'-favicon"></span> ';
+					item += '<span class="dm-link-'+_.escape(value.item_id)+'-feedname dm-hot-links">Feed</span></p>';
 					item += '<p style="text-align:right;">';
 					item += '<a href="'+_.escape(value.url)+'" target="_blank" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="grid">Open URL</a> ';
-					item += '<a href="" data-fmjs-fnc="toggle-save-item" data-fmjs-save-item-id="'+_.escape(value.item_id)+'" data-role="button" data-icon="plus" data-theme="a" data-inline="true" data-mini="true" class="fmjs-button fmjs-link-'+_.escape(value.item_id)+'-save-button">Save</a></p>';
+					item += '<a href="" data-dm-fnc="toggle-save-item" data-dm-save-item-id="'+_.escape(value.item_id)+'" data-role="button" data-icon="plus" data-theme="a" data-inline="true" data-mini="true" class="dm-button dm-link-'+_.escape(value.item_id)+'-save-button">Save</a></p>';
 				}
 			
 				// Now we show a list of all those items, linking to this hot item...
-				item += '<ul data-role="listview" data-theme="a" data-inset="true" id="fmjs-hot-content-link-'+_.escape(value.id)+'" class="fmjs-hot-linkbox">';
+				item += '<ul data-role="listview" data-theme="a" data-inset="true" id="dm-hot-content-link-'+_.escape(value.id)+'" class="dm-hot-linkbox">';
 
 				var links = value.item_ids.split(',');
 				for (var i=0, link_id; link_id=links[i]; i++) {
 					// item is "some", then "example", then "array"
 					// i is the index of item in the array
 					link_id = _.escape(link_id);
-					item += '<li class="ui-li-has-icon"><span class="fmjs-link-'+link_id+'-favicon"></span><p>';
-					item += '<a href="" class="fmjs-link-'+link_id+' fmjs-button fmjs-hot-links fmjs-single-item-link-'+link_id+'" data-fmjs-show-item="'+_.escape(link_id)+'" data-fmjs-fnc="show-item">';
-					item += '<span class="fmjs-link-'+link_id+'-title fmjs-hot-links fmjs-single-item-link-'+link_id+'">Link: '+link_id+'</span>';
+					item += '<li class="ui-li-has-icon"><span class="dm-link-'+link_id+'-favicon"></span><p>';
+					item += '<a href="" class="dm-link-'+link_id+' dm-button dm-hot-links dm-single-item-link-'+link_id+'" data-dm-show-item="'+_.escape(link_id)+'" data-dm-fnc="show-item">';
+					item += '<span class="dm-link-'+link_id+'-title dm-hot-links dm-single-item-link-'+link_id+'">Link: '+link_id+'</span>';
 					item += '</a> ';
-					item += 'by <span class="fmjs-link-'+link_id+'-feedname fmjs-hot-links">Feed</span></p></li>';
+					item += 'by <span class="dm-link-'+link_id+'-feedname dm-hot-links">Feed</span></p></li>';
 					id_list += link_id + ",";
 				}	
 				item += '</ul>';
 				//
 				item += '<div style="text-align:right">';
-				item += '<a href="" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="check" class="fmjs-button" data-fmjs-fnc="mark-items-read" data-fmjs-item-ids="'+_.escape(id_list)+'">Mark Links as read</a>';
+				item += '<a href="" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="check" class="dm-button" data-dm-fnc="mark-items-read" data-dm-item-ids="'+_.escape(id_list)+'">Mark Links as read</a>';
 				item += '</div>';
 				//
 				item += '</div>';
-				$("#fmjs-hot-content").append(item);
+				$("#dm-hot-content").append(item);
 				
 			});	
 
@@ -300,14 +302,14 @@ function showHot(page) {
 				//if ( called_hot == false ) {
 					//called_hot = true;
 				//} else {
-					//$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
+					//$(".dm-to-listview").listview().removeClass("dm-to-listview");
 					//$("#page-hot").trigger("create");
 				//}
 				//$.mobile.navigate("#page-hot", {transition: transition});
 				//$.mobile.silentScroll(0);
 				return false;
 			} else {
-				//$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
+				//$(".dm-to-listview").listview().removeClass("dm-to-listview");
 				$("#page-hot").enhanceWithin();
 				return false;
 			}
@@ -327,7 +329,7 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 	}
 	var get_ids = first.join(",");
 	showHideLoader("start");
-	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if (checkAuth(data.auth) ) {
 			$.each(data.items, function(index, value) {
@@ -347,56 +349,56 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 
 function replacePlaceholder(value) {
 	var class_prefix = 'link';
-	var feed_class="fmjs-is-read";
+	var feed_class="dm-is-read";
 	
 	if (html_content == "raw" ) {
-		$(".fmjs-"+class_prefix+"-"+value.id+"-title").html($.parseHTML(value.title));
-		$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
+		$(".dm-"+class_prefix+"-"+value.id+"-title").html($.parseHTML(value.title));
+		$(".dm-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
 	} else {
-		$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
-		$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));	
+		$(".dm-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
+		$(".dm-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));	
 	}
 	
 	if ( value.is_read == 0 ) {
-		$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-unread");
-		feed_class="fmjs-is-unread";
+		$(".dm-"+class_prefix+"-"+value.id+"-title").addClass("dm-item-is-unread");
+		feed_class="dm-is-unread";
 	} else {
-		$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-read");
+		$(".dm-"+class_prefix+"-"+value.id+"-title").addClass("dm-item-is-read");
 	}
 	
 	var feedname = _.findWhere(feeds, {id: value.feed_id});
-	$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="" class="fmjs-button '+feed_class+'" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feedname.id)+'">'+_.escape(feedname.title)+'</a>');
+	$(".dm-"+class_prefix+"-"+value.id+"-feedname").html('<a href="" class="dm-button '+feed_class+'" data-dm-fnc="show-feed" data-dm-show-feed="'+_.escape(feedname.id)+'">'+_.escape(feedname.title)+'</a>');
 	
 
 	
 	if ( value.is_saved == 1 ) {
 		console.log("saved");
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').text("Unsave");
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "minus" });
-		//$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");	
+		$('.dm-link-'+_.escape(value.id)+'-save-button').text("Unsave");
+		$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "minus" });
+		//$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");	
 
 	} else {
 		console.log("unsaved");
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').text("Save");
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "plus" });
-		//$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");
+		$('.dm-link-'+_.escape(value.id)+'-save-button').text("Save");
+		$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "plus" });
+		//$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");
 	}
 	
 
 
-	var favicon = getFavicon(feedname, "ui-li-icon fmjs-favicon");
-	$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").before(favicon).removeClass("fmjs-"+class_prefix+"-"+value.id+"-favicon");
+	var favicon = getFavicon(feedname, "ui-li-icon dm-favicon");
+	$(".dm-"+class_prefix+"-"+value.id+"-favicon").before(favicon).removeClass("dm-"+class_prefix+"-"+value.id+"-favicon");
 	return true;
 }
 
 function buildGroup(id) {
-	last_fmjs_group_show = now();
+	last_dm_group_show = now();
 	id = getNumber(id);
 	console.log(paginate_items);
-	$("#fmjs-group-content").empty();
-	$("#fmjs-group-more").empty();
-	$("#fmjs-group-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-fnc="show-feeds-group" data-fmjs-group-id="'+id+'" id="fmjs-group-show-feeds" class="fmjs-button">Show Feeds of Group</a></div>');
-	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
+	$("#dm-group-content").empty();
+	$("#dm-group-more").empty();
+	$("#dm-group-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-dm-fnc="show-feeds-group" data-dm-group-id="'+id+'" id="dm-group-show-feeds" class="dm-button">Show Feeds of Group</a></div>');
+	$("#dm-group-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-group-view"></ul>');
 	
 	// get group items
 	var group = _.findWhere(groups, {id: id});
@@ -428,12 +430,12 @@ function buildGroup(id) {
 			item += renderListviewItem(value, true, true, "long");
 			item_ids_in_group += value.id +",";
 			//group_item_counter++;
-			$("#fmjs-group-view").append(item);
+			$("#dm-group-view").append(item);
 		});
-		$("#fmjs-group-more").append('<button class="fmjs-button" data-fmjs-fnc="mark-group-read" data-fmjs-group-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_group+'">Mark Items Read</button>');
-		$("#fmjs-group-read").data("fmjs-fnc", "mark-group-read");
-		$("#fmjs-group-read").data("fmjs-group-id", id);
-		$("#fmjs-group-read").data("fmjs-item-ids", item_ids_in_group);
+		$("#dm-group-more").append('<button class="dm-button" data-dm-fnc="mark-group-read" data-dm-group-id="'+id+'" data-dm-item-ids="'+item_ids_in_group+'">Mark Items Read</button>');
+		$("#dm-group-read").data("dm-fnc", "mark-group-read");
+		$("#dm-group-read").data("dm-group-id", id);
+		$("#dm-group-read").data("dm-item-ids", item_ids_in_group);
 		
 	} else {
 		// yes, show just some items
@@ -443,23 +445,24 @@ function buildGroup(id) {
 			item += renderListviewItem(value, true, true, "long");
 			item_ids_in_group += value.id +",";
 			//group_item_counter++;
-			$("#fmjs-group-view").append(item);
+			$("#dm-group-view").append(item);
 		});
-		$("#fmjs-group-more").append('<button class="fmjs-button" data-fmjs-fnc="show-group-more" data-fmjs-group-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_group+'">Show More</button>');
-		$("#fmjs-group-read").data("fmjs-fnc", "show-group-more");
-		$("#fmjs-group-read").data("fmjs-item-ids", item_ids_in_group);
-		$("#fmjs-group-read").data("fmjs-group-id", id);
+		$("#dm-group-more").append('<button class="dm-button" data-dm-fnc="show-group-more" data-dm-group-id="'+id+'" data-dm-item-ids="'+item_ids_in_group+'">Show More</button>');
+		$("#dm-group-read").data("dm-fnc", "show-group-more");
+		$("#dm-group-read").data("dm-item-ids", item_ids_in_group);
+		$("#dm-group-read").data("dm-group-id", id);
 	}
 	var title = group.title + ' ('+unread+')';
 	$("#page-group").data("title", title);
-	$("#fmjs-group-header").html(title);
+	$("#dm-group-header").html(title);
+	document.title = title;
 
-	$("#fmjs-group-content").data("fmjs-current-ids", item_ids_in_group);
-	$("#fmjs-group-content").data("fmjs-current-group-id", id);
+	$("#dm-group-content").data("dm-current-ids", item_ids_in_group);
+	$("#dm-group-content").data("dm-current-group-id", id);
 
 	// build whole group
-	$("#fmjs-mark-group-read").data("fmjs-item-ids", item_ids_in_group);
-	$("#fmjs-mark-group-read").data("ffmjs-group-id", id);
+	$("#dm-mark-group-read").data("dm-item-ids", item_ids_in_group);
+	$("#dm-mark-group-read").data("fdm-group-id", id);
 	// build part of group
 	if (called_group == true ) {
 		$("#page-group").enhanceWithin();
@@ -468,32 +471,32 @@ function buildGroup(id) {
 
 function showGroup(id) {
 
-	$("#fmjs-group-content").removeData("fmjs-current-ids");
-	$("#fmjs-group-content").removeData("fmjs-current-group-id");
+	$("#dm-group-content").removeData("dm-current-ids");
+	$("#dm-group-content").removeData("dm-current-group-id");
 
 	buildGroup(id);
 
 	
-	$("#fmjs-group-favmarker").data("fmjs-group-id", id);
-	$("#fmjs-mark-group-read").data("fmjs-group-id", id);
+	$("#dm-group-favmarker").data("dm-group-id", id);
+	$("#dm-mark-group-read").data("dm-group-id", id);
 	
 	if ( _.contains(fav_groups, id) ) {
-		$("#fmjs-group-favmarker").html("Remove Group from Favourites");
+		$("#dm-group-favmarker").html("Remove Group from Favourites");
 	} else {
-		$("#fmjs-group-favmarker").html("Mark Group as Favourite");
+		$("#dm-group-favmarker").html("Mark Group as Favourite");
 	}
 
 	return false;
 }
 
 function buildFeed(id) {
-	last_fmjs_group_show = now();
+	last_dm_group_show = now();
 	id = getNumber(id);
 	console.log(paginate_items);
-	$("#fmjs-feed-content").empty();
-	$("#fmjs-feed-more").empty();
+	$("#dm-feed-content").empty();
+	$("#dm-feed-more").empty();
 
-	$("#fmjs-feed-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-feed-view"></ul>');
+	$("#dm-feed-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-feed-view"></ul>');
 	
 	// get group items
 	var feed_items = _.where(items, {feed_id: id});
@@ -514,12 +517,12 @@ function buildFeed(id) {
 			item += renderListviewItem(value, false, true, "long");
 			item_ids_in_feed += value.id +",";
 			//group_item_counter++;
-			$("#fmjs-feed-view").append(item);
+			$("#dm-feed-view").append(item);
 		});
-		$("#fmjs-feed-more").append('<button class="fmjs-button" data-fmjs-fnc="mark-feed-read" data-fmjs-feed-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_feed+'">Mark Items Read</button>');
-		$("#fmjs-feed-read").data("fmjs-fnc", "mark-feed-read");
-		$("#fmjs-feed-read").data("fmjs-feed-id", id);
-		$("#fmjs-feed-read").data("fmjs-item-ids", item_ids_in_feed);
+		$("#dm-feed-more").append('<button class="dm-button" data-dm-fnc="mark-feed-read" data-dm-feed-id="'+id+'" data-dm-item-ids="'+item_ids_in_feed+'">Mark Items Read</button>');
+		$("#dm-feed-read").data("dm-fnc", "mark-feed-read");
+		$("#dm-feed-read").data("dm-feed-id", id);
+		$("#dm-feed-read").data("dm-item-ids", item_ids_in_feed);
 		
 	} else {
 		// yes, show just some items
@@ -529,40 +532,41 @@ function buildFeed(id) {
 			item += renderListviewItem(value, true, true, "long");
 			item_ids_in_feed += value.id +",";
 			//group_item_counter++;
-			$("#fmjs-feed-view").append(item);
+			$("#dm-feed-view").append(item);
 		});
-		$("#fmjs-feed-more").append('<button class="fmjs-button" data-fmjs-fnc="show-feed-more" data-fmjs-feed-id="'+id+'" data-fmjs-item-ids="'+item_ids_in_feed+'">Show More</button>');
-		$("#fmjs-feed-read").data("fmjs-fnc", "show-feed-more");
-		$("#fmjs-feed-read").data("fmjs-item-ids", item_ids_in_feed);
-		$("#fmjs-feed-read").data("fmjs-feed-id", id);
+		$("#dm-feed-more").append('<button class="dm-button" data-dm-fnc="show-feed-more" data-dm-feed-id="'+id+'" data-dm-item-ids="'+item_ids_in_feed+'">Show More</button>');
+		$("#dm-feed-read").data("dm-fnc", "show-feed-more");
+		$("#dm-feed-read").data("dm-item-ids", item_ids_in_feed);
+		$("#dm-feed-read").data("dm-feed-id", id);
 	}
 	var title = feed.title + ' ('+unread+')';
 	$("#page-feed").data("title", title);
-	$("#fmjs-feed-header").html(title);
+	$("#dm-feed-header").html(title);
+	document.title = title;
 	
-	$("#fmjs-feed-content").data("fmjs-feed-item-ids", item_ids_in_feed);
-	$("#fmjs-feed-content").data("fmjs-feed-id", id);
+	$("#dm-feed-content").data("dm-feed-item-ids", item_ids_in_feed);
+	$("#dm-feed-content").data("dm-feed-id", id);
 	
-	$("#fmjs-feed-content").data("fmjs-current-ids", item_ids_in_feed);
-	$("#fmjs-feed-content").data("fmjs-current-feed-id", id);
+	$("#dm-feed-content").data("dm-current-ids", item_ids_in_feed);
+	$("#dm-feed-content").data("dm-current-feed-id", id);
 	
-	$("#fmjs-mark-feed-read").data("fmjs-item-ids", item_ids_in_feed);
-	$("#fmjs-mark-feed-read").data("fmjs-feed-id", id);
+	$("#dm-mark-feed-read").data("dm-item-ids", item_ids_in_feed);
+	$("#dm-mark-feed-read").data("dm-feed-id", id);
 	// build whole group
 
 }
 
 function showFeed(id) {
 	id = getNumber(id);
-	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
-	$("#fmjs-feed-content").removeData("fmjs-feed-id");	
+	$("#dm-feed-content").removeData("dm-feed-item-ids");
+	$("#dm-feed-content").removeData("dm-feed-id");	
 	buildFeed(id);
 
 
 	if ( _.contains(fav_feeds, id) ) {
-		$("#fmjs-feed-favmarker").html("Remove Feed from Favourites");
+		$("#dm-feed-favmarker").html("Remove Feed from Favourites");
 	} else {
-		$("#fmjs-feed-favmarker").html("Mark Feed as Favourite");
+		$("#dm-feed-favmarker").html("Mark Feed as Favourite");
 	}
 
 	return false;
@@ -584,7 +588,7 @@ function showSingleItem(id) {
 	
 	if ( !item ) {
 		showHideLoader("start");
-		$.post(fm_url + "?api&items&with_ids="+ _.escape(id), { api_key: fm_key }).done(function(data) {
+		$.post(dm_url + "?api&items&with_ids="+ _.escape(id), { api_key: dm_key }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				session_read_items.push(data.items[0]);
@@ -600,55 +604,55 @@ function showSingleItem(id) {
 
 function renderSingleItem(data) {
 	//console.log(data);
-	$("#fmjs-single-content").empty();
+	$("#dm-single-content").empty();
 	if ( html_content == "raw") {
 		try {
 			var content = $.parseHTML(data.html);
-			$("#fmjs-single-content").append(content);
+			$("#dm-single-content").append(content);
 		} catch(e) {
 			console.log("error in html of item");
-			$("#fmjs-single-content").html(_.escape(data.html));
+			$("#dm-single-content").html(_.escape(data.html));
 		}
-		$("#fmjs-single-content a").attr("target", "_blank");
-		$("#fmjs-single-content img").attr("height", "");
-		$("#fmjs-single-content img").attr("width", "");
-		$("#fmjs-single-content").fitVids();
+		$("#dm-single-content a").attr("target", "_blank");
+		$("#dm-single-content img").attr("height", "");
+		$("#dm-single-content img").attr("width", "");
+		$("#dm-single-content").fitVids();
 	} else {
-		$("#fmjs-single-content").html(_.escape(data.html));
+		$("#dm-single-content").html(_.escape(data.html));
 	}
 
-	$("#fmjs-single-content").data("fmjs-single-item-current", data.id);
-	$("#fmjs-single-title").html(_.escape(data.title));
-	$("#fmjs-single-title").attr("href", data.url);
+	$("#dm-single-content").data("dm-single-item-current", data.id);
+	$("#dm-single-title").html(_.escape(data.title));
+	$("#dm-single-title").attr("href", data.url);
 	$("#page-single").data("title", _.escape(data.title));
-	$("#fmjs-single-url").attr("href", data.url);
+	$("#dm-single-url").attr("href", data.url);
 	var meta = '';
 	if (data.author) {
 		meta += 'by ' + data.author + ' ';
 	}
 	meta += 'on ' + renderDate("long", data.created_on_time);
-	$("#fmjs-single-meta").html(_.escape(meta));
+	$("#dm-single-meta").html(_.escape(meta));
 	var feedname = _.findWhere(feeds, {id: data.feed_id});
 
-	$("#fmjs-feed-title").html(_.escape(feedname.title));
+	$("#dm-feed-title").html(_.escape(feedname.title));
 
 	var favicon_img = getFavicon(feedname);
 
-	$("#fmjs-single-feedname").html(favicon_img + _.escape(feedname.title));
-	$("#fmjs-single-feedname").data("fmjs-show-feed", data.feed_id);
+	$("#dm-single-feedname").html(favicon_img + _.escape(feedname.title));
+	$("#dm-single-feedname").data("dm-show-feed", data.feed_id);
 	
-	$("#fmjs-single-btn-save").data("fmjs-save-item-id", data.id);
+	$("#dm-single-btn-save").data("dm-save-item-id", data.id);
 	
 	markItemsRead(data.id.toString());
 	if ( data.is_saved == 1 ) {
 
-		$("#fmjs-single-btn-save").text("Unsave");
-		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "minus" });		
+		$("#dm-single-btn-save").text("Unsave");
+		$("#dm-single-btn-save" ).buttonMarkup({ icon: "minus" });		
 	} else {
-		$("#fmjs-single-btn-save").text("Save");
-		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });	
+		$("#dm-single-btn-save").text("Save");
+		$("#dm-single-btn-save" ).buttonMarkup({ icon: "plus" });	
 	}
-	$("#fmjs-single-sharing-buttons").empty();
+	$("#dm-single-sharing-buttons").empty();
 	//var sharing_buttons = '';
 	if (sharing == "all" ) {
 		// Add Facebook-Button
@@ -667,17 +671,17 @@ function renderSingleItem(data) {
 		gplus_button += '})();';
 		gplus_button += '</script>';
 		try {
-			$("#fmjs-single-sharing-buttons").append(fb_button);
+			$("#dm-single-sharing-buttons").append(fb_button);
 		} catch (e) {
 			console.log("fb button caused an error...");
 		}
 		try {
-			$("#fmjs-single-sharing-buttons").append(twitter_button);
+			$("#dm-single-sharing-buttons").append(twitter_button);
 		} catch (e) {
 			console.log("twitter button caused an error...");
 		}
 		try {
-			$("#fmjs-single-sharing-buttons").append(gplus_button);
+			$("#dm-single-sharing-buttons").append(gplus_button);
 		} catch (e) {
 			console.log("g+ button caused an error...");
 		}
@@ -687,7 +691,7 @@ function renderSingleItem(data) {
 		// Add E-Mail-Button
 		var e_mail_msg = sharing_msg.split("%url%").join(data.url);
 		var email_button = '<a href="mailto:?subject='+encodeURI('Check it out: '+data.title)+'&amp;body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
-		$("#fmjs-single-sharing-buttons").append(email_button);
+		$("#dm-single-sharing-buttons").append(email_button);
 	}
 
 
@@ -719,7 +723,7 @@ function checkAuth(auth) {
 			console.log("Probably stopped or network issue.");
 		} else {
 			//console.log("Forbidden");
-			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");	
+			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");
 			initSettings();
 			$.mobile.navigate("#page-settings", {transition: transition});
 			//$.mobile.silentScroll(0);
@@ -750,9 +754,9 @@ function getUnreadSparks() {
 }
 
 function showSparks() {
-		last_fmjs_group_show = now();
-	$("#fmjs-sparks-content").empty();
-	$("#fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" id="fmjs-sparks-view"></ul>');
+		last_dm_group_show = now();
+	$("#dm-sparks-content").empty();
+	$("#dm-sparks-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" id="dm-sparks-view"></ul>');
 
 	var sparks = getUnreadSparks();
 	item_ids_in_sparks = "";
@@ -762,14 +766,14 @@ function showSparks() {
 			item += renderListviewItem(value, true, true, "long");
 			
 			item_ids_in_sparks += value.id +",";
-			$("#fmjs-sparks-view").append(item);
+			$("#dm-sparks-view").append(item);
 		}
 	});
-	$("#fmjs-sparks").data("fmjs-current-ids", item_ids_in_sparks);
+	$("#dm-sparks").data("dm-current-ids", item_ids_in_sparks);
 	if (called_sparks == false ) {
 		called_sparks = true;
 	} else {
-		//$("#fmjs-sparks-view").listview();
+		//$("#dm-sparks-view").listview();
 		//$("#page-sparks").trigger("create");
 	}
 	$.mobile.navigate("#page-sparks", {transition: transition});
@@ -785,8 +789,8 @@ function showAllFeeds() {
 }
 
 function buildAllFeeds() {
-	$("#fmjs-all-feeds-content").empty();
-	$("#fmjs-all-feeds-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-all-feeds-view"></ul>');
+	$("#dm-all-feeds-content").empty();
+	$("#dm-all-feeds-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-all-feeds-view"></ul>');
 	countUnreadItems();
 	//console.log(unread_counter);
 	//console.log("build all feeds");
@@ -794,18 +798,18 @@ function buildAllFeeds() {
 		
 		var item = renderListviewItemFeed(value, true);
 		//console.log(item);
-		$("#fmjs-all-feeds-view").append(item);
+		$("#dm-all-feeds-view").append(item);
 	});
 
 	var title = "All Feeds (" + feeds.length + ")";
 	$("#page-all-feeds").data("title", title);
-	$("#fmjs-all-feeds-title").html(title);
+	$("#dm-all-feeds-title").html(title);
 	
 	
 	if (called_all_feeds == false ) {
 		called_all_feeds = true;
 	} else {
-		//$("#fmjs-all-feeds-view").listview();
+		//$("#dm-all-feeds-view").listview();
 		
 	}
 	//$("#page-all-feeds").trigger("create");
@@ -835,17 +839,17 @@ function showHideLoader(state) {
 }
 
 function buildKindling() {
-	last_fmjs_group_show = now();
-	$("#fmjs-kindling-content").empty();
-	$("#fmjs-kindling-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-kindling-view"></ul>');
-	$("#fmjs-kindling-more").empty();
+	last_dm_group_show = now();
+	$("#dm-kindling-content").empty();
+	$("#dm-kindling-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-kindling-view"></ul>');
+	$("#dm-kindling-more").empty();
 	paginated_ids = '';
 	console.log("check2");
 	if ( paginate_items == "all" ) {
 		$.each(items, function(index, value) {
 			if ( value.is_read == 0 ) {
 				var item = renderListviewItem(value, true, true, "long");
-				$("#fmjs-kindling-view").append(item);
+				$("#dm-kindling-view").append(item);
 				paginated_ids += item.id + ",";
 			}
 		});
@@ -855,22 +859,22 @@ function buildKindling() {
 		$.each(kindling, function(index, value) {
 			if ( value.is_read == 0 ) {
 				var item = renderListviewItem(value, true, true, "long");
-				$("#fmjs-kindling-view").append(item);
+				$("#dm-kindling-view").append(item);
 				paginated_ids += value.id + ",";
 			}
 		});
 		
 		if ( items.length > getNumber(paginate_items) ) {
 			var btn_text = "Show More";
-			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
+			$("#dm-kindling-more").append('<button data-dm-fnc="show-kindling-more" class="dm-button" data-dm-ids="'+paginated_ids+'">'+btn_text+'</button>');
 		} else {
 			var btn_text = "Mark as Read";
-			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="mark-kindling-read" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
+			$("#dm-kindling-more").append('<button data-dm-fnc="mark-kindling-read" class="dm-button" data-dm-ids="'+paginated_ids+'">'+btn_text+'</button>');
 		}
 		
-		//$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
+		//$("#dm-kindling-more").append('<button data-dm-fnc="show-kindling-more" class="dm-button" data-dm-ids="'+paginated_ids+'">'+btn_text+'</button>');
 		
-		$("#fmjs-kindling-items").data('fmjs-ids', paginated_ids);
+		$("#dm-kindling-items").data('dm-ids', paginated_ids);
 		
 	}
 
@@ -888,7 +892,7 @@ function getFavicon(feed, css_classes) {
 	if ( !!css_classes ) {
 
 	} else {
-		var css_classes = "fmjs-favicon";
+		var css_classes = "dm-favicon";
 	}
 
 	var favicon = _.findWhere(favicons, {id: feed.favicon_id});
@@ -916,16 +920,16 @@ function showGroupSelector(id) {
 }
 
 function showFeedsInGroup(id) {
-	last_fmjs_group_show = now();
-	$("#fmjs-feedgroup-content").empty();
-	$("#fmjs-feedgroup-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-show-group="'+id+'" class="fmjs-button" data-fmjs-fnc="show-group" id="fmjs-feedgroup-show-all">Show All Items</a></div>');
-	$("#fmjs-feedgroup-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-feedgroup-view"></ul>');
+	last_dm_group_show = now();
+	$("#dm-feedgroup-content").empty();
+	$("#dm-feedgroup-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-dm-show-group="'+id+'" class="dm-button" data-dm-fnc="show-group" id="dm-feedgroup-show-all">Show All Items</a></div>');
+	$("#dm-feedgroup-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-feedgroup-view"></ul>');
 	
 	var group = _.findWhere(groups, {id: getNumber(id)});
 	var unread = countUnreadInGroup(id);
 	var title = group.title + ' ('+unread+')';
 	$("#page-feedgroup").data("title", title);
-	$("#fmjs-feedgroup-header").html(title);
+	$("#dm-feedgroup-header").html(title);
 
 	var ids_to_show = _.findWhere(feeds_groups, {group_id: id});
 	
@@ -953,7 +957,7 @@ function showFeedsInGroup(id) {
 	$.each(gr_feeds, function(index, value) {
 		var item = renderListviewItemFeed(value, false);
 		if (item) {
-			$("#fmjs-feedgroup-view").append(item);
+			$("#dm-feedgroup-view").append(item);
 		}
 	});
 
@@ -977,9 +981,9 @@ function renderListviewItemFeed(feed, show_all) {
 	}
 	var item = '';
 	item += '<li>';
-	item += '<a class="fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feed.id)+'">';
+	item += '<a class="dm-button" data-dm-fnc="show-feed" data-dm-show-feed="'+_.escape(feed.id)+'">';
 		
-	item += getFavicon(feed, "ui-li-icon fmjs-favicon");
+	item += getFavicon(feed, "ui-li-icon dm-favicon");
 
 	
 	item += _.escape(feed.title)+ '<span class="ui-li-count">'+unread+'</span>'+'</a>';
@@ -994,17 +998,17 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 	li  = '<li data-theme="a">';
 
 	var feed = _.findWhere(feeds, {id: item.feed_id});
-	li += getFavicon(feed, "fmjs-favicon ui-li-icon");
-	li += '<p class="fmjs-listview-content">';
+	li += getFavicon(feed, "dm-favicon ui-li-icon");
+	li += '<p class="dm-listview-content">';
 	if ( item.is_read == 0 ) {
-		css_classes = 'fmjs-item-is-unread';
+		css_classes = 'dm-item-is-unread';
 	} else {
-		css_classes = 'fmjs-item-is-read';
+		css_classes = 'dm-item-is-read';
 	}
 	//console.log("checkpoint");
-	li += '<a href="" class="fmjs-button fmjs-hot-links fmjs-single-item-link-'+_.escape(item.id)+' '+css_classes+'" data-fmjs-show-item="'+_.escape(item.id)+'" data-fmjs-fnc="show-item">' + _.escape(item.title) + '</a></p><p class="fmjs-listview-content">posted';
+	li += '<a href="" class="dm-button dm-hot-links dm-single-item-link-'+_.escape(item.id)+' '+css_classes+'" data-dm-show-item="'+_.escape(item.id)+'" data-dm-fnc="show-item">' + _.escape(item.title) + '</a></p><p class="dm-listview-content">posted';
 	if ( with_feed == true ) {
-		li += ' on <a href="" class="fmjs-hot-links fmjs-is-read fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feed.id)+'">'+_.escape(feed.title)+'</a>';
+		li += ' on <a href="" class="dm-hot-links dm-is-read dm-button" data-dm-fnc="show-feed" data-dm-show-feed="'+_.escape(feed.id)+'">'+_.escape(feed.title)+'</a>';
 	}
 	if ( with_author == true && item.author ) {
 		li += ' by '+_.escape(item.author)+'';
@@ -1022,7 +1026,7 @@ function prepareHome() {
 	
 	$.each(widgets, function(index, value) {
 		var result = '';
-		$("#fmjs-widget-place-"+value.place).html(eval(value.fnc));
+		$("#dm-widget-place-"+value.place).html(eval(value.fnc));
 	});
 
 	$("#page-home").enhanceWithin();
@@ -1036,44 +1040,44 @@ function showHome() {
 }
 
 function showGroups() {
-	$("#fmjs-groups-content").empty();
-	$("#fmjs-groups-content").append(widgetSystemGroups());
-	$("#fmjs-groups-content").append(widgetCustomGroups());
+	$("#dm-groups-content").empty();
+	$("#dm-groups-content").append(widgetSystemGroups());
+	$("#dm-groups-content").append(widgetCustomGroups());
 
 	return false;
 }
 
 function markFeedAsFav() {
-	var id = $("#fmjs-feed-content").data("fmjs-feed-id");
+	var id = $("#dm-feed-content").data("dm-feed-id");
 
 	if ( _.contains(fav_feeds, id) ) {
 		// should be removed
 		fav_feeds = _.without(fav_feeds, id);
-		$.jStorage.set("fmjs-fav-feeds", _.compact(fav_feeds));
-		$("#fmjs-feed-favmarker").html("Mark Feed as Favourite");
+		$.jStorage.set("dm-fav-feeds", _.compact(fav_feeds));
+		$("#dm-feed-favmarker").html("Mark Feed as Favourite");
 		
 	} else {
 		fav_feeds.push(id);
-		$.jStorage.set("fmjs-fav-feeds", _.compact(fav_feeds));
-		$("#fmjs-feed-favmarker").html("Remove Feed from Favourites");
+		$.jStorage.set("dm-fav-feeds", _.compact(fav_feeds));
+		$("#dm-feed-favmarker").html("Remove Feed from Favourites");
 	}
 
 	return false;
 }
 
 function markGroupAsFav() {
-	var id = $("#fmjs-group-content").data("fmjs-current-group-id");
+	var id = $("#dm-group-content").data("dm-current-group-id");
 
 	if ( _.contains(fav_groups, id) ) {
 		// should be removed
 		fav_groups = _.without(fav_groups, id);
-		$.jStorage.set("fmjs-fav-groups", _.compact(fav_groups));
-		$("#fmjs-group-favmarker").html("Mark Group as Favourite");
+		$.jStorage.set("dm-fav-groups", _.compact(fav_groups));
+		$("#dm-group-favmarker").html("Mark Group as Favourite");
 		
 	} else {
 		fav_groups.push(id);
-		$.jStorage.set("fmjs-fav-groups", _.compact(fav_groups));
-		$("#fmjs-group-favmarker").html("Remove Group from Favourites");
+		$.jStorage.set("dm-fav-groups", _.compact(fav_groups));
+		$("#dm-group-favmarker").html("Remove Group from Favourites");
 	}
 	return false;
 }
@@ -1112,7 +1116,7 @@ function showEditHomescreen() {
 	});
 	
 	$.each(widget_places, function(index, value) {
-		var field_name = 'fmjs-edit-homescreen-' + value;
+		var field_name = 'dm-edit-homescreen-' + value;
 		var field = '<div data-role="fieldcontain">';
 		
 		field += '<label for="'+field_name+'-select">Widget&nbsp;'+value.toUpperCase()+':</label><br>';  
@@ -1121,13 +1125,13 @@ function showEditHomescreen() {
 		field += '</select>';
 		field += '</div>';
 		
-		$("#fmjs-edit-widget-place-"+value).html(field);
+		$("#dm-edit-widget-place-"+value).html(field);
 	});
 	
 	/* Now set selects to their current values... */
-	// $('#fmjs-setting-empty-groups').filter('[value="'+show_empty_groups+'"]').prop('checked', true);
+	// $('#dm-setting-empty-groups').filter('[value="'+show_empty_groups+'"]').prop('checked', true);
 	$.each(widgets, function (index, value) {
-		$('#fmjs-edit-widget-place-'+value.place+ ' option').filter('[value="'+value.fnc+'"]').prop('selected', true);
+		$('#dm-edit-widget-place-'+value.place+ ' option').filter('[value="'+value.fnc+'"]').prop('selected', true);
 	});
 
 	return false;
@@ -1136,13 +1140,13 @@ function showEditHomescreen() {
 function saveHomescreen() {
 	widgets = [];
 	$.each(widget_places, function(index, value) {
-		var field_name = 'fmjs-edit-homescreen-' + value;
-		//$('input[name=fmjs-setting-transitions]:checked').val();
+		var field_name = 'dm-edit-homescreen-' + value;
+		//$('input[name=dm-setting-transitions]:checked').val();
 		var func = $("#"+field_name+"-select option:selected").val();
 		var this_widget = { place: value, fnc: func, options: {} };
 		widgets.push(this_widget);
 	});
-	$.jStorage.set("fmjs-widgets", widgets);
+	$.jStorage.set("dm-widgets", widgets);
 	showHome();
 
 }
@@ -1180,9 +1184,9 @@ function buildPanel() {
 	console.log("panel to be opened");
 	return;
 	//countUnreadItems();
-	$("#fmjs-panel-content").empty();
-	$("#fmjs-panel-content").append('<h3>Fever<span style="color:red">°</span></h3>');
-	$("#fmjs-panel-content").append('<a href="" class="fmjs-button ui-btn" data-fmjs-fnc="show-hot">Show Hot Items</a>');
+	$("#dm-panel-content").empty();
+	$("#dm-panel-content").append('<h3>Fever<span style="color:red">°</span></h3>');
+	$("#dm-panel-content").append('<a href="" class="dm-button ui-btn" data-dm-fnc="show-hot">Show Hot Items</a>');
 	// Show personal groups
 
 	panel_custom_groups = '<ul data-role="listview" data-theme="b" data-inset="false">';
@@ -1192,11 +1196,11 @@ function buildPanel() {
 		
 		if ( unread == 0 ) {
 			if ( show_empty_groups == "true") {
-				panel_custom_groups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+				panel_custom_groups += '<li><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
 			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 			}
 		} else {
-			panel_custom_groups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+			panel_custom_groups += '<li><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
 			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 		}
 		
@@ -1204,11 +1208,11 @@ function buildPanel() {
 	});
 	panel_custom_groups += '</ul>';
 	
-	$("#fmjs-panel-content").append(panel_custom_groups);
+	$("#dm-panel-content").append(panel_custom_groups);
 	// Show system groups
 	
 	
-	//$("#fmjs-panel").panel();
-	//$("#fmjs-panel-content").enhanceWithin();
+	//$("#dm-panel").panel();
+	//$("#dm-panel-content").enhanceWithin();
 }
 

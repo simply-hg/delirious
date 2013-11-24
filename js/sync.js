@@ -60,12 +60,14 @@ function syncSavedItems(what) {
 		return;
 	}
 	showHideLoader("start");
-	$.post(fm_url + "?api&saved_item_ids", { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&saved_item_ids", { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			var online_ids = data.saved_item_ids.split(',');
 			if ( saved_items.length == 0 && online_ids.length > 0) {
-				loadSavedItems(online_ids);
+				// get a full load
+				console.log("let's load all saved items");
+				refreshSavedItems();
 			} else {
 				local_ids = [];
 			
@@ -78,7 +80,7 @@ function syncSavedItems(what) {
 				delete_em =  _.difference(local_ids, online_ids);
 
 				if ( load_em.length > 0 ) {
-
+					processLoadedSaveItems = _.after(load_em.length, storeLoadedSavedItems);
 					loadSavedItems(load_em);
 
 				}
@@ -94,7 +96,8 @@ function syncSavedItems(what) {
 					});
 				}
 			}
-			$.jStorage.set("fmjs-local-items", saved_items);
+			console.log("store "+saved_items.length+" saved items");
+			$.jStorage.set("dm-local-items", saved_items);
 
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -107,14 +110,14 @@ function syncUnreadItems(what) {
 	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
 	// It is done by comparing ids
 	//createGroups(true);
-	last_fmjs_refresh = now();
-	console.log(last_fmjs_refresh);
+	last_dm_refresh = now();
+	console.log(last_dm_refresh);
 	if ( what == "full" ) {
 		refreshItems();
 		return;
 	}
 	showHideLoader("start");
-	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&unread_item_ids", { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			var run_anyway = false;
@@ -154,16 +157,14 @@ function syncUnreadItems(what) {
 				runAfterItemLoad();
 			}
 			
-			//$.jStorage.set("fmjs-local-items", saved_items);
-
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
 function refreshItems() {
-	//last_fmjs_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
+	//last_dm_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
 	showHideLoader("start");
-	$.post(fm_url + "?api&unread_item_ids", { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&unread_item_ids", { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			var ids = data.unread_item_ids.split(',');
@@ -192,7 +193,7 @@ function loadItems(ids) {
 	}
 	var get_ids = first.join(",");
 	showHideLoader("start");
-	$.post(fm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&items&with_ids="+ _.escape(get_ids), { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			last_fever_refresh = data.last_refreshed_on_time;
@@ -230,14 +231,14 @@ function runAfterItemLoadNoHome() {
 
 function refreshSavedItems() {
 	showHideLoader("start");
-	$.post(fm_url + "?api&saved_item_ids", { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&saved_item_ids", { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
-			$.jStorage.set("fmjs-local-items", []);
+			$.jStorage.set("dm-local-items", []);
 			saved_items = [];
 			if ( data.saved_item_ids != "") {
 				var ids = data.saved_item_ids.split(',');
-				//processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
+				processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
 				loadSavedItems(ids);
 			}
 		}
@@ -245,14 +246,19 @@ function refreshSavedItems() {
 }
 
 function storeLoadedSavedItems() {
+	console.log("store "+saved_items.length+" saved items 2");
 	saved_items = _.sortBy(saved_items, "created_on_time");
 	if ( order_items == "desc" ) {
 		saved_items.reverse();
-	}	
-	$.jStorage.set("fmjs-local-items", saved_items);
+	}
+	console.log("store "+saved_items.length+" saved items 2");
+	$.jStorage.set("dm-local-items", saved_items);
+	prepareHome();
 }
 
 function loadSavedItems(ids) {
+	//console.log("Loading saved item ids");
+	//console.log(ids);
 	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
 	if ( ids.length > 40 ) {
 		var first = _.first(ids, 40);
@@ -264,14 +270,16 @@ function loadSavedItems(ids) {
 	var get_ids = first.join(",");
 	
 	showHideLoader("start");
-	$.post(fm_url + "?api&items&with_ids=" + get_ids, { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&items&with_ids=" + get_ids, { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			$.each(data.items, function(index, value) {
-				//var local_items = $.jStorage.get("fmjs-local-items", []);
+				//var local_items = $.jStorage.get("dm-local-items", []);
+				//console.log("psuhing an item");
 				saved_items.push(value);
+				processLoadedSaveItems();
 				//processLoadedSaveItems();
-				//$.jStorage.set("fmjs-local-items", local_items);
+				//$.jStorage.set("dm-local-items", local_items);
 			});
 			
 		}
@@ -321,9 +329,9 @@ function markItemsRead(ids) {
 
 function markItemRead(id) {
 	if ( $.trim(id) != "") {
-		$(".fmjs-single-item-link-"+id).removeClass("fmjs-item-is-unread").addClass("fmjs-item-is-read");
+		$(".dm-single-item-link-"+id).removeClass("dm-item-is-unread").addClass("dm-item-is-read");
 		showHideLoader("start");
-		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "read", id: $.trim(_.escape(id))  }).done(function(data) {
+		$.post(dm_url + "?api", { api_key: dm_key, mark: "item", as: "read", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 
@@ -343,7 +351,7 @@ function markKindlingRead() {
 	
 	
 	showHideLoader("start");
-	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_group_show }).done(function(data) {
+	$.post(dm_url + "?api", { api_key: dm_key, mark: "group", as: "read", id: 0, before: last_dm_group_show }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			syncItems();
@@ -363,7 +371,7 @@ function markAllRead() {
 	
 	
 	showHideLoader("start");
-	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_group_show }).done(function(data) {
+	$.post(dm_url + "?api", { api_key: dm_key, mark: "group", as: "read", id: 0, before: last_dm_group_show }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			syncItems();
@@ -374,10 +382,10 @@ function markAllRead() {
 
 
 function markGroupAsRead(group_id, ids) {
-	//var data     = $("#fmjs-group-content").data("fmjs-current-ids");
-	//var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
-	//$("#fmjs-group-content").removeData("fmjs-current-ids");
-	$("#fmjs-group-content").removeData("fmjs-current-group-id");
+	//var data     = $("#dm-group-content").data("dm-current-ids");
+	//var group_id = $("#dm-group-content").data("dm-current-group-id");
+	//$("#dm-group-content").removeData("dm-current-ids");
+	$("#dm-group-content").removeData("dm-current-group-id");
 	markGroupRead("group", getNumber(group_id) );//what, id, ids
 	//$.mobile.navigate("#page-home");
 	window.history.back();
@@ -420,7 +428,7 @@ function markGroupRead(what, id) {
 
 	if ( $.trim(id) != "") {
 		showHideLoader("start");
-		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_group_show  }).done(function(data) {
+		$.post(dm_url + "?api", { api_key: dm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_dm_group_show  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				//$.mobile.navigate("#page-home", {transition: "slide"});
@@ -436,25 +444,25 @@ function saveItem(id) {
 	//id = $.trim(id);
 	if ( $.trim(id) != "") {
 		console.log("Save: " + id);
-		//var local_items = $.jStorage.get("fmjs-local-items", []);
+		//var local_items = $.jStorage.get("dm-local-items", []);
 		var item = _.findWhere(items, {id: id});
 		//console.log(id);
 		if ( item ) {
 			//
 			item.is_saved = 1;
 			saved_items.push(item);
-			$.jStorage.set("fmjs-local-items", saved_items);
+			$.jStorage.set("dm-local-items", saved_items);
 		} else {
 			item = _.findWhere(session_read_items, {id: id});
 			if ( item ) {
 				item.is_saved = 1;
 				saved_items.push(item);
-				$.jStorage.set("fmjs-local-items", saved_items);
+				$.jStorage.set("dm-local-items", saved_items);
 			}
 			
 		}
 		showHideLoader("start");
-		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
+		$.post(dm_url + "?api", { api_key: dm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				console.log(data);
@@ -465,7 +473,7 @@ function saveItem(id) {
 
 function unsaveItem(id) {
 	if ( $.trim(id) != "") {
-		//var saved_items = $.jStorage.get("fmjs-local-items", []);
+		//var saved_items = $.jStorage.get("dm-local-items", []);
 		current_unsave_id = id;
 		var unsave_item = _.findWhere(saved_items, {id:id});
 		
@@ -480,10 +488,10 @@ function unsaveItem(id) {
 				return true;
 			}
 		});
-		$.jStorage.set("fmjs-local-items", saved_items);
+		$.jStorage.set("dm-local-items", saved_items);
 
 		showHideLoader("start");
-		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "unsaved", id: $.trim(_.escape(id))  }).done(function(data) {
+		$.post(dm_url + "?api", { api_key: dm_key, mark: "item", as: "unsaved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 
@@ -510,20 +518,20 @@ function toggleSaveState(id) {
 }
 
 function saveCurrentItem(id) {
-	//var id = $("#fmjs-single-btn-save").data("fmjs-save-item-id");
+	//var id = $("#dm-single-btn-save").data("dm-save-item-id");
 	saveItem(id);
-	//$("#fmjs-single-btn-save .ui-btn-text").html("Unsave");
-	//$("#fmjs-single-btn-save").attr("onclick", "unsaveCurrentItem();");
-	//$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "minus" });
+	//$("#dm-single-btn-save .ui-btn-text").html("Unsave");
+	//$("#dm-single-btn-save").attr("onclick", "unsaveCurrentItem();");
+	//$("#dm-single-btn-save" ).buttonMarkup({ icon: "minus" });
 
 	return false;
 }
 function unsaveCurrentItem(id) {
-	//var id = $("#fmjs-single-btn-save").data("fmjs-save-item-id");
+	//var id = $("#dm-single-btn-save").data("dm-save-item-id");
 	unsaveItem(id);
-	//$("#fmjs-single-btn-save .ui-btn-text").html("Save");
-	//$("#fmjs-single-btn-save").attr("onclick", "saveCurrentItem();");
-	//$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });
+	//$("#dm-single-btn-save .ui-btn-text").html("Save");
+	//$("#dm-single-btn-save").attr("onclick", "saveCurrentItem();");
+	//$("#dm-single-btn-save" ).buttonMarkup({ icon: "plus" });
 
 	return false;
 }
@@ -531,10 +539,10 @@ function unsaveCurrentItem(id) {
 
 
 function markFeedAsRead(feed_id, ids) {
-	//var data     = $("#fmjs-feed-content").data("fmjs-feed-item-ids");
-	//var feed_id = $("#fmjs-feed-content").data("fmjs-feed-id");
-	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
-	$("#fmjs-feed-content").removeData("fmjs-feed-id");
+	//var data     = $("#dm-feed-content").data("dm-feed-item-ids");
+	//var feed_id = $("#dm-feed-content").data("dm-feed-id");
+	$("#dm-feed-content").removeData("dm-feed-item-ids");
+	$("#dm-feed-content").removeData("dm-feed-id");
 	markGroupRead("feed", getNumber(feed_id), ids);//what, id, ids
 	//$.mobile.navigate("#page-home");
 	window.history.back();
@@ -543,11 +551,11 @@ function markFeedAsRead(feed_id, ids) {
 
 function refreshFavicons() {
 	showHideLoader("start");
-	$.post(fm_url + "?api&favicons", { api_key: fm_key }).done(function(data) {
+	$.post(dm_url + "?api&favicons", { api_key: dm_key }).done(function(data) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			favicons = data.favicons;
-			$.jStorage.set("fmjs-favicons", favicons);
+			$.jStorage.set("dm-favicons", favicons);
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	return false;

@@ -22,43 +22,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-.fmjs-item-is-unread, .fmjs-is-unread {
+.dm-item-is-unread, .dm-is-unread {
 	font-weight:bold;
 }
-.fmjs-item-is-read, .fmjs-is-read {
+.dm-item-is-read, .dm-is-read {
 	font-weight:normal !important;
 }
 
-.fmjs-hot-links, #fmjs-hot-content .fmjs-hot-links :link, #fmjs-hot-content .fmjs-hot-links :visited, #fmjs-single-content a, .fmjs-content :link {
+.dm-hot-links, #dm-hot-content .dm-hot-links :link, #dm-hot-content .dm-hot-links :visited, #dm-single-content a, .dm-content :link {
 	text-decoration:none;
 	color:steelblue;
 }
 
-img.fmjs-favicon {
+img.dm-favicon {
 	padding:1px;
 	border:1px solid #ddd;
 	margin-right: 5px;
 	vertical-align:middle;
 }
 
-#fmjs-single-content :link, #fmjs-single-content :visited {
+#dm-single-content :link, #dm-single-content :visited {
 	text-decoration:none;
 	color:steelblue;
 }
-#fmjs-single-content img, #fmjs-single-content object, #fmjs-single-content div {
+#dm-single-content img, #dm-single-content object, #dm-single-content div {
 	max-width:85%;
 	margin:5px;
 	padding:0;
 }
 
-#fmjs-single-content p {
+#dm-single-content p {
 	max-width:100%;
 	margin:0;
 	padding:0;
 }
 
 /* integrated clearfix by: http://www.webtoolkit.info/css-clearfix.html */
-#fmjs-single-content {
+#dm-single-content {
 	max-width:100%;
 	overflow:hidden;
 	border:1px solid #ccc;
@@ -68,7 +68,7 @@ img.fmjs-favicon {
 	display: inline-block;
 }
 
-#fmjs-single-content:after {
+#dm-single-content:after {
 	content: ".";
 	display: block;
 	clear: both;
@@ -76,10 +76,10 @@ img.fmjs-favicon {
 	line-height: 0;
 	height: 0;
 }
-* html #fmjs-single-content {
+* html #dm-single-content {
 	height: 1%;
 }
-.fmjs-single-below-content {
+.dm-single-below-content {
 	padding-top:0.3em;
 	padding-right:1em;
 	text-align:right;
@@ -105,36 +105,36 @@ img.fmjs-favicon {
 
 
 
-.fmjs-widget-container {
+.dm-widget-container {
 	padding-left:0.5em;
 	padding-right:0.5em;
 }
 
 @media all and (max-width: 35em) {
-		.fmjs-widget-container {
+		.dm-widget-container {
 		padding-left:0;
 		padding-right:0;
 	}
 }
 
-#fmjs-groups-content .fmjs-widget-container {
+#dm-groups-content .dm-widget-container {
 	padding-left:0;
 	padding-right:0;
 }
 
-.fmjs-bottom-menu {
+.dm-bottom-menu {
 	width:20em;
 	margin-left:auto;
 	margin-right:auto;
 }
 
-.fmjs-listview-content, .fmjs-listview-content a, .fmjs-listview-content p, .fmjs-hot-linkbox li p {
+.dm-listview-content, .dm-listview-content a, .dm-listview-content p, .dm-hot-linkbox li p {
 	white-space:normal !important;
 	margin-top:0 !important;
 	margin-bottom:0 !important;
 }
 
-#fmjs-single-title {
+#dm-single-title {
 	color:steelblue;
 	text-decoration:none;
 }

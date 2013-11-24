@@ -46,7 +46,7 @@ var defined_widgets = [
 	{ fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: "" }
 ];
 function parseWidget(widget) {
-	return '<div class="fmjs-widget-container">'+widget+'</div>';
+	return '<div class="dm-widget-container">'+widget+'</div>';
 }
 function widgetEmpty() {
 	return '';
@@ -57,21 +57,21 @@ function widgetSystemGroups() {
 	sysgroups += '<h2>Fever<span style="color:red">°</span> Groups</h2>';
 	sysgroups += '<ul data-role="listview" data-theme="a" data-inset="true">'; //  style="margin-top:-10px;"
 
-	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-hot">Hot</a></li>';
+	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-hot">Hot</a></li>';
 
-	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-kindling">Kindling';
+	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-kindling">Kindling';
 	var unread_items = _.where(items, {is_read:0});
 
 	sysgroups +=    '<span class="ui-li-count">'+unread_items.length+'</span>'+'</a></li>';
-	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-sparks">Sparks';
+	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-sparks">Sparks';
 
 	var unread_sparks = getUnreadSparks();
 	sysgroups += 	'<span class="ui-li-count">'+unread_sparks.counter+'</span>'+'</a></li>';
 
-	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-saved">Saved items';
+	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-saved">Saved items';
 	sysgroups +=    '<span class="ui-li-count">'+saved_items.length+'</span>'+'</a></li>';
 
-	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-all-feeds">All Feeds';
+	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-all-feeds">All Feeds';
 	sysgroups +=    '<span class="ui-li-count">'+feeds.length+'</span>'+'</a></li>';
 	sysgroups += '</ul>';
 	sysgroups += '<p>Last Fever<span style="color:red">°</span> Refresh @ '+renderDate("time", last_fever_refresh)+'</p>';
@@ -81,18 +81,18 @@ function widgetSystemGroups() {
 function widgetCustomGroups() {
 
 	panel_custom_groups = '<h2>My Groups</h2>';
-	panel_custom_groups += '<ul data-role="listview" data-filter-theme="a" data-divider-theme="a" data-theme="a" data-inset="true" data-filter="true" id="fmjs-groups" class="fmjs-home-views">';
+	panel_custom_groups += '<ul data-role="listview" data-filter-theme="a" data-divider-theme="a" data-theme="a" data-inset="true" data-filter="true" id="dm-groups" class="dm-home-views">';
 
 	$.each( groups, function(index, value) {
 		var unread = countUnreadInGroup(value.id);
 		
 		if ( unread == 0 ) {
 			if ( show_empty_groups == "true") {
-				panel_custom_groups += '<li id="fmjs-group-'+value.id+'"><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+				panel_custom_groups += '<li id="dm-group-'+value.id+'"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
 			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 			}
 		} else {
-			panel_custom_groups += '<li id="fmjs-group-'+value.id+'"><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+			panel_custom_groups += '<li id="dm-group-'+value.id+'"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
 			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 		}
 		
@@ -119,7 +119,7 @@ function widgetShowFavGroups() {
 		if ( unread > 0 ) {
 			var group = _.findWhere(groups, {id:value});
 			content_ShowFavGroups += '<li data-theme="a">';
-			content_ShowFavGroups += '<a href="" data-fmjs-show-group="'+group.id+'" class="fmjs-button" data-fmjs-fnc="show-group-selector">'+ _.escape(group.title) +'';
+			content_ShowFavGroups += '<a href="" data-dm-show-group="'+group.id+'" class="dm-button" data-dm-fnc="show-group-selector">'+ _.escape(group.title) +'';
 			content_ShowFavGroups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 		}  
 	});
@@ -158,25 +158,25 @@ function widgetShowFavFeeds() {
 /* Some simple Buttons... */ 
 
 function widgetButtonSparks() {
-	return parseWidget('<a href="" data-role="button"class="fmjs-button"  data-fmjs-fnc="show-sparks">Show Sparks</a>');
+	return parseWidget('<a href="" data-role="button"class="dm-button"  data-dm-fnc="show-sparks">Show Sparks</a>');
 }
 
 function widgetButtonKindling() {
-	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-kindling">Show Kindling</a>');
+	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-kindling">Show Kindling</a>');
 }
 
 function widgetButtonSaved() {
-	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-saved">Show Saved</a>');
+	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-saved">Show Saved</a>');
 }
 
 function widgetButtonHotView() {
-	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-hot">Show Hot Items</a>');
+	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-hot">Show Hot Items</a>');
 }
 function widgetButtonAllFeeds() {
-	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-all-feeds">Show All Feeds</a>');
+	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-all-feeds">Show All Feeds</a>');
 }
 function widgetButtonGroups() {
-	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-groups">Show Groups</a>');
+	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-groups">Show Groups</a>');
 }
 
 // ------------------------------
@@ -186,17 +186,17 @@ function widgetButtonSettings() {
 }
 
 function widgetButtonReloadFavicons() {
-	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="fmjs-button" data-fmjs-fnc="refresh-favicons">Reload Favicons</a>');
+	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="dm-button" data-dm-fnc="refresh-favicons">Reload Favicons</a>');
 }
 
 function widgetButtonEditHomescreen() {
-	return parseWidget('<a href="" data-role="button" data-icon="grid" class="fmjs-button" data-fmjs-fnc="show-edit-homescreen">Edit Homescreen</a>');
+	return parseWidget('<a href="" data-role="button" data-icon="grid" class="dm-button" data-dm-fnc="show-edit-homescreen">Edit Homescreen</a>');
 }
 
 function widgetButtonSyncItems() {
-	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="fmjs-button" data-fmjs-fnc="sync-items">Sync with Fever<span style="color:red;">°</span></a>');
+	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="dm-button" data-dm-fnc="sync-items">Sync with Fever<span style="color:red;">°</span></a>');
 }
 
 function widgetButtonMarkAllRead() {
-	return parseWidget('<a href="" data-role="button" data-icon="check" class="fmjs-button" data-fmjs-fnc="mark-all-read">Mark all Read</a>');
+	return parseWidget('<a href="" data-role="button" data-icon="check" class="dm-button" data-dm-fnc="mark-all-read">Mark all Read</a>');
 }
