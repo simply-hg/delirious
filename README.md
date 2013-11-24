@@ -5,7 +5,7 @@ Delirious° is a Javascript client for the feed reader [Fever](http://www.feedaf
 
 Delirious° is based on [jQuery Mobile](http://www.jquerymobile.com/), [undescore.js](http://underscorejs.org/) and [jStorage](http://www.jstorage.info/). It hasn't been fully tested for browser compatibility. It works on Dolphin (with Jetpack), Chrome on Android and on the desktop version of Firefox. There are still bugs but all in all I find it working quite ok - it hasn't been aggressively tested, though.
 
-You may be interested in screenshots. You can find them on my personal site with [more information on Delirious°](http://simply-hg.de/fever-js).
+You may be interested in screenshots. You can find them on my personal site with [more information on Delirious°](http://simply-hg.de/delirious).
 
 How to download and run it
 ==========================
