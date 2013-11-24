@@ -5,45 +5,49 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<link rel="icon" href="artwork/touch-icon-16.png" type="image/png">
+
+	<link rel="icon" href="artwork/touch-icon-144.png" type="image/png" />
+	<link rel="shortcut icon" href="artwork/touch-icon-144.png" type="image/png" />
+
 	<!-- Adapted from: http://mathiasbynens.be/notes/touch-icons -->
 	<!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --> 
-	<link rel="apple-touch-icon" href="artwork/touch-icon-57.png">
+	<link rel="apple-touch-icon" href="artwork/touch-icon-57.png" />
 	<!-- For first- and second-generation iPad: -->
-	<link rel="apple-touch-icon" sizes="72x72" href="artwork/touch-icon-72.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="artwork/touch-icon-72.png" />
 	<!-- For iPhone with high-resolution Retina display: -->
-	<link rel="apple-touch-icon" sizes="114x114" href="artwork/touch-icon-114.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="artwork/touch-icon-114.png" />
 	<!-- For third-generation iPad with high-resolution Retina display: -->
-	<link rel="apple-touch-icon" sizes="144x144" href="artwork/touch-icon-144.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="artwork/touch-icon-144.png" />
 
-	<title>Fever° Mobile</title>
-	<link rel="stylesheet" href="//code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+	<title>Delirious°</title>
+	<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.0-rc.1/jquery.mobile-1.4.0-rc.1.min.css">
 	<link rel="stylesheet" href="css/app.css" />
-	
 
-	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script src="//code.jquery.com/jquery-2.1.0-beta2.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 	<script src="lib/jstorage.min.js"></script>
 	<script src="lib/fitvid.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+	<script src="lib/md5.min.js"></script>
 	<script src="js/functions.js"></script>
 	
-	<script src="lib/md5.min.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/sync.js"></script>
 	<script src="js/widgets.js"></script>
 	
 	<script src="js/config.js"></script>
-	<script src="//code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 	<script src="js/eventhandler.js"></script>
+	<script src="//code.jquery.com/mobile/1.4.0-rc.1/jquery.mobile-1.4.0-rc.1.min.js"></script>
+
 </head>
 
 <body>
 	<!-- Home -->
 
-	<div data-role="page" id="page-home" data-title="Fever° Mobile" class="fmjs-page">
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<h3 id="fmjs-header">Fever<span style="color:red">°</span> Mobile</h3>
-			<button data-fmjs-fnc="sync-items" data-theme="b" class="ui-btn-right fmjs-button" data-icon="refresh">Sync</button>
+	<div data-role="page" id="page-home" data-title="Delirious°" class="fmjs-page" data-theme="a">
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<!--a href="#fmjs-panel" class="fmjs-button ui-btn-left ui-btn ui-icon-grid ui-btn-icon-notext">Show Panel</a>-->
+			<h1 id="fmjs-header">Delirious<span style="color:red">°</span></h1>
+			<button data-fmjs-fnc="sync-items" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh">Sync</button>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-homescreen-message"></div>
@@ -74,8 +78,8 @@
 				<div class="ui-block-b"><div id="fmjs-widget-place-b9"></div></div>
 			</div><!-- /grid-c -->
 			
-			<div id="fmjs-hot-bottom" class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+			<div class="fmjs-bottom-menu">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="gear"><a href="#page-settings">Settings</a></li>
 					<li data-icon="grid"><a href="" class="fmjs-button" data-fmjs-fnc="show-edit-homescreen">Edit Homescreen</a></li>
@@ -87,12 +91,18 @@
 	</div><!-- / Home -->
 
 	<!-- Hot-view -->
-	<div data-role="page" id="page-hot" data-title="Hot Items" class="fmjs-page">
+	<div data-role="page" id="page-hot" data-title="Hot Items" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-header">Hot on Fever<span style="color:red">°</span></h3>
-			<a href="" data-icon="refresh" data-fmjs-fnc="show-hot" class="fmjs-button" data-theme="b">Refresh</a>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<!--<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+				<a href="#fmjs-panel" class="ui-btn ui-icon-grid ui-btn-icon-notext">Show Panel</a>
+				<a href="#" class="ui-btn ui-btn-icon-left ui-icon-arrow-l" data-rel="back">Back</a>
+			</div>-->
+			
+			<h1 id="fmjs-header">Hot on Fever<span style="color:red">°</span></h1>
+			<a href="" data-fmjs-fnc="show-hot" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh" data-theme="b">Refresh</a>
+			
 		</div>
 		<div data-role="content">
 			<div data-role="fieldcontain">
@@ -127,7 +137,7 @@
 			</div>
 	 		<button id="fmjs-hot-more" data-role="button" class="fmjs-button" data-fmjs-fnc="show-hot-more" data-fmjs-hot-page="2">Load More</button>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -138,19 +148,19 @@
 	</div><!-- / Hot view -->
 
 	<!-- A Group -->
-	<div data-role="page" id="page-group" data-title="Fever Mobile Group" class="fmjs-page">
+	<div data-role="page" id="page-group" data-title="Fever Mobile Group" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-group-header">Fever<span style="color:red">°</span> Custom Group</h3>
-			<a href="" data-icon="check" data-theme="b" class="fmjs-button" data-fmjs-fnc="mark-items-read" id="fmjs-group-read">Mark Read</a>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-group-header">Fever<span style="color:red">°</span> Custom Group</h1>
+			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="mark-items-read" id="fmjs-group-read">Mark Read</a>
 		</div>
 		
 		<div data-role="content">
 			<div id="fmjs-group-content"></div>
 			<div id="fmjs-group-more"></div>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-group-read" id="fmjs-mark-group-read">Mark Whole Group as Read</a></li>
@@ -163,17 +173,17 @@
 	</div><!-- / A Group -->
 
 	<!-- A Group of feeds -->
-	<div data-role="page" id="page-feedgroup" data-title="Fever Mobile Group" class="fmjs-page">
+	<div data-role="page" id="page-feedgroup" data-title="Fever Mobile Group" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-feedgroup-header">Fever<span style="color:red">°</span> Custom Group</h3>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-feedgroup-header">Fever<span style="color:red">°</span> Custom Group</h1>
 		</div>
 		
 		<div data-role="content">
 			<div id="fmjs-feedgroup-content"></div>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -184,18 +194,18 @@
 	</div><!-- / A Group of feeds -->
 
 	<!-- Kindling -->
-	<div data-role="page" id="page-kindling" data-title="Kindling Items" class="fmjs-page">
+	<div data-role="page" id="page-kindling" data-title="Kindling Items" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-group-header">Fever<span style="color:red">°</span> Kindling</h3>
-			<a href="" data-icon="check" data-theme="b" class="fmjs-button" id="fmjs-kindling-items" data-fmjs-fnc="show-kindling-more">Show More</a>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-group-header">Fever<span style="color:red">°</span> Kindling</h1>
+			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" id="fmjs-kindling-items" data-fmjs-fnc="show-kindling-more">Show More</a>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-kindling-content"></div>
 			<div id="fmjs-kindling-more"></div>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-kindling-read">Mark Kindling Read</a></li>
@@ -206,18 +216,18 @@
 	</div><!-- / Kindling -->
 	
 	<!-- A Feed -->
-	<div data-role="page" id="page-feed" data-title="A Feed" class="fmjs-page">
+	<div data-role="page" id="page-feed" data-title="A Feed" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-feed-header">Fever<span style="color:red">°</span> View Feed</h3>
-			<a href="" data-icon="check" data-theme="b" class="fmjs-button" data-fmjs-fnc="show-feed-more" id="fmjs-feed-read">Mark Read</a>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-feed-header">Fever<span style="color:red">°</span> View Feed</h1>
+			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="show-feed-more" id="fmjs-feed-read">Mark Read</a>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-feed-content"></div>
 			<div id="fmjs-feed-more"></div>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="mark-feed-read" id="fmjs-mark-feed-read">Mark Feed as Read</a></li>
@@ -229,17 +239,17 @@
 	</div><!-- / A Feed -->
 
 	<!-- Saved -->
-	<div data-role="page" id="page-saved" data-title="Saved Items" class="fmjs-page">
+	<div data-role="page" id="page-saved" data-title="Saved Items" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-saved-header">Saved Items</h3>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-saved-header">Saved Items</h1>
 
 		</div>
 		<div data-role="content">
 			<div id="fmjs-saved-content"></div>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -250,17 +260,17 @@
 	</div><!-- / Saved -->
 
 	<!-- Sparks -->
-	<div data-role="page" id="page-sparks" data-title="Sparks" class="fmjs-page">
+	<div data-role="page" id="page-sparks" data-title="Sparks" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-sparks-header">Fever<span style="color:red">°</span> Sparks</h3>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-sparks-header">Fever<span style="color:red">°</span> Sparks</h1>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-sparks-content"></div>
 		
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -271,11 +281,11 @@
 
 
 	<!-- Show Groups -->
-	<div data-role="page" id="page-groups" data-title="Fever° Groups" class="fmjs-page">
+	<div data-role="page" id="page-groups" data-title="Fever° Groups" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-groups-header">Fever<span style="color:red">°</span> Groups</h3>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-groups-header">Fever<span style="color:red">°</span> Groups</h1>
 		</div>
 		
 		<div data-role="content">
@@ -283,7 +293,7 @@
 
 			</div>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -295,12 +305,12 @@
 	
 	
 	<!-- Settings -->
-	<div data-role="page" id="page-settings" data-title="Settings" class="fmjs-page">
+	<div data-role="page" id="page-settings" data-title="Settings" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-header">Fever<span style="color:red">°</span> Mobile Settings</h3>
-			<a href="" data-icon="check" data-theme="b" class="fmjs-button" data-fmjs-fnc="save-settings">Save</a>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-header">Delirious<span style="color:red">°</span> Settings</h1>
+			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="save-settings">Save</a>
 		</div>
 		<div data-role="content">
 			<h1>Authentification</h1>
@@ -313,7 +323,7 @@
 			
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup">
-					<label for="fmjs-e-mail">E-Mail</label>
+					<label for="fmjs-e-mail">E-Mail / Username</label>
 					<input name="fmjs-e-mail" id="fmjs-e-mail" placeholder="user@example.com" value="" type="email" />
 				</fieldset>
 			</div>
@@ -433,7 +443,7 @@
 				</label>
 				<input type="radio" name="fmjs-setting-html-content" id="fmjs-setting-html-content-2" value="raw" />       	
 				<label for="fmjs-setting-html-content-2">
-					<h3 class="ui-li-heading">Raw HTML</h3>
+					<h3 class="ui-li-heading">Raw (parsed) HTML</h3>
 					<p class="ui-li-desc">Looks best, but might raise security issues.</p>
 				</label>     	
 			</fieldset>
@@ -479,7 +489,7 @@
 			<a data-role="button" data-icon="refresh" href="" class="fmjs-button" data-fmjs-fnc="refresh-favicons">Refresh Favicons</a>
 
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="check"><a href="" class="fmjs-button" data-fmjs-fnc="save-settings">Save Settings</a></li>
@@ -491,12 +501,12 @@
 	</div><!-- / Settings -->
 
 	<!-- Single Entry -->
-	<div data-role="page" id="page-single" data-title="Single Item" class="fmjs-page">
+	<div data-role="page" id="page-single" data-title="Single Item" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
 			<h3 id="fmjs-feed-title">Feed-Name</h3>
-			<a class="fmjs-button" data-icon="plus" data-theme="b" class="fmjs-button" data-fmjs-fnc="toggle-save-item" data-fmjs-save-item-id="" id="fmjs-single-btn-save">Save</a>
+			<a data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-plus" data-fmjs-fnc="toggle-save-item" data-fmjs-save-item-id="fmjs-single-btn-save" id="fmjs-single-btn-save">Save</a>
 		</div>
 		<div data-role="content">
 			<h2><a href="" id="fmjs-single-title" target="_blank">Title</a></h2>
@@ -509,7 +519,7 @@
 			<div id="fmjs-single-sharing-buttons"></div>
 			<a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="" data-iconpos="left" id="fmjs-single-url">Open URL</a>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -520,16 +530,16 @@
 	</div><!-- / Single Item -->
 
 	<!-- All feeds -->
-	<div data-role="page" id="page-all-feeds" data-title="All Feeds" class="fmjs-page">
+	<div data-role="page" id="page-all-feeds" data-title="All Feeds" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3 id="fmjs-all-feeds-title">All Feeds</h3>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+			<h1 id="fmjs-all-feeds-title">All Feeds</h1>
 		</div>
 		<div data-role="content">
 			<div id="fmjs-all-feeds-content"></div>
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -538,42 +548,43 @@
 		</div>
 	</div><!-- / All feeds -->
 
-	<div data-role="page" id="page-support" data-title="Help and Support" class="fmjs-page">
+	<div data-role="page" id="page-support" data-title="Help and Support" class="fmjs-page" data-theme="a">
 
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
-			<h3>Help, Credits and Copyrights <span style="color:red">&copy;</span></h3>
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
+
+			<h1>Help, Credits and Copyrights <span style="color:red">&copy;</span></h1>
 		</div>
-		<div data-role="content" id="fmjs-support-content" class="fmjs-content">
-			<h1>Support, Bug Reports et. al.</h1>
+		<div data-role="content" class="fmjs-content">
+			<h2>Support, Bug Reports et. al.</h2>
 			<p>This app is still a work in progress. It works quite well, but has not been fully tested for security, compatibility and such aspects.</p>
-			<p>If you encounter bugs, miss features or have a comment about fever-js, go to <a href="https://github.com/simply-hg/fever-js" target="_blank">fever-js on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to fever-js on github.com in any way you find fitting. If you want to make your own adjustments to fever-js I suggest to fork it on github. That way your features may flow back into fever-js.</p>
-			<p>News, comments and announcements about fever-js are posted to my webpage.</p>
-			<p>You like social networks? If so, you can like fever-js and tell your friends about it on Google+. Have question about fever-js? You can send me a tweet to <a href="https://twitter.com/simplyhg" target="_blank">@simplyhg</a> on twitter (I'm not too active there, but I receive and try to answer messages and tweets - maybe I even get more active there, who knows).</p>
-			<h1>fever-js License</h1>
-			<p>fever-js is provided as is without any guarantees. It is licensed under MIT-style terms. If you redistribute or modify it, please leave this license in place. If you use it in your project I'd be happy to hear about it. Also, I kindly ask you, to put up a link to the homepage of fever-js (<a href="http://www.simply-hg.de/fever-js" target="_blank">simply-hg.de/fever-js/</a>) in case you use it as a base of your own work. Thank you very much.</p>
+			<p>If you encounter bugs, miss features or have a comment about Delirious<span style="color:red">°</span>, go to <a href="https://github.com/simply-hg/fever-js" target="_blank">Delirious<span style="color:red">°</span> on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to Delirious<span style="color:red">°</span> on github.com in any way you find fitting. If you want to make your own adjustments to Delirious<span style="color:red">°</span> I suggest to fork it on github. That way your features may flow back into Delirious<span style="color:red">°</span>.</p>
+			<p>News, comments and announcements about Delirious<span style="color:red">°</span> are posted to my webpage.</p>
+			<p>You like social networks? If so, you can like Delirious<span style="color:red">°</span> and tell your friends about it on Google+. Have question about fever-js? You can send me a tweet to <a href="https://twitter.com/simplyhg" target="_blank">@simplyhg</a> on twitter (I'm not too active there, but I receive and try to answer messages and tweets - maybe I even get more active there, who knows).</p>
+			<h1>Delirious<span style="color:red">°</span> License</h1>
+			<p>Delirious<span style="color:red">°</span> is provided as is without any guarantees or warranties. It is licensed under MIT-style terms. If you redistribute or modify it, please leave this license in place. If you use it in your project I'd be happy to hear about it. Also, I kindly ask you, to put up a link to the homepage of fever-js (<a href="http://www.simply-hg.de/fever-js" target="_blank">simply-hg.de/fever-js/</a>) in case you use it as a base of your own work. Thank you very much.</p>
 
-			<h1>The MIT License (MIT)</h1>
+			<h2>The MIT License (MIT)</h2>
 
-			<p>fever-js copyright &copy; 2013 by Hans-Georg Kluge</p>
+			<p>Delirious<span style="color:red">°</span> copyright &copy; 2013 by Hans-Georg Kluge</p>
 			<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 			<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 			<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 
-			<h1>Copyright Information of Used Works by Others</h1>
-			<p>fever-js uses some plugins and works done by other people, which are not covered by the above license agreement. So check them out:</p>
+			<h2>Copyright Information of Used Works by Others</h2>
+			<p>Delirious<span style="color:red">°</span> uses some plugins and works done by other people, which are not covered by the above license agreement. So check them out:</p>
 			<p><a href="http://www.feedafever.com/" target="_blank">Fever</a><span style="color:red">°</span>, its website and all related files are copyright &copy; 2008-2013 <a href="http://shauninman.com/" target="_blank">Shaun Inman</a>.</p>
-			<p>fever-js is <strong>not</strong> developed or endorsed by Shaun Inman, please don't bother him with bug reports, complaints or anything else regarding fever-js.</p>
+			<p>Delirious<span style="color:red">°</span> is <strong>not</strong> developed or endorsed by Shaun Inman, please don't bother him with bug reports, complaints or anything else regarding Delirious<span style="color:red">°</span>.</p>
 			<p><a href="http://www.jquery.com/" target="_blank">jQuery</a> and <a href="http://jquerymobile.com/" target="_blank">jQuery Mobile</a> are used under their <a href="https://jquery.org/license/" target="_blank">license terms (MIT)</a>.</p>
 			<p><a href="http://www.jstorage.info/" target="_blank">jStorage</a> is licensed under MIT-styled terms. You can <a href="http://www.jstorage.info/static/license.txt" target="_blank">find its license online</a>.</p>
-			<p>fever-js uses the jQuery plugin <a href="http://www.fitvid.com" target="_blank">fitvid.js</a>.</p>
+			<p>Delirious<span style="color:red">°</span> uses the jQuery plugin <a href="http://www.fitvid.com" target="_blank">fitvid.js</a>.</p>
 			<p>RSS icons used in this app are taken from <a href="http://commons.wikimedia.org/wiki/File:Feed-icon.svg" target="_blank">Wikimedia Commons</a> and <a href="http://www.feedicons.com/" target="_blank">feedicon.com</a>.</p>
 			<p>MD5 hashing is done with help from an implementation found on <a href="http://www.webtoolkit.info/javascript-md5.html" target="_blank">webtoolkit.info</a>. Some css code for the single item view is also from there, known as <a href="http://www.webtoolkit.info/css-clearfix.html" target="_blank">clearfix</a>. You can find <a href="http://www.webtoolkit.info/license" target="_blank">their license</a> online. </p>
-			<p>fever-js releases are compressed by <a href="http://www.jscompress.com/" target="_blank">jscompress.com</a></p>
+			<p>fever-js releases will be compressed by <a href="http://www.jscompress.com/" target="_blank">jscompress.com</a>. </p>
 			<p>Some nicer looking parts of the settings screen have been adapted from <a href="http://roughlybrilliant.com/jquery_mobile_best_practices" target="_blank">Roughly Brilliant</a>.</sp>
 		
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
@@ -583,11 +594,11 @@
 	</div>
 	
 	<!-- Edit Homescreen -->
-	<div data-role="page" id="page-edit-homescreen" data-title="Edit Homescreen" class="fmjs-page">
-		<div data-theme="a" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="fmjs-button" data-fmjs-fnc="back" data-icon="arrow-l">Back</button>
+	<div data-role="page" id="page-edit-homescreen" data-title="Edit Homescreen" class="fmjs-page" data-theme="a">
+		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+			<button class="fmjs-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-fmjs-fnc="back">Back</button>
 			<h3 id="fmjs-header">Edit Homescreen</h3>
-			<a href="" data-icon="check" data-theme="b" class="fmjs-button" data-fmjs-fnc="save-homescreen">Save</a>
+			<a href="" data-theme="b" class="fmjs-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-fmjs-fnc="save-homescreen">Save</a>
 		</div>
 		<div data-role="content">
 			
@@ -613,14 +624,24 @@
 			</div><!-- /grid-c -->
 			
 			<div class="fmjs-bottom-menu">
-				<ul data-role="listview" data-theme="d" data-inset="true" data-iconpos="left">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="fmjs-button" data-fmjs-fnc="back">Back</a></li>
 					<li data-icon="arrow-u"><a href="" class="fmjs-button" data-fmjs-fnc="to-top">Back to the Top</a></li>
-					<li data-theme="d" data-icon="gear"><a href="" class="fmjs-button" data-fmjs-fnc="save-homescreen">Save Homescreen</a></li>
+					<li data-icon="gear"><a href="" class="fmjs-button" data-fmjs-fnc="save-homescreen">Save Homescreen</a></li>
 					<li data-icon="home"><a href="" class="fmjs-button" data-fmjs-fnc="show-home">Go to Homescreen</a></li>
 				</ul>
 			</div>
 		</div>			
 	</div><!-- / Edit Homescreen -->
+	
+	<!--<div data-role="panel" id="fmjs-panel" data-position="left" data-display="push" data-theme="b">
+		<div id="fmjs-panel-content">
+			<h3>Left Panel: Reveal</h3>
+			<p>This panel is positioned on the left with the reveal display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
+			<p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
+		</div>
+
+	</div> /leftpanel1 -->
+
 </body>
 </html>
