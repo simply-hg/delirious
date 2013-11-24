@@ -1,3 +1,28 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2013 Hans-Georg Kluge
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+
 function autoSync() {
 	syncSavedItems("sync");
 	syncUnreadItems("sync");
@@ -27,7 +52,7 @@ function syncItems() {
 function syncSavedItems(what) {
 	// This function compares your local stored items with all saved items online.
 	// if some are missing here, we load them.
-	// if some are missing there, we remove our copy (beacuse it was probably unsaved somewhere else...).
+	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
 	// It is done by comparing ids
 	
 	if ( what == "full" ) {
@@ -39,39 +64,35 @@ function syncSavedItems(what) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			var online_ids = data.saved_item_ids.split(',');
-
-			local_ids = [];
-			$.each(saved_items, function(index, value) {
-				local_ids.push(value.id.toString());
-			});
-
-			var load_em = _.difference(online_ids, local_ids);
-
-			delete_em =  _.difference(local_ids, online_ids);
-
-			if ( load_em.length > 0 ) {
-				if ( what == "start" && load_em.length > 50 ) {
-					// too much to load on start, this should be done with a full refresh...
-					// adding a message to top
-					$("#fmjs-homescreen-message").append('<div class="warning">Please reload your saved items in the settings screen (click to hide message).</div>');
-					return;
-					
-				} else {
-					processLoadedSaveItems = _.after(load_em.length, storeLoadedSavedItems);
-					loadSavedItems(load_em);
-				}
-			}
+			if ( saved_items.length == 0 && online_ids.length > 0) {
+				loadSavedItems(online_ids);
+			} else {
+				local_ids = [];
 			
-			if ( delete_em.length > 0 ) {
-				saved_items = _.reject(saved_items, function(item) {
-	
-					if ( $.inArray(item.id.toString(), delete_em ) == -1 )  {
-						return false;
-					} else {
-
-						return true;
-					}
+				$.each(saved_items, function(index, value) {
+					local_ids.push(value.id.toString());
 				});
+
+				var load_em = _.difference(online_ids, local_ids);
+
+				delete_em =  _.difference(local_ids, online_ids);
+
+				if ( load_em.length > 0 ) {
+
+					loadSavedItems(load_em);
+
+				}
+			
+				if ( delete_em.length > 0 ) {
+					saved_items = _.reject(saved_items, function(item) {
+	
+						if ( $.inArray(item.id.toString(), delete_em ) == -1 )  {
+							return false;
+						} else {
+							return true;
+						}
+					});
+				}
 			}
 			$.jStorage.set("fmjs-local-items", saved_items);
 
@@ -216,7 +237,7 @@ function refreshSavedItems() {
 			saved_items = [];
 			if ( data.saved_item_ids != "") {
 				var ids = data.saved_item_ids.split(',');
-				processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
+				//processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
 				loadSavedItems(ids);
 			}
 		}
@@ -249,16 +270,17 @@ function loadSavedItems(ids) {
 			$.each(data.items, function(index, value) {
 				//var local_items = $.jStorage.get("fmjs-local-items", []);
 				saved_items.push(value);
-				processLoadedSaveItems();
+				//processLoadedSaveItems();
 				//$.jStorage.set("fmjs-local-items", local_items);
 			});
+			
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	
 	if ( rest.length > 0 ) {
-		loadItems(rest);
+		loadSavedItems(rest);
 	} else {
-		
+		storeLoadedSavedItems();
 	}
 	
 }
@@ -330,13 +352,34 @@ function markKindlingRead() {
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
+function markAllRead() {
+	
+	$.each(items, function(index, value) {
+		value.is_read = 1;
+		session_read_items.push(value);
+	});
+	
+	items = [];
+	
+	
+	showHideLoader("start");
+	$.post(fm_url + "?api", { api_key: fm_key, mark: "group", as: "read", id: 0, before: last_fmjs_group_show }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			syncItems();
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
+
+
+
 function markGroupAsRead(group_id, ids) {
 	//var data     = $("#fmjs-group-content").data("fmjs-current-ids");
 	//var group_id = $("#fmjs-group-content").data("fmjs-current-group-id");
 	//$("#fmjs-group-content").removeData("fmjs-current-ids");
 	$("#fmjs-group-content").removeData("fmjs-current-group-id");
 	markGroupRead("group", getNumber(group_id) );//what, id, ids
-	//$.mobile.changePage("#page-home");
+	//$.mobile.navigate("#page-home");
 	window.history.back();
 	return false;
 }
@@ -380,7 +423,7 @@ function markGroupRead(what, id) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: what, as: "read", id: $.trim(_.escape(id)), before: last_fmjs_group_show  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-				//$.mobile.changePage("#page-home", {transition: "slide"});
+				//$.mobile.navigate("#page-home", {transition: "slide"});
 				syncUnreadItems("sync");
 				//window.history.back();
 			}
@@ -392,10 +435,10 @@ function markGroupRead(what, id) {
 function saveItem(id) {
 	//id = $.trim(id);
 	if ( $.trim(id) != "") {
-		console.log(id);
+		console.log("Save: " + id);
 		//var local_items = $.jStorage.get("fmjs-local-items", []);
 		var item = _.findWhere(items, {id: id});
-		console.log(id);
+		//console.log(id);
 		if ( item ) {
 			//
 			item.is_saved = 1;
@@ -414,9 +457,9 @@ function saveItem(id) {
 		$.post(fm_url + "?api", { api_key: fm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
-
+				console.log(data);
 			}
-		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); console.log("Save fail"); });
 	}
 }
 
@@ -493,9 +536,20 @@ function markFeedAsRead(feed_id, ids) {
 	$("#fmjs-feed-content").removeData("fmjs-feed-item-ids");
 	$("#fmjs-feed-content").removeData("fmjs-feed-id");
 	markGroupRead("feed", getNumber(feed_id), ids);//what, id, ids
-	//$.mobile.changePage("#page-home");
+	//$.mobile.navigate("#page-home");
 	window.history.back();
 	return false;
 }
 
+function refreshFavicons() {
+	showHideLoader("start");
+	$.post(fm_url + "?api&favicons", { api_key: fm_key }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			favicons = data.favicons;
+			$.jStorage.set("fmjs-favicons", favicons);
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+	return false;
+}
 
