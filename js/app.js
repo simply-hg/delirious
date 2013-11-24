@@ -880,6 +880,11 @@ function buildKindling() {
 		$("#dm-kindling-items").data('dm-ids', paginated_ids);
 		
 	}
+	// Fever<span style="color:red">°</span> Kindling
+	// dm-kindling-header
+	$("#dm-kindling-header").html('Fever<span style="color:red">°</span> Kindling (' + items.length + ')');
+	document.title = 'Fever° Kindling Items (' + items.length + ')';
+	$("#page-kindling").data("title", 'Fever° Kindling Items (' + items.length + ')');
 
 }
 
