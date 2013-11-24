@@ -1,3 +1,27 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2013 Hans-Georg Kluge
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 function initSettings() {
 	if ( fm_url != "" ) {
 		$("#fmjs-fever-url").val(fm_url);
@@ -18,19 +42,20 @@ function initSettings() {
 function start() {
 	// test-auth
 	console.log("start");
-	var fmjs_autosync = window.setInterval("autoSync()", 5*60*1000);
+
 	if ( fm_url == "" ) {
 		checkAuth(0);
 	} else {
 		started_items_load = true;
-
+		console.log("start aoi call");
 		showHideLoader("start");
 		$.post(fm_url + "?api", { api_key: fm_key }).done(function(data) {
 			showHideLoader("stop");
+			console.log("end api call");
 			if ( checkAuth(data.auth) ) {
 				auth_success = true;
 				// Get groups and build them
-				syncSavedItems("start");
+				console.log("first success");
 				showHideLoader("start");
 				$.post(fm_url + "?api&groups", { api_key: fm_key }).done(function(data) {
 					showHideLoader("stop");
@@ -64,13 +89,17 @@ function start() {
 									return 0;
 								});
 								syncUnreadItems("full");
+								syncSavedItems("start");
+								fmjs_autosync = window.setInterval("autoSync()", 5*60*1000);
 							}
 						});
 					}
 				}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 			}
+			
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
+	//buildPanel();
 }
 
 function saveSettings() {
@@ -108,7 +137,7 @@ function saveSettings() {
 
 
 	restart();
-	$.mobile.changePage("#page-home", {transition: transition});
+	$.mobile.navigate("#page-home", {transition: transition});
 	//$.mobile.silentScroll(0);
 	return false;	
 }
@@ -149,7 +178,7 @@ function logout() {
 function showSaved() {
 
 	$("#fmjs-saved-content").empty();
-	$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true"></ul>');
+	$("#fmjs-saved-content").append('<ul id="fmjs-saved-view" data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true"></ul>');
 	//var local_items = $.jStorage.get("fmjs-local-items", []);
 	var title = "Saved Items (" +  saved_items.length + ")";
 	$("#page-saved").data("title", title);
@@ -213,19 +242,19 @@ function showHot(page) {
 					item += '<p style="text-align:right;">posted by <span class="fmjs-link-'+_.escape(value.item_id)+'-favicon"></span> ';
 					item += '<span class="fmjs-link-'+_.escape(value.item_id)+'-feedname fmjs-hot-links">Feed</span></p>';
 					item += '<p style="text-align:right;">';
-					item += '<a href="'+_.escape(value.url)+'" target="_blank" data-role="button" data-theme="b" data-inline="true" data-mini="true" data-icon="grid">Open URL</a> ';
-					item += '<a href="" data-fmjs-fnc="toggle-save-item" data-fmjs-save-item-id="'+_.escape(value.item_id)+'" data-role="button" data-icon="plus" data-theme="b" data-inline="true" data-mini="true" class="fmjs-button fmjs-link-'+_.escape(value.item_id)+'-save-button">Save</a></p>';
+					item += '<a href="'+_.escape(value.url)+'" target="_blank" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="grid">Open URL</a> ';
+					item += '<a href="" data-fmjs-fnc="toggle-save-item" data-fmjs-save-item-id="'+_.escape(value.item_id)+'" data-role="button" data-icon="plus" data-theme="a" data-inline="true" data-mini="true" class="fmjs-button fmjs-link-'+_.escape(value.item_id)+'-save-button">Save</a></p>';
 				}
 			
 				// Now we show a list of all those items, linking to this hot item...
-				item += '<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-hot-content-link-'+_.escape(value.id)+'" class="fmjs-hot-linkbox">';
+				item += '<ul data-role="listview" data-theme="a" data-inset="true" id="fmjs-hot-content-link-'+_.escape(value.id)+'" class="fmjs-hot-linkbox">';
 
 				var links = value.item_ids.split(',');
 				for (var i=0, link_id; link_id=links[i]; i++) {
 					// item is "some", then "example", then "array"
 					// i is the index of item in the array
 					link_id = _.escape(link_id);
-					item += '<li><p><span class="fmjs-link-'+link_id+'-favicon"></span>';
+					item += '<li class="ui-li-has-icon"><span class="fmjs-link-'+link_id+'-favicon"></span><p>';
 					item += '<a href="" class="fmjs-link-'+link_id+' fmjs-button fmjs-hot-links fmjs-single-item-link-'+link_id+'" data-fmjs-show-item="'+_.escape(link_id)+'" data-fmjs-fnc="show-item">';
 					item += '<span class="fmjs-link-'+link_id+'-title fmjs-hot-links fmjs-single-item-link-'+link_id+'">Link: '+link_id+'</span>';
 					item += '</a> ';
@@ -235,7 +264,7 @@ function showHot(page) {
 				item += '</ul>';
 				//
 				item += '<div style="text-align:right">';
-				item += '<a href="" data-role="button" data-theme="b" data-inline="true" data-mini="true" data-icon="check" class="fmjs-button" data-fmjs-fnc="mark-items-read" data-fmjs-item-ids="'+_.escape(id_list)+'">Mark Links as read</a>';
+				item += '<a href="" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="check" class="fmjs-button" data-fmjs-fnc="mark-items-read" data-fmjs-item-ids="'+_.escape(id_list)+'">Mark Links as read</a>';
 				item += '</div>';
 				//
 				item += '</div>';
@@ -274,12 +303,12 @@ function showHot(page) {
 					//$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
 					//$("#page-hot").trigger("create");
 				//}
-				//$.mobile.changePage("#page-hot", {transition: transition});
+				//$.mobile.navigate("#page-hot", {transition: transition});
 				//$.mobile.silentScroll(0);
 				return false;
 			} else {
 				//$(".fmjs-to-listview").listview().removeClass("fmjs-to-listview");
-				$("#page-hot").trigger("create");
+				$("#page-hot").enhanceWithin();
 				return false;
 			}
 		}
@@ -312,40 +341,51 @@ function fillLinkPlaceholder(placeholder_ids, class_prefix) {
 	if ( rest.length > 0 ) {
 		fillLinkPlaceholder(rest, class_prefix);
 	} else {
-		$("#page-hot").trigger("create");
+		$("#page-hot").enhanceWithin();
 	}
 }
 
 function replacePlaceholder(value) {
 	var class_prefix = 'link';
-	$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
-
+	var feed_class="fmjs-is-read";
+	
+	if (html_content == "raw" ) {
+		$(".fmjs-"+class_prefix+"-"+value.id+"-title").html($.parseHTML(value.title));
+		$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
+	} else {
+		$(".fmjs-"+class_prefix+"-"+value.id+"-title").html(_.escape(value.title));
+		$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));	
+	}
+	
 	if ( value.is_read == 0 ) {
 		$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-unread");
+		feed_class="fmjs-is-unread";
 	} else {
 		$(".fmjs-"+class_prefix+"-"+value.id+"-title").addClass("fmjs-item-is-read");
 	}
+	
+	var feedname = _.findWhere(feeds, {id: value.feed_id});
+	$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="" class="fmjs-button '+feed_class+'" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feedname.id)+'">'+_.escape(feedname.title)+'</a>');
+	
 
-	$(".fmjs-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
 	
 	if ( value.is_saved == 1 ) {
 		console.log("saved");
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').children(".ui-btn-inner").children(".ui-btn-text").html("Unsave");
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').text("Unsave");
 		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "minus" });
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");	
+		//$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");	
 
 	} else {
 		console.log("unsaved");
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').children(".ui-btn-inner").children(".ui-btn-text").html("Save");
+		$('.fmjs-link-'+_.escape(value.id)+'-save-button').text("Save");
 		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "plus" });
-		$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");
+		//$('.fmjs-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");
 	}
 	
-	var feedname = _.findWhere(feeds, {id: value.feed_id});
-	$(".fmjs-"+class_prefix+"-"+value.id+"-feedname").html('<a href="" class="fmjs-button" data-fmjs-fnc="show-feed" data-fmjs-show-feed="'+_.escape(feedname.id)+'">'+_.escape(feedname.title)+'</a>');
 
-	var favicon = getFavicon(feedname);
-	$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").append(favicon).removeClass("fmjs-"+class_prefix+"-"+value.id+"-favicon");
+
+	var favicon = getFavicon(feedname, "ui-li-icon fmjs-favicon");
+	$(".fmjs-"+class_prefix+"-"+value.id+"-favicon").before(favicon).removeClass("fmjs-"+class_prefix+"-"+value.id+"-favicon");
 	return true;
 }
 
@@ -356,7 +396,7 @@ function buildGroup(id) {
 	$("#fmjs-group-content").empty();
 	$("#fmjs-group-more").empty();
 	$("#fmjs-group-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-fnc="show-feeds-group" data-fmjs-group-id="'+id+'" id="fmjs-group-show-feeds" class="fmjs-button">Show Feeds of Group</a></div>');
-	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
+	$("#fmjs-group-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-group-view"></ul>');
 	
 	// get group items
 	var group = _.findWhere(groups, {id: id});
@@ -422,7 +462,7 @@ function buildGroup(id) {
 	$("#fmjs-mark-group-read").data("ffmjs-group-id", id);
 	// build part of group
 	if (called_group == true ) {
-		$("#page-group").trigger("create");
+		$("#page-group").enhanceWithin();
 	}
 }
 
@@ -453,7 +493,7 @@ function buildFeed(id) {
 	$("#fmjs-feed-content").empty();
 	$("#fmjs-feed-more").empty();
 
-	$("#fmjs-feed-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feed-view"></ul>');
+	$("#fmjs-feed-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-feed-view"></ul>');
 	
 	// get group items
 	var feed_items = _.where(items, {feed_id: id});
@@ -529,17 +569,7 @@ function showFeed(id) {
 }
 
 
-function refreshFavicons() {
-	showHideLoader("start");
-	$.post(fm_url + "?api&favicons", { api_key: fm_key }).done(function(data) {
-		showHideLoader("stop");
-		if ( checkAuth(data.auth) ) {
-			favicons = data.favicons;
-			$.jStorage.set("fmjs-favicons", favicons);
-		}
-	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-	return false;
-}
+
 
 function showSingleItem(id) {
 	var item = _.findWhere(items, {id: getNumber(id)});
@@ -612,10 +642,10 @@ function renderSingleItem(data) {
 	markItemsRead(data.id.toString());
 	if ( data.is_saved == 1 ) {
 
-		$("#fmjs-single-btn-save .ui-btn-text").html("Unsave");
+		$("#fmjs-single-btn-save").text("Unsave");
 		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "minus" });		
 	} else {
-		$("#fmjs-single-btn-save .ui-btn-text").html("Save");
+		$("#fmjs-single-btn-save").text("Save");
 		$("#fmjs-single-btn-save" ).buttonMarkup({ icon: "plus" });	
 	}
 	$("#fmjs-single-sharing-buttons").empty();
@@ -674,38 +704,10 @@ function renderSingleItem(data) {
 	return false;
 }
 
-function renderDate(how, timestamp) {
-	var now  = new Date();
-	var date = new Date(timestamp*1000);
-	var month =  date.getMonth();
-	month++;
-	var minutes = date.getMinutes();
-	if (minutes < 10 ) {
-		minutes = "0" + minutes;
-	}
-	
-	if ( how == "long") {
-		return date.getDate() + '.' + month + '.' + date.getFullYear() + ' @ ' + date.getHours()+ ':' + minutes;
-	}
-	
-	if ( how == "date" ) {
-		return date.getDate() + '.' + month + '.' + date.getFullYear();
-	}
-	
-	if ( how == "time" ) {
-		return date.getHours()+ ':' + minutes;
-	}
-	
-	if ( how == "relative-date" ) {
-		return '';
-	}
 
-	if ( how == "relative-time" ) {
-		return '';
-	}
-}
 
 function checkAuth(auth) {
+	console.log("checking auth");
 	if ( auth == 1 ) {
 		return true;
 	} else {
@@ -714,12 +716,12 @@ function checkAuth(auth) {
 			// a stop or anything else, just log it, and don't do anything at all.
 			// an alert would be ok too, but this might be unwise, as 
 			// initial loading can happen quite often...
-			//console.log("Probably stopped or network issue.");
+			console.log("Probably stopped or network issue.");
 		} else {
 			//console.log("Forbidden");
 			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");	
 			initSettings();
-			$.mobile.changePage("#page-settings", {transition: transition});
+			$.mobile.navigate("#page-settings", {transition: transition});
 			//$.mobile.silentScroll(0);
 			return false;		
 		}
@@ -750,7 +752,7 @@ function getUnreadSparks() {
 function showSparks() {
 		last_fmjs_group_show = now();
 	$("#fmjs-sparks-content").empty();
-	$("#fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" id="fmjs-sparks-view"></ul>');
+	$("#fmjs-sparks-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" id="fmjs-sparks-view"></ul>');
 
 	var sparks = getUnreadSparks();
 	item_ids_in_sparks = "";
@@ -770,7 +772,7 @@ function showSparks() {
 		//$("#fmjs-sparks-view").listview();
 		//$("#page-sparks").trigger("create");
 	}
-	$.mobile.changePage("#page-sparks", {transition: transition});
+	$.mobile.navigate("#page-sparks", {transition: transition});
 	//$.mobile.silentScroll(0);
 	return false;
 
@@ -784,7 +786,7 @@ function showAllFeeds() {
 
 function buildAllFeeds() {
 	$("#fmjs-all-feeds-content").empty();
-	$("#fmjs-all-feeds-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-all-feeds-view"></ul>');
+	$("#fmjs-all-feeds-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-all-feeds-view"></ul>');
 	countUnreadItems();
 	//console.log(unread_counter);
 	//console.log("build all feeds");
@@ -807,7 +809,7 @@ function buildAllFeeds() {
 		
 	}
 	//$("#page-all-feeds").trigger("create");
-	//$.mobile.changePage("#page-all-feeds", {transition: transition});
+	//$.mobile.navigate("#page-all-feeds", {transition: transition});
 	//$.mobile.silentScroll(0);
 	return false;
 }
@@ -827,7 +829,7 @@ function showHideLoader(state) {
 		$.mobile.loading( "show", {
 			text: "Synchronizing data...",
 			textVisible: true,
-			theme: "b",
+			theme: "a",
 		});
 	}
 }
@@ -835,7 +837,7 @@ function showHideLoader(state) {
 function buildKindling() {
 	last_fmjs_group_show = now();
 	$("#fmjs-kindling-content").empty();
-	$("#fmjs-kindling-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-kindling-view"></ul>');
+	$("#fmjs-kindling-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-kindling-view"></ul>');
 	$("#fmjs-kindling-more").empty();
 	paginated_ids = '';
 	console.log("check2");
@@ -860,10 +862,14 @@ function buildKindling() {
 		
 		if ( items.length > getNumber(paginate_items) ) {
 			var btn_text = "Show More";
+			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
 		} else {
 			var btn_text = "Mark as Read";
+			$("#fmjs-kindling-more").append('<button data-fmjs-fnc="mark-kindling-read" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
 		}
-		$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
+		
+		//$("#fmjs-kindling-more").append('<button data-fmjs-fnc="show-kindling-more" class="fmjs-button" data-fmjs-ids="'+paginated_ids+'">'+btn_text+'</button>');
+		
 		$("#fmjs-kindling-items").data('fmjs-ids', paginated_ids);
 		
 	}
@@ -913,7 +919,7 @@ function showFeedsInGroup(id) {
 	last_fmjs_group_show = now();
 	$("#fmjs-feedgroup-content").empty();
 	$("#fmjs-feedgroup-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-fmjs-show-group="'+id+'" class="fmjs-button" data-fmjs-fnc="show-group" id="fmjs-feedgroup-show-all">Show All Items</a></div>');
-	$("#fmjs-feedgroup-content").append('<ul data-role="listview" data-divider-theme="d" data-inset="true" data-filter="true" id="fmjs-feedgroup-view"></ul>');
+	$("#fmjs-feedgroup-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="fmjs-feedgroup-view"></ul>');
 	
 	var group = _.findWhere(groups, {id: getNumber(id)});
 	var unread = countUnreadInGroup(id);
@@ -956,20 +962,12 @@ function showFeedsInGroup(id) {
 }
 
 
-function sortHelper(a,b) {
-	var str_a = a.title.toLowerCase();
-	var str_b = b.title.toLowerCase();
-	if (str_a < str_b) {
-		return -1;
-	}
-	if (str_a > str_b) {
-		return 1;
-	}
-	return 0;
-}
 
 function renderListviewItemFeed(feed, show_all) {
 	//var feed = _.findWhere(feeds, {id: parseInt(feed_id, 10)});
+	if ( _.isUndefined(feed) ) {
+		return '';
+	}
 	var unread = getUnreadCountFeed(feed.id);//_.where(items, {is_read:0, feed_id:feed.id});
 	
 	if ( unread == 0 ) {
@@ -993,7 +991,7 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 	// creates the whole li-string...
 	var li, css_classes;
 	
-	li  = '<li data-theme="c">';
+	li  = '<li data-theme="a">';
 
 	var feed = _.findWhere(feeds, {id: item.feed_id});
 	li += getFavicon(feed, "fmjs-favicon ui-li-icon");
@@ -1023,14 +1021,16 @@ function prepareHome() {
 	// Which Widgets to display?
 	
 	$.each(widgets, function(index, value) {
-		$("#fmjs-widget-place-"+value.place).html( eval(value.fnc) );
+		var result = '';
+		$("#fmjs-widget-place-"+value.place).html(eval(value.fnc));
 	});
-	$("#page-home").trigger("create");
+
+	$("#page-home").enhanceWithin();
 }
 
 function showHome() {
 
-	$.mobile.changePage("#page-home", {transition: transition});
+	$.mobile.navigate("#page-home", {transition: transition});
 	$.mobile.silentScroll(0);
 	return false;
 }
@@ -1082,7 +1082,13 @@ function countUnreadInGroup(id) {
 	var group = _.findWhere(groups, {id: id});
 	var ids_to_show = _.findWhere(feeds_groups, {group_id: id});
 	
+	if ( _.isUndefined(ids_to_show) ) {
+		// No feeds in it...
+		return 0;
+	}
+	
 	count_feeds_to_show = ids_to_show.feed_ids.split(",");
+
 	count_feeds_for_group = [];
 	$.each(count_feeds_to_show, function(index, value) {
 		count_feeds_for_group.push(parseInt(value, 10));
@@ -1141,35 +1147,18 @@ function saveHomescreen() {
 
 }
 
-function getNumber(val) {
-	var type = $.type(val);
-	if ( type == "number" ) {
-		return val;
-	}
-	if ( type == "string" ) {
-		return parseInt(val, 10);
-	}
-}
-
-function getString(val) {
-	var type = $.type(val);
-	if ( type == "number" ) {
-		return val.toString();
-	}
-	if ( type == "string" ) {
-		return val;
-	}
-}
 
 function countUnreadItems() {
 	unread_counter = {};
-	//alert("tir");
+	console.log("counting unread items");
 	
 	$.each(items, function(key, value) {
-		if ( unread_counter["feed-"+value.feed_id] ) {
-			unread_counter["feed-"+value.feed_id]++;
-		} else {
-			unread_counter["feed-"+value.feed_id] = 1;
+		if ( value.is_read == 0 ) {
+			if ( unread_counter["feed-"+value.feed_id] ) {
+				unread_counter["feed-"+value.feed_id]++;
+			} else {
+				unread_counter["feed-"+value.feed_id] = 1;
+			}
 		}
 		
 	});
@@ -1185,5 +1174,41 @@ function getUnreadCountFeed(feed_id) {
 	} else {
 		return 0;
 	}
+}
+
+function buildPanel() {
+	console.log("panel to be opened");
+	return;
+	//countUnreadItems();
+	$("#fmjs-panel-content").empty();
+	$("#fmjs-panel-content").append('<h3>Fever<span style="color:red">°</span></h3>');
+	$("#fmjs-panel-content").append('<a href="" class="fmjs-button ui-btn" data-fmjs-fnc="show-hot">Show Hot Items</a>');
+	// Show personal groups
+
+	panel_custom_groups = '<ul data-role="listview" data-theme="b" data-inset="false">';
+
+	$.each( groups, function(index, value) {
+		var unread = countUnreadInGroup(value.id);
+		
+		if ( unread == 0 ) {
+			if ( show_empty_groups == "true") {
+				panel_custom_groups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
+			}
+		} else {
+			panel_custom_groups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
+		}
+		
+		
+	});
+	panel_custom_groups += '</ul>';
+	
+	$("#fmjs-panel-content").append(panel_custom_groups);
+	// Show system groups
+	
+	
+	//$("#fmjs-panel").panel();
+	//$("#fmjs-panel-content").enhanceWithin();
 }
 
