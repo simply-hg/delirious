@@ -1,3 +1,27 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2013 Hans-Georg Kluge
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 widget_places = ["a1", "b1", "a2", "b2", "a3", "b3", "a4", "b4", "a5", "b5", "a6", "b6", "a7", "b7", "a8", "b8", "a9", "b9"];
 var defined_widgets = [
 	// Some Buttons:
@@ -21,6 +45,9 @@ var defined_widgets = [
 	{ fnc: "widgetSystemGroups", title: "Show System Groups", desc: "" },
 	{ fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: "" }
 ];
+function parseWidget(widget) {
+	return '<div class="fmjs-widget-container">'+widget+'</div>';
+}
 function widgetEmpty() {
 	return '';
 }
@@ -28,45 +55,51 @@ function widgetSystemGroups() {
 	var sysgroups = '';
 
 	sysgroups += '<h2>Fever<span style="color:red">°</span> Groups</h2>';
-	sysgroups += '<ul data-role="listview" data-theme="a" data-inset="true" style="margin-top:-10px;">';
+	sysgroups += '<ul data-role="listview" data-theme="a" data-inset="true">'; //  style="margin-top:-10px;"
 
-	sysgroups += '<li data-theme="d"><a href="" class="fmjs-button" data-fmjs-fnc="show-hot">Hot</a></li>';
-	sysgroups += '<li data-theme="d"><a href="" class="fmjs-button" data-fmjs-fnc="show-kindling">Kindling';
+	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-hot">Hot</a></li>';
+
+	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-kindling">Kindling';
 	var unread_items = _.where(items, {is_read:0});
+
 	sysgroups +=    '<span class="ui-li-count">'+unread_items.length+'</span>'+'</a></li>';
-	sysgroups += '<li data-theme="d"><a href="" class="fmjs-button" data-fmjs-fnc="show-sparks">Sparks';
+	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-sparks">Sparks';
+
 	var unread_sparks = getUnreadSparks();
 	sysgroups += 	'<span class="ui-li-count">'+unread_sparks.counter+'</span>'+'</a></li>';
-	sysgroups += '<li data-theme="d"><a href="" class="fmjs-button" data-fmjs-fnc="show-saved">Saved items</a>';
-	sysgroups +=    '<span class="ui-li-count">'+saved_items.length+'</span>'+'</li>';
-	sysgroups += '<li data-theme="d"><a href="" class="fmjs-button" data-fmjs-fnc="show-all-feeds">All Feeds';
+
+	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-saved">Saved items';
+	sysgroups +=    '<span class="ui-li-count">'+saved_items.length+'</span>'+'</a></li>';
+
+	sysgroups += '<li><a href="" class="fmjs-button" data-fmjs-fnc="show-all-feeds">All Feeds';
 	sysgroups +=    '<span class="ui-li-count">'+feeds.length+'</span>'+'</a></li>';
 	sysgroups += '</ul>';
 	sysgroups += '<p>Last Fever<span style="color:red">°</span> Refresh @ '+renderDate("time", last_fever_refresh)+'</p>';
-	return '<div class="fmjs-widget-container">' + sysgroups + '</div>';
+	return parseWidget(sysgroups);
 }
 
 function widgetCustomGroups() {
+
 	panel_custom_groups = '<h2>My Groups</h2>';
-	panel_custom_groups += '<ul data-role="listview" data-filter-theme="d" data-divider-theme="d" data-theme="d" data-inset="true" data-filter="true" id="fmjs-groups" class="fmjs-home-views">';
+	panel_custom_groups += '<ul data-role="listview" data-filter-theme="a" data-divider-theme="a" data-theme="a" data-inset="true" data-filter="true" id="fmjs-groups" class="fmjs-home-views">';
 
 	$.each( groups, function(index, value) {
 		var unread = countUnreadInGroup(value.id);
 		
 		if ( unread == 0 ) {
 			if ( show_empty_groups == "true") {
-				panel_custom_groups += '<li data-theme="d" id="fmjs-group-'+value.id+'"><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'</a>';
-			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</li>';
+				panel_custom_groups += '<li id="fmjs-group-'+value.id+'"><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 			}
 		} else {
-			panel_custom_groups += '<li data-theme="d" id="fmjs-group-'+value.id+'"><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'</a>';
-			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</li>';
+			panel_custom_groups += '<li id="fmjs-group-'+value.id+'"><a href="" class="fmjs-button" data-fmjs-fnc="show-group-selector" data-fmjs-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
+			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 		}
 		
 		
 	});
 	panel_custom_groups += '</ul>';
-	return '<div class="fmjs-widget-container">' + panel_custom_groups + '</div>';
+	return parseWidget(panel_custom_groups);
 }
 
 function widgetHotView() {
@@ -85,19 +118,19 @@ function widgetShowFavGroups() {
 		var unread = countUnreadInGroup(value);
 		if ( unread > 0 ) {
 			var group = _.findWhere(groups, {id:value});
-			content_ShowFavGroups += '<li data-theme="d">';
-			content_ShowFavGroups += '<a href="" data-fmjs-show-group="'+group.id+'" class="fmjs-button" data-fmjs-fnc="show-group-selector">'+ _.escape(group.title) +'</a>';
-			content_ShowFavGroups += '<span class="ui-li-count">'+unread+'</span>'+'</li>';
+			content_ShowFavGroups += '<li data-theme="a">';
+			content_ShowFavGroups += '<a href="" data-fmjs-show-group="'+group.id+'" class="fmjs-button" data-fmjs-fnc="show-group-selector">'+ _.escape(group.title) +'';
+			content_ShowFavGroups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
 		}  
 	});
 	
 	if ( content_ShowFavGroups ) {
-		content_ShowFavGroups = '<ul data-role="listview" data-theme="d" data-inset="true">' + content_ShowFavGroups;
+		content_ShowFavGroups = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavGroups;
 		content_ShowFavGroups += '</ul>';
 	} else {
 		content_ShowFavGroups = '<p>No new items in your favourite groups.</p>';
 	}
-	return '<div class="fmjs-widget-container">' + content_ShowFavGroups + '</div>';
+	return parseWidget(content_ShowFavGroups);
 }
 
 
@@ -113,57 +146,57 @@ function widgetShowFavFeeds() {
 		content_ShowFavFeeds += renderListviewItemFeed(feed, false);
 	});
 	if ( content_ShowFavFeeds ) {
-		res_ShowFavFeeds = '<ul data-role="listview" data-theme="d" data-inset="true">' + content_ShowFavFeeds;
+		res_ShowFavFeeds = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavFeeds;
 		res_ShowFavFeeds += '</ul>';
 	} else {
 		res_ShowFavFeeds = '<p>No new items in your favourite feeds.</p>';
 	}
-	return '<div class="fmjs-widget-container">' + res_ShowFavFeeds + '</div>'; 
+	return parseWidget(res_ShowFavFeeds); 
 }
 
 
 /* Some simple Buttons... */ 
 
 function widgetButtonSparks() {
-	return '<a href="" data-role="button"class="fmjs-button"  data-fmjs-fnc="show-sparks">Show Sparks</a>';
+	return parseWidget('<a href="" data-role="button"class="fmjs-button"  data-fmjs-fnc="show-sparks">Show Sparks</a>');
 }
 
 function widgetButtonKindling() {
-	return '<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-kindling">Show Kindling</a>';
+	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-kindling">Show Kindling</a>');
 }
 
 function widgetButtonSaved() {
-	return '<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-saved">Show Saved</a>';
+	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-saved">Show Saved</a>');
 }
 
 function widgetButtonHotView() {
-	return '<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-hot">Show Hot Items</a>';
+	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-hot">Show Hot Items</a>');
 }
 function widgetButtonAllFeeds() {
-	return '<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-all-feeds">Show All Feeds</a>';
+	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-all-feeds">Show All Feeds</a>');
 }
 function widgetButtonGroups() {
-	return '<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-groups">Show Groups</a>';
+	return parseWidget('<a href="" data-role="button" class="fmjs-button" data-fmjs-fnc="show-groups">Show Groups</a>');
 }
 
 // ------------------------------
 
 function widgetButtonSettings() {
-	return '<a href="#page-settings" data-icon="gear" data-role="button">Edit Settings</a>';
+	return parseWidget('<a href="#page-settings" data-icon="gear" data-role="button">Edit Settings</a>');
 }
 
 function widgetButtonReloadFavicons() {
-	return '<a href="" data-role="button" data-icon="refresh" class="fmjs-button" data-fmjs-fnc="refresh-favicons">Reload Favicons</a>';
+	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="fmjs-button" data-fmjs-fnc="refresh-favicons">Reload Favicons</a>');
 }
 
 function widgetButtonEditHomescreen() {
-	return '<a href="" data-role="button" data-icon="grid" class="fmjs-button" data-fmjs-fnc="show-edit-homescreen">Edit Homescreen</a>';
+	return parseWidget('<a href="" data-role="button" data-icon="grid" class="fmjs-button" data-fmjs-fnc="show-edit-homescreen">Edit Homescreen</a>');
 }
 
 function widgetButtonSyncItems() {
-	return '<a href="" data-role="button" data-icon="refresh" class="fmjs-button" data-fmjs-fnc="sync-items">Sync with Fever<span style="color:red;">°</span></a>';
+	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="fmjs-button" data-fmjs-fnc="sync-items">Sync with Fever<span style="color:red;">°</span></a>');
 }
 
 function widgetButtonMarkAllRead() {
-	return '<a href="" data-role="button" data-icon="check" class="fmjs-button" data-fmjs-fnc="mark-kindling-read">Mark all Read</a>';
+	return parseWidget('<a href="" data-role="button" data-icon="check" class="fmjs-button" data-fmjs-fnc="mark-all-read">Mark all Read</a>');
 }
