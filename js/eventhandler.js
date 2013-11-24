@@ -1,5 +1,29 @@
-$(document).ready(function() {
-	start();
+/*
+The MIT License (MIT)
+
+Copyright (c) 2013 Hans-Georg Kluge
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+function registerEventHandlers() { 
+
 	$("#fmjs-homescreen-message").on("vclick", function(e) { e.stopPropagation(); $(this).empty(); });
 	
 	$(document).on("pagecreate", ".fmjs-page", function(e) {
@@ -8,9 +32,29 @@ $(document).ready(function() {
 	$(document).on("pageinit", ".fmjs-page", function(e) {
 		console.log("pageinit: " + $(this).attr("id") );
 	});
-	$(document).on("pagebeforeshow", ".fmjs-page", function(e) {
+	//$( "#fmjs-panel" ).on( "panelbeforeopen", function( event, ui ) {
+	//	buildPanel();
+	//});
+	
+	$(document).on("pagebeforeshow", ".fmjs-page", function(e, o) {
 		
 		id = $(this).attr("id");
+		
+		if ( _.isUndefined( $(o.prevPage).attr("id") ) ) {
+			console.log("prev page is empty, startup assumed");
+			if ( id != "page-home" ) {
+				console.log("show home instead");
+				showHome();
+			} else {
+				// home is shown...
+				// return and don't do anything, because
+				// home is created after item load
+				return;
+			}
+		} else {
+			console.log("from: " + $(o.prevPage).attr("id") );
+		}
+		
 		console.log("pagebeforeshow: " + $(this).attr("id") );
 		//console.log("Items loaded: " + items_loaded);
 		//console.log("Items load started: " + started_items_load);
@@ -40,15 +84,10 @@ $(document).ready(function() {
 			case "page-single":
 				var id = $( this ).data("fmjs-item-id");
 				console.log("single-id: "+id);
-				if ( !id ) {
-					console.log("no id");
-					//restart();
-					//showHome();
-				}
 			break;
 		}
 		
-		$(this).trigger("create");
+		$(this).enhanceWithin();
 	});
 	
 	$ ( document ).on("vclick", ".fmjs-button", function(e) {
@@ -63,12 +102,12 @@ $(document).ready(function() {
 				$( "#page-single" ).data("fmjs-item-id", id);
 				//showSingleItem(id);
 				showSingleItem(id);
-				$.mobile.changePage("#page-single", {transition: transition});
+				$.mobile.navigate("#page-single", {transition: transition});
 			break;
 			case "show-group":
 				var id = $(this).data("fmjs-show-group");
 				showGroup(id);
-				$.mobile.changePage("#page-group", {transition: transition});
+				$.mobile.navigate("#page-group", {transition: transition});
 			break;
 			case "show-group-selector":
 				var id = $(this).data("fmjs-show-group");
@@ -76,11 +115,11 @@ $(document).ready(function() {
 					// feeds 
 					//var id = $(this).data("fmjs-group-id");
 					$("#page-feedgroup").data("fmjs-group-id", id);
-					$.mobile.changePage("#page-feedgroup", {transition: transition});
+					$.mobile.navigate("#page-feedgroup", {transition: transition});
 				} else {
 					// items
 					showGroup(id);
-					$.mobile.changePage("#page-group", {transition: transition});
+					$.mobile.navigate("#page-group", {transition: transition});
 				}
 				//showGroupSelector(id);
 			break;
@@ -88,15 +127,16 @@ $(document).ready(function() {
 				var id = $(this).data("fmjs-show-feed");
 				$("#page-feed").data("fmjs-show-feed-id", id);
 				showFeed(id);
-				$.mobile.changePage("#page-feed", {transition: transition});
+				$.mobile.navigate("#page-feed", {transition: transition});
 				
 			break;
 			case "show-all-feeds":
-				$.mobile.changePage("#page-all-feeds", {transition: transition});
+				$.mobile.navigate("#page-all-feeds", {transition: transition});
 			break;
 			case "show-hot":
+				//$("#fmjs-panel").panel( "close" );
 				showHot(1);
-				$.mobile.changePage("#page-hot", {transition: transition});
+				$.mobile.navigate("#page-hot", {transition: transition});
 			break;
 			case "show-hot-more":
 				var page = $(this).data("fmjs-hot-page");
@@ -110,21 +150,21 @@ $(document).ready(function() {
 				
 				//console.log( data );
 				buildKindling();
-				$("#page-kindling").trigger("create");
+				$("#page-kindling").enhanceWithin();
 				$.mobile.silentScroll(0);
 				
 			break;
 			case "show-group-more":
 				markItemsRead( $(this).data("fmjs-item-ids") );
 				buildGroup( $(this).data("fmjs-group-id") );
-				$("#page-group").trigger("create");
+				$("#page-group").enhanceWithin();
 				$.mobile.silentScroll(0);
 				
 			break;
 			case "show-feed-more":
 				markItemsRead( $(this).data("fmjs-item-ids") );
 				buildFeed( $(this).data("fmjs-feed-id") );
-				$("#page-feed").trigger("create");
+				$("#page-feed").enhanceWithin();
 				$.mobile.silentScroll(0);
 			break;
 			case "show-home":
@@ -137,7 +177,7 @@ $(document).ready(function() {
 				window.history.back();
 			break;
 			case "show-groups":
-				$.mobile.changePage("#page-groups", {transition: transition});
+				$.mobile.navigate("#page-groups", {transition: transition});
 			break;
 			case "sync-items":
 				syncItems();
@@ -147,7 +187,7 @@ $(document).ready(function() {
 			break;
 			case "show-kindling":
 				showKindling();
-				$.mobile.changePage("#page-kindling", {transition: transition});
+				$.mobile.navigate("#page-kindling", {transition: transition});
 			break;
 			case "refresh-favicons":
 				refreshFavicons();
@@ -159,10 +199,10 @@ $(document).ready(function() {
 				refreshItems();
 			break;
 			case "show-edit-homescreen":
-				$.mobile.changePage("#page-edit-homescreen", {transition: transition});
+				$.mobile.navigate("#page-edit-homescreen", {transition: transition});
 			break;
 			case "show-saved":
-				$.mobile.changePage("#page-saved", {transition: transition});
+				$.mobile.navigate("#page-saved", {transition: transition});
 			break;
 			case "mark-items-read":
 				var ids = $(this).data("fmjs-item-ids");
@@ -170,6 +210,9 @@ $(document).ready(function() {
 			break;
 			case "mark-kindling-read":
 				markKindlingRead();
+			break;
+			case "mark-all-read":
+				markAllRead();
 			break;
 			case "mark-group-read":
 				//var ids = $(this).data("fmjs-item-ids");
@@ -206,18 +249,18 @@ $(document).ready(function() {
 				
 				var save_state = isItemSaved(id);
 				
-				console.log(save_state);
+				console.log("Save state id: "+ id + " -> " + save_state);
 				if ( !save_state ) {
-					$(this).children(".ui-btn-inner").children(".ui-btn-text").html("Unsave");
-					$(this).buttonMarkup();
+					$(this).text("Unsave");
+					//$(this).buttonMarkup();
 					$(this).buttonMarkup({ icon: "minus" });
-					$(this).buttonMarkup("refresh");
+					//$(this).buttonMarkup("refresh");
 					saveCurrentItem(id);
 				} else {
-					$(this).children(".ui-btn-inner").children(".ui-btn-text").html("Save");
-					$(this).buttonMarkup();
+					$(this).text("Save");
+					//$(this).buttonMarkup();
 					$(this).buttonMarkup({ icon: "plus" });
-					$(this).buttonMarkup("refresh");
+					//$(this).buttonMarkup("refresh");
 					unsaveCurrentItem(id);
 				}
 				//toggleSaveState(id);
@@ -225,7 +268,7 @@ $(document).ready(function() {
 			case "show-feeds-group":
 				var id = $(this).data("fmjs-group-id");
 				$("#page-feedgroup").data("fmjs-group-id", id);
-				$.mobile.changePage("#page-feedgroup", {transition: transition});
+				$.mobile.navigate("#page-feedgroup", {transition: transition});
 			break;
 			case "":
 			break;
@@ -243,4 +286,4 @@ $(document).ready(function() {
 			break;
 		}
 	});
-});
+}
