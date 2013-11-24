@@ -110,6 +110,7 @@ function saveSettings() {
 	url           = $.trim($("#dm-fever-url").val());
 	user          = $.trim($("#dm-e-mail").val());
 	password      = $.trim($("#dm-password").val());
+	$("#dm-password").val("");
 	transition    = $('input[name=dm-setting-transitions]:checked').val();
 	html_content  = $('input[name=dm-setting-html-content]:checked').val();
 	groupview     = $('input[name=dm-setting-groupview]:checked').val();
@@ -120,22 +121,24 @@ function saveSettings() {
 	page          = $('input[name=dm-setting-paginate-items]:checked').val();
 	
 
-		$.jStorage.set("dm-url", url);
+	$.jStorage.set("dm-url", url);
+	
+	if ( password != "" ) {
+		key = MD5(user + ":" + password);
+		password = "";
+		$.jStorage.set("dm-user", user);
+		$.jStorage.set("dm-key", key);
 		
-		if ( password != "" ) {
-			key = MD5(user + ":" + password);
-			$.jStorage.set("dm-user", user);
-			$.jStorage.set("dm-key", key);
-		}
-		
-		$.jStorage.set("dm-transition", transition);
-		$.jStorage.set("dm-html-content", html_content);
-		$.jStorage.set("dm-groupview", groupview);
-		$.jStorage.set("dm-show-empty-groups", emptygroups);
-		$.jStorage.set("dm-sharing", share_buttons);
-		$.jStorage.set("dm-sharing-msg", sharing_text);
-		$.jStorage.set("dm-order-items", item_order);
-		$.jStorage.set("dm-paginate-items", page);
+	}
+	
+	$.jStorage.set("dm-transition", transition);
+	$.jStorage.set("dm-html-content", html_content);
+	$.jStorage.set("dm-groupview", groupview);
+	$.jStorage.set("dm-show-empty-groups", emptygroups);
+	$.jStorage.set("dm-sharing", share_buttons);
+	$.jStorage.set("dm-sharing-msg", sharing_text);
+	$.jStorage.set("dm-order-items", item_order);
+	$.jStorage.set("dm-paginate-items", page);
 
 
 	restart();
