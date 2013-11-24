@@ -882,7 +882,7 @@ function buildKindling() {
 	}
 	// Fever<span style="color:red">°</span> Kindling
 	// dm-kindling-header
-	$("#dm-kindling-header").html('Fever<span style="color:red">°</span> Kindling (' + items.length + ')');
+	$("#dm-kindling-header").html('Fever<span style="color:red">°</span> Kindling Items (' + items.length + ')');
 	document.title = 'Fever° Kindling Items (' + items.length + ')';
 	$("#page-kindling").data("title", 'Fever° Kindling Items (' + items.length + ')');
 

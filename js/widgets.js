@@ -68,7 +68,7 @@ function widgetSystemGroups() {
 	var unread_sparks = getUnreadSparks();
 	sysgroups += 	'<span class="ui-li-count">'+unread_sparks.counter+'</span>'+'</a></li>';
 
-	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-saved">Saved items';
+	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-saved">Saved Items';
 	sysgroups +=    '<span class="ui-li-count">'+saved_items.length+'</span>'+'</a></li>';
 
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-all-feeds">All Feeds';
