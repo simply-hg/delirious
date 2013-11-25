@@ -314,28 +314,20 @@
 			<a href="" data-theme="b" class="dm-button ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="save-settings">Save</a>
 		</div>
 		<div data-role="content">
+		
 			<h1>Authentification</h1>
-			<div data-role="fieldcontain">
-				<fieldset data-role="controlgroup">
-					<label for="dm-fever-url">Fever<span style="color:red">°</span>-URL</label>
-					<input name="dm-fever-url" id="dm-fever-url" placeholder="http://www.host.example/path/to/fever/" value="" type="url" />
-				</fieldset>
-			</div>
+
+			<label for="dm-fever-url">Fever<span style="color:red">°</span>-URL:</label>
+			<input name="dm-fever-url" id="dm-fever-url" placeholder="http://www.host.example/path/to/fever/" value="" type="url" />
+
+			<label for="dm-e-mail">E-Mail / Username:</label>
+			<input name="dm-e-mail" id="dm-e-mail" placeholder="user@example.com" value="" type="email" />
 			
-			<div data-role="fieldcontain">
-				<fieldset data-role="controlgroup">
-					<label for="dm-e-mail">E-Mail / Username</label>
-					<input name="dm-e-mail" id="dm-e-mail" placeholder="user@example.com" value="" type="email" />
-				</fieldset>
-			</div>
-			
-			<div data-role="fieldcontain">
-				<fieldset data-role="controlgroup">
-					<label for="dm-password">Password</label>
-					<input name="dm-password" id="dm-password" placeholder="" value="" type="password" />
-				</fieldset>
-			</div>
+			<label for="dm-password">Password:</label>
+			<input name="dm-password" id="dm-password" placeholder="" value="" type="password" />
+
 			<p><strong>Please note</strong>: In order to change your E-Mail, you also need to provide your password, because your login changes with your e-mail. Your password is <strong>not stored</strong> on your device.</p>
+		
 			<h1>Page transitions</h1>
 
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-transitions-group">
@@ -388,7 +380,7 @@
 				</label>
 			</fieldset>			
 			
-			<h1>Show empty groups in overview</h1>
+			<h1>Show Empty Groups in Overview</h1>
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-empty-groups-group">
 				<input id="dm-setting-empty-groups-1" name="dm-setting-empty-groups" value="false" type="radio">
 				<label for="dm-setting-empty-groups-1">
@@ -466,7 +458,7 @@
 					<h3 class="ui-li-heading">No Sharing</h3>
 					<p class="ui-li-desc">If you do not want to show or use any sharing buttons, choose this.</p>
 				</label>
-				<p>Some feeds post urls which lead to a feed proxy or something like it. Currently, if you share an item this url gets shared. Most times this is a 'by-feed-phenomenom', so you will be able to share the correct urls on some feeds, on some others this is not possible.</p> 
+				<p>Some feeds post urls which lead to a feed proxy or something like it. If you share an item this url gets shared. Most times this is a 'by-feed-phenomenom', so you will be able to share the correct urls on some feeds, on some others this is not possible.</p> 
 			</fieldset>
 			<h2>Default Sharing Message</h2>
 			<div data-role="fieldcontain">
