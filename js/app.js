@@ -1037,7 +1037,19 @@ function prepareHome() {
 		$("#dm-widget-place-"+value.place).html(eval(value.fnc));
 	});
 
+	switch($.mobile.activePage.attr("id")) {
+		case "page-home":
+			// reload home
+			document.title = "Delirious° ("+ items.length +")";
+			$("#dm-header").html('Delirious<span style="color:red">°</span> ('+items.length+')');
+		break;
+		default:
+			// do nothing for now
+		break;
+	}
+
 	$("#page-home").enhanceWithin();
+	
 }
 
 function showHome() {
