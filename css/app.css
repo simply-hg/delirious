@@ -45,7 +45,7 @@ img.dm-favicon {
 	text-decoration:none;
 	color:steelblue;
 }
-#dm-single-content img, #dm-single-content object, #dm-single-content div {
+#dm-single-content img, #dm-single-content object {
 	max-width:85%;
 	margin:5px;
 	padding:0;
