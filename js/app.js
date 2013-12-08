@@ -101,7 +101,7 @@ function start() {
 			
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	}
-	//buildPanel();
+
 }
 
 function saveSettings() {
@@ -425,7 +425,7 @@ function buildGroup(id) {
 	item_ids_in_group = '';
 	//group_item_counter = 0;
 	console.log( getNumber(paginate_items) );
-	if ( paginate_items == "all" || getNumber(paginate_items) > unread ) {
+	if ( paginate_items == "all" || getNumber(paginate_items) >= unread ) {
 		//no, just show all items
 		console.log("check all");
 		$.each(group_items, function(index, value) {
@@ -512,7 +512,7 @@ function buildFeed(id) {
 	//group_item_counter = 0;
 	//console.log( getNumber(paginate_items) );
 	//console.log(feed_items);
-	if ( paginate_items == "all" || getNumber(paginate_items) > unread ) {
+	if ( paginate_items == "all" || getNumber(paginate_items) >= unread ) {
 		//no, just show all items
 		console.log("check all");
 		$.each(feed_items, function(index, value) {
@@ -875,8 +875,7 @@ function buildKindling() {
 			$("#dm-kindling-more").append('<button data-dm-fnc="mark-kindling-read" class="dm-button" data-dm-ids="'+paginated_ids+'">'+btn_text+'</button>');
 		}
 		
-		//$("#dm-kindling-more").append('<button data-dm-fnc="show-kindling-more" class="dm-button" data-dm-ids="'+paginated_ids+'">'+btn_text+'</button>');
-		
+				
 		$("#dm-kindling-items").data('dm-ids', paginated_ids);
 		
 	}
@@ -1198,41 +1197,5 @@ function getUnreadCountFeed(feed_id) {
 	} else {
 		return 0;
 	}
-}
-
-function buildPanel() {
-	console.log("panel to be opened");
-	return;
-	//countUnreadItems();
-	$("#dm-panel-content").empty();
-	$("#dm-panel-content").append('<h3>Fever<span style="color:red">°</span></h3>');
-	$("#dm-panel-content").append('<a href="" class="dm-button ui-btn" data-dm-fnc="show-hot">Show Hot Items</a>');
-	// Show personal groups
-
-	panel_custom_groups = '<ul data-role="listview" data-theme="b" data-inset="false">';
-
-	$.each( groups, function(index, value) {
-		var unread = countUnreadInGroup(value.id);
-		
-		if ( unread == 0 ) {
-			if ( show_empty_groups == "true") {
-				panel_custom_groups += '<li><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
-			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
-			}
-		} else {
-			panel_custom_groups += '<li><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
-			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
-		}
-		
-		
-	});
-	panel_custom_groups += '</ul>';
-	
-	$("#dm-panel-content").append(panel_custom_groups);
-	// Show system groups
-	
-	
-	//$("#dm-panel").panel();
-	//$("#dm-panel-content").enhanceWithin();
 }
 
