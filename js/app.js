@@ -988,11 +988,9 @@ function renderListviewItemFeed(feed, show_all) {
 	}
 	var item = '';
 	item += '<li>';
-	item += '<a class="dm-button" data-dm-fnc="show-feed" data-dm-show-feed="'+_.escape(feed.id)+'">';
-		
-	item += getFavicon(feed, "ui-li-icon dm-favicon");
 
-	
+	item += '<a class="dm-button" data-dm-fnc="show-feed" data-dm-show-feed="'+_.escape(feed.id)+'">';
+	item += getFavicon(feed, "ui-li-icon dm-favicon dm-favicon-feed");
 	item += _.escape(feed.title)+ '<span class="ui-li-count">'+unread+'</span>'+'</a>';
 	item += '</li>';
 	return item;
@@ -1002,7 +1000,7 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 	// creates the whole li-string...
 	var li, css_classes;
 	
-	li  = '<li data-theme="a">';
+	li  = '<li>';
 
 	var feed = _.findWhere(feeds, {id: item.feed_id});
 	li += getFavicon(feed, "dm-favicon ui-li-icon");
