@@ -1197,3 +1197,19 @@ function getUnreadCountFeed(feed_id) {
 	}
 }
 
+
+function showSavedItemsGroupedByFeed() {
+	var grouped_items = _.groupBy(saved_items, function(item) {
+		return item.feed_id;
+	});
+	saved_items_grouped = {};
+	// each, li's in array speichern, nach feed_id
+	$.each(grouped_items, function(key, value) {
+	
+	});
+	// Je feed_id das HEader und die Sortierung generieren
+	
+	// sortieren, ausgeben
+	return;
+}
+
