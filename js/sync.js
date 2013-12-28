@@ -36,7 +36,7 @@ function autoSync() {
 	switch($.mobile.activePage.attr("id")) {
 		case "page-home":
 			// reload home
-			prepareHome();
+			//prepareHome();
 		break;
 		default:
 			// do nothing for now
@@ -608,4 +608,27 @@ function syncFeeds() {
 
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
+
+function checkAuth(auth) {
+	console.log("checking auth");
+	if ( auth == 1 ) {
+		return true;
+	} else {
+		if ( auth_success == true ) {
+			// it was once successful, so it's probably a network issue,
+			// a stop or anything else, just log it, and don't do anything at all.
+			// an alert would be ok too, but this might be unwise, as 
+			// initial loading can happen quite often...
+			console.log("Probably stopped or network issue.");
+		} else {
+			//console.log("Forbidden");
+			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");
+			initSettings();
+			$.mobile.navigate("#page-settings", {transition: transition});
+			//$.mobile.silentScroll(0);
+			return false;		
+		}
+
+	}
 }
