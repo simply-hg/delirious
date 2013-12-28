@@ -24,9 +24,12 @@ THE SOFTWARE.
 
 
 function autoSync() {
+	console.log("starting autosync");
+	syncGroups();
+	syncFeeds();
 	syncSavedItems("sync");
 	syncUnreadItems("sync");
-	console.log("autosync started");
+
 	console.log($.mobile.activePage.attr("id"));
 	// Now we should reload home, if we are here,
 	// or print out a message, asking for a reload
@@ -43,9 +46,7 @@ function autoSync() {
 }
 
 function syncItems() {
-	syncSavedItems("sync");
-	syncUnreadItems("sync");
-	prepareHome();
+	autoSync();
 	return false;
 }
 
@@ -79,11 +80,7 @@ function syncSavedItems(what) {
 
 				delete_em =  _.difference(local_ids, online_ids);
 
-				if ( load_em.length > 0 ) {
-					processLoadedSaveItems = _.after(load_em.length, storeLoadedSavedItems);
-					loadSavedItems(load_em);
 
-				}
 			
 				if ( delete_em.length > 0 ) {
 					saved_items = _.reject(saved_items, function(item) {
@@ -94,10 +91,17 @@ function syncSavedItems(what) {
 							return true;
 						}
 					});
+					console.log("store "+saved_items.length+" saved items");
+					$.jStorage.set("dm-local-items", saved_items);
+				}
+				
+				if ( load_em.length > 0 ) {
+					processLoadedSaveItems = _.after(load_em.length, storeLoadedSavedItems);
+					loadSavedItems(load_em);
 				}
 			}
-			console.log("store "+saved_items.length+" saved items");
-			$.jStorage.set("dm-local-items", saved_items);
+			
+			
 
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -561,3 +565,47 @@ function refreshFavicons() {
 	return false;
 }
 
+function syncGroups() {
+	showHideLoader("start");
+	$.post(dm_url + "?api&groups", { api_key: dm_key }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			groups       = _.sortBy(data.groups, "title");
+			groups.sort(function(a,b) {
+				var group_a = a.title.toLowerCase();
+				var group_b = b.title.toLowerCase();
+				if (group_a < group_b) {
+					return -1;
+				}
+				if (group_a > group_b) {
+					return 1;
+				}
+				return 0;
+			});				
+			feeds_groups = data.feeds_groups;
+
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
+
+function syncFeeds() {
+	showHideLoader("start");
+	$.post(dm_url + "?api&feeds", { api_key: dm_key }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			feeds = data.feeds;
+			feeds.sort(function(a,b) {
+				var feed_a = a.title.toLowerCase();
+				var feed_b = b.title.toLowerCase();
+				if (feed_a < feed_b) {
+					return -1;
+				}
+				if (feed_a > feed_b) {
+					return 1;
+				}
+				return 0;
+			});
+
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
