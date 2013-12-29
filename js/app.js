@@ -22,6 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+
+
+function start() {
+	// test-auth
+	console.log("start");
+
+	if ( dm_url == "" ) {
+		console.log("No URL. To settings please");
+		checkAuth(0);
+	} else {
+		started_items_load = true;
+		console.log("start api call");
+		showHideLoader("start");
+		$.post(dm_url + "?api", { api_key: dm_key }).done(function(data) {
+			showHideLoader("stop");
+			console.log("Fever API version: " + data.api_version);
+			if ( checkAuth(data.auth) ) {
+				auth_success = true;
+				// Get groups and build them
+				console.log("first success");
+				
+				syncGroups();
+				syncFeeds();
+				syncUnreadItems("full");
+				syncSavedItems("start");
+				dm_autosync = window.setInterval("autoSync()", 5*60*1000);
+				prepareHome();
+			}
+			
+		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+	}
+
+}
 function initSettings() {
 	if ( dm_url != "" ) {
 		$("#dm-fever-url").val(dm_url);
@@ -38,72 +71,6 @@ function initSettings() {
 	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="'+paginate_items+'"]').prop('checked', true);
 	$('#dm-setting-sharing-msg').val(sharing_msg);
 }
-
-function start() {
-	// test-auth
-	console.log("start");
-
-	if ( dm_url == "" ) {
-		console.log("start gone");
-		checkAuth(0);
-	} else {
-		started_items_load = true;
-		console.log("start api call");
-		showHideLoader("start");
-		$.post(dm_url + "?api", { api_key: dm_key }).done(function(data) {
-			showHideLoader("stop");
-			console.log("end api call");
-			if ( checkAuth(data.auth) ) {
-				auth_success = true;
-				// Get groups and build them
-				console.log("first success");
-				showHideLoader("start");
-				$.post(dm_url + "?api&groups", { api_key: dm_key }).done(function(data) {
-					showHideLoader("stop");
-					if ( checkAuth(data.auth) ) {
-						groups       = _.sortBy(data.groups, "title");
-						groups.sort(function(a,b) {
-							var group_a = a.title.toLowerCase();
-							var group_b = b.title.toLowerCase();
-							if (group_a < group_b) {
-								return -1;
-							}
-							if (group_a > group_b) {
-								return 1;
-							}
-							return 0;
-						});				
-						feeds_groups = data.feeds_groups;
-						//createGroups(false);
-						$.post(dm_url + "?api&feeds", { api_key: dm_key }).done(function(data) {
-							if ( checkAuth(data.auth) ) {
-								feeds = data.feeds;//_.sortBy(data.feeds, "title");
-								feeds.sort(function(a,b) {
-									var feed_a = a.title.toLowerCase();
-									var feed_b = b.title.toLowerCase();
-									if (feed_a < feed_b) {
-										return -1;
-									}
-									if (feed_a > feed_b) {
-										return 1;
-									}
-									return 0;
-								});
-								syncUnreadItems("full");
-								syncSavedItems("start");
-								dm_autosync = window.setInterval("autoSync()", 5*60*1000);
-								prepareHome();
-							}
-						});
-					}
-				}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-			}
-			
-		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-	}
-
-}
-
 function saveSettings() {
 	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, sharing_text, item_order, page;
 	
