@@ -27,14 +27,11 @@ function registerEventHandlers() {
 	$("#dm-homescreen-message").on("vclick", function(e) { e.stopPropagation(); $(this).empty(); });
 	
 	$(document).on("pagecreate", ".dm-page", function(e) {
-		console.log("pagecreate: " + $(this).attr("id") );
+		//console.log("pagecreate: " + $(this).attr("id") );
 	});
 	$(document).on("pageinit", ".dm-page", function(e) {
-		console.log("pageinit: " + $(this).attr("id") );
+		//console.log("pageinit: " + $(this).attr("id") );
 	});
-	//$( "#dm-panel" ).on( "panelbeforeopen", function( event, ui ) {
-	//	buildPanel();
-	//});
 	
 	$(document).on("pagebeforeshow", ".dm-page", function(e, o) {
 		
@@ -276,7 +273,10 @@ function registerEventHandlers() {
 				$("#page-feedgroup").data("dm-group-id", id);
 				$.mobile.navigate("#page-feedgroup", {transition: transition});
 			break;
-			case "":
+			case "unread-last-items":
+				unreadLastItems();
+				syncItems();
+				showHome();				
 			break;
 			case "":
 			break;	

@@ -111,9 +111,9 @@ function syncSavedItems(what) {
 function syncUnreadItems(what) {
 	// This function compares your local unread items with all unread items online.
 	// if some are missing here, we load them.
-	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
+	// if some are missing there, we remove our copy (because it was probably read somewhere else...).
 	// It is done by comparing ids
-	//createGroups(true);
+
 	last_dm_refresh = now();
 	console.log(last_dm_refresh);
 	if ( what == "full" ) {
@@ -631,4 +631,11 @@ function checkAuth(auth) {
 		}
 
 	}
+}
+
+function unreadLastItems() {
+	showHideLoader("start");
+	$.post(dm_url + "?api", { api_key: dm_key, unread_recently_read: "1" }).done(function(data) {
+		showHideLoader("stop");
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }

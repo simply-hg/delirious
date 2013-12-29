@@ -36,6 +36,7 @@ var defined_widgets = [
 	{ fnc: "widgetButtonEditHomescreen", title: "Button: Edit Homescreen", desc:"" },
 	{ fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc:"" },
 	{ fnc: "widgetButtonMarkAllRead", title: "Button: Mark all read", desc:"" },
+	{ fnc: "widgetButtonUnreadLastItems", title: "Button: Last items unread", desc:"" },
 	
 	// Favourites:
 	{ fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: "" },
@@ -199,4 +200,8 @@ function widgetButtonSyncItems() {
 
 function widgetButtonMarkAllRead() {
 	return parseWidget('<a href="" data-role="button" data-icon="check" class="dm-button" data-dm-fnc="mark-all-read">Mark all Read</a>');
+}
+
+function widgetButtonUnreadLastItems() {
+	return parseWidget('<a href="" data-role="button" data-icon="eye" class="dm-button" data-dm-fnc="unread-last-items">Mark Last Items Unread</a>');
 }
