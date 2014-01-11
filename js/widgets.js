@@ -32,11 +32,11 @@ var defined_widgets = [
 	{ fnc: "widgetButtonAllFeeds", title: "Button: Show All Feeds", desc: ""},
 	{ fnc: "widgetButtonGroups", title: "Button: Show Groups", desc: ""},
 	{ fnc: "widgetButtonReloadFavicons", title: "Button: Reload Favicons", desc: ""},
-	{ fnc: "widgetButtonSettings", title: "Button: Show Settings", desc:"" },
-	{ fnc: "widgetButtonEditHomescreen", title: "Button: Edit Homescreen", desc:"" },
-	{ fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc:"" },
-	{ fnc: "widgetButtonMarkAllRead", title: "Button: Mark all read", desc:"" },
-	{ fnc: "widgetButtonUnreadLastItems", title: "Button: Last items unread", desc:"" },
+	{ fnc: "widgetButtonSettings", title: "Button: Show Settings", desc: "" },
+	{ fnc: "widgetButtonEditHomescreen", title: "Button: Edit Homescreen", desc: "" },
+	{ fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc: "" },
+	{ fnc: "widgetButtonMarkAllRead", title: "Button: Mark all read", desc: "" },
+	{ fnc: "widgetButtonUnreadLastItems", title: "Button: Last items unread", desc: "" },
 	
 	// Favourites:
 	{ fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: "" },
@@ -47,7 +47,7 @@ var defined_widgets = [
 	{ fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: "" }
 ];
 function parseWidget(widget) {
-	return '<div class="dm-widget-container">'+widget+'</div>';
+	return '<div class="dm-widget-container">' + widget + '</div>';
 }
 function widgetEmpty() {
 	return '';
@@ -63,19 +63,19 @@ function widgetSystemGroups() {
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-kindling">Kindling';
 	var unread_items = _.where(items, {is_read:0});
 
-	sysgroups +=    '<span class="ui-li-count">'+unread_items.length+'</span>'+'</a></li>';
+	sysgroups +=    '<span class="ui-li-count">' + unread_items.length + '</span></a></li>';
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-sparks">Sparks';
 
 	var unread_sparks = getUnreadSparks();
-	sysgroups += 	'<span class="ui-li-count">'+unread_sparks.counter+'</span>'+'</a></li>';
+	sysgroups += 	'<span class="ui-li-count">' + unread_sparks.counter + '</span></a></li>';
 
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-saved">Saved Items';
-	sysgroups +=    '<span class="ui-li-count">'+saved_items.length+'</span>'+'</a></li>';
+	sysgroups +=    '<span class="ui-li-count">' + saved_items.length + '</span></a></li>';
 
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-all-feeds">All Feeds';
-	sysgroups +=    '<span class="ui-li-count">'+feeds.length+'</span>'+'</a></li>';
+	sysgroups +=    '<span class="ui-li-count">' + feeds.length + '</span></a></li>';
 	sysgroups += '</ul>';
-	sysgroups += '<p>Last Fever<span style="color:red">°</span> Refresh @ '+renderDate("time", last_fever_refresh)+'</p>';
+	sysgroups += '<p>Last Fever<span style="color:red">°</span> Refresh @ ' + renderDate("time", last_fever_refresh) + '</p>';
 	return parseWidget(sysgroups);
 }
 
@@ -89,12 +89,12 @@ function widgetCustomGroups() {
 		
 		if ( unread == 0 ) {
 			if ( show_empty_groups == "true") {
-				panel_custom_groups += '<li id="dm-group-'+value.id+'"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
-			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
+				panel_custom_groups += '<li id="dm-group-' + value.id + '"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">' + _.escape(value.title);
+			panel_custom_groups += '<span class="ui-li-count">' + unread + '</span></a></li>';
 			}
 		} else {
-			panel_custom_groups += '<li id="dm-group-'+value.id+'"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="'+ _.escape(value.id) +'">'+ _.escape(value.title) +'';
-			panel_custom_groups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
+			panel_custom_groups += '<li id="dm-group-' + value.id + '"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">' + _.escape(value.title);
+			panel_custom_groups += '<span class="ui-li-count">' + unread + '</span></a></li>';
 		}
 		
 		
@@ -120,8 +120,8 @@ function widgetShowFavGroups() {
 		if ( unread > 0 ) {
 			var group = _.findWhere(groups, {id:value});
 			content_ShowFavGroups += '<li data-theme="a">';
-			content_ShowFavGroups += '<a href="" data-dm-show-group="'+group.id+'" class="dm-button" data-dm-fnc="show-group-selector">'+ _.escape(group.title) +'';
-			content_ShowFavGroups += '<span class="ui-li-count">'+unread+'</span>'+'</a></li>';
+			content_ShowFavGroups += '<a href="" data-dm-show-group="' + group.id + '" class="dm-button" data-dm-fnc="show-group-selector">' + _.escape(group.title);
+			content_ShowFavGroups += '<span class="ui-li-count">' + unread + '</span></a></li>';
 		}  
 	});
 	
