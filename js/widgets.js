@@ -61,7 +61,7 @@ function widgetSystemGroups() {
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-hot">Hot</a></li>';
 
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-kindling">Kindling';
-	var unread_items = _.where(items, {is_read:0});
+	var unread_items = _.where(items, {is_read: 0});
 
 	sysgroups +=    '<span class="ui-li-count">' + unread_items.length + '</span></a></li>';
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-sparks">Sparks';
@@ -84,11 +84,11 @@ function widgetCustomGroups() {
 	panel_custom_groups = '<h2>My Groups</h2>';
 	panel_custom_groups += '<ul data-role="listview" data-filter-theme="a" data-divider-theme="a" data-theme="a" data-inset="true" data-filter="true" id="dm-groups" class="dm-home-views">';
 
-	$.each( groups, function(index, value) {
+	$.each(groups, function (index, value) {
 		var unread = countUnreadInGroup(value.id);
 		
-		if ( unread == 0 ) {
-			if ( show_empty_groups == "true") {
+		if ( unread === 0 ) {
+			if ( show_empty_groups === "true") {
 				panel_custom_groups += '<li id="dm-group-' + value.id + '"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">' + _.escape(value.title);
 			panel_custom_groups += '<span class="ui-li-count">' + unread + '</span></a></li>';
 			}
@@ -115,10 +115,10 @@ function widgetShowGroup() {
 function widgetShowFavGroups() {
 	// 
 	content_ShowFavGroups = '';
-	$.each(fav_groups, function(index, value){
+	$.each(fav_groups, function (index, value) {
 		var unread = countUnreadInGroup(value);
 		if ( unread > 0 ) {
-			var group = _.findWhere(groups, {id:value});
+			var group = _.findWhere(groups, {id: value});
 			content_ShowFavGroups += '<li data-theme="a">';
 			content_ShowFavGroups += '<a href="" data-dm-show-group="' + group.id + '" class="dm-button" data-dm-fnc="show-group-selector">' + _.escape(group.title);
 			content_ShowFavGroups += '<span class="ui-li-count">' + unread + '</span></a></li>';
