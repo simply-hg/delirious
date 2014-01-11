@@ -51,17 +51,17 @@ var fav_groups = [];
 var fav_feeds  = [];
 
 var default_widgets = [
-	{place:"a1", fnc: "widgetButtonHotView", options: {}},
-	{place:"b1", fnc: "widgetButtonSaved", options: {}},
-	{place:"a2", fnc: "widgetShowFavFeeds", options: {}},
-	{place:"b2", fnc: "widgetShowFavGroups", options: {}},
-	{place:"a3", fnc: "widgetSystemGroups", options: {}},
-	{place:"b3", fnc: "widgetCustomGroups", options: {}},
-	{place:"a4", fnc: "widgetButtonKindling", options: {}},
-	{place:"b4", fnc: "widgetButtonSparks", options: {}},
-	{place:"a5", fnc: "widgetButtonReloadFavicons", options: {}},
-	{place:"b5", fnc: "widgetButtonSettings", options: {}},
-	{place:"a6", fnc: "widgetButtonEditHomescreen", options: {}},
+	{place: "a1", fnc: "widgetButtonHotView", options: {}},
+	{place: "b1", fnc: "widgetButtonSaved", options: {}},
+	{place: "a2", fnc: "widgetShowFavFeeds", options: {}},
+	{place: "b2", fnc: "widgetShowFavGroups", options: {}},
+	{place: "a3", fnc: "widgetSystemGroups", options: {}},
+	{place: "b3", fnc: "widgetCustomGroups", options: {}},
+	{place: "a4", fnc: "widgetButtonKindling", options: {}},
+	{place: "b4", fnc: "widgetButtonSparks", options: {}},
+	{place: "a5", fnc: "widgetButtonReloadFavicons", options: {}},
+	{place: "b5", fnc: "widgetButtonSettings", options: {}},
+	{place: "a6", fnc: "widgetButtonEditHomescreen", options: {}}
 ];
 var widgets = [];
 
@@ -114,7 +114,7 @@ function getSettings() {
 
 
 			
-$(document).bind("mobileinit", function(){
+$(document).bind("mobileinit", function() {
 	//apply overrides here
 	console.log("mobilestart");
 	getSettings();
