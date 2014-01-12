@@ -73,7 +73,7 @@ function widgetSystemGroups() {
 	sysgroups +=    '<span class="ui-li-count">' + saved_items.length + '</span></a></li>';
 
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-all-feeds">All Feeds';
-	sysgroups +=    '<span class="ui-li-count">' + feeds.length + '</span></a></li>';
+	sysgroups +=    '<span class="ui-li-count">' + _.size(feeds) + '</span></a></li>';
 	sysgroups += '</ul>';
 	sysgroups += '<p>Last Fever<span style="color:red">°</span> Refresh @ ' + renderDate("time", last_fever_refresh) + '</p>';
 	return parseWidget(sysgroups);
