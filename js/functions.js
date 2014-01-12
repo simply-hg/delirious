@@ -24,34 +24,39 @@ THE SOFTWARE.
 */
 
 function now() {
+    "use strict";
 	// from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
-	return Math.round(+new Date()/1000);
+	return Math.round(+new Date() / 1000);
 }
 
 
 function getNumber(val) {
-	var type = $.type(val);
-	if ( type == "number" ) {
+    "use strict";
+	var str_type = $.type(val);
+	if (str_type === "number") {
 		return val;
 	}
-	if ( type == "string" ) {
+	if (str_type === "string") {
 		return parseInt(val, 10);
 	}
 }
 
 function getString(val) {
-	var type = $.type(val);
-	if ( type == "number" ) {
+    "use strict";
+	var str_type = $.type(val);
+    
+	if (str_type === "number") {
 		return val.toString();
 	}
-	if ( type == "string" ) {
+	if (str_type === "string") {
 		return val;
 	}
 }
 
-function sortHelper(a,b) {
-	var str_a = a.title.toLowerCase();
-	var str_b = b.title.toLowerCase();
+function sortHelper(a, b) {
+    "use strict";
+	var str_a = a.title.toLowerCase(), str_b = b.title.toLowerCase();
+    
 	if (str_a < str_b) {
 		return -1;
 	}
@@ -62,32 +67,30 @@ function sortHelper(a,b) {
 }
 
 function renderDate(how, timestamp) {
-	var now  = new Date();
-	var date = new Date(timestamp*1000);
-	var month =  date.getMonth();
-	month++;
-	var minutes = date.getMinutes();
-	if (minutes < 10 ) {
+    "use strict";
+	var now  = new Date(), date = new Date(timestamp * 1000), month = date.getMonth() + 1, minutes = date.getMinutes();
+    
+	if (minutes < 10) {
 		minutes = "0" + minutes;
 	}
 	
-	if ( how == "long") {
-		return date.getDate() + '.' + month + '.' + date.getFullYear() + ' @ ' + date.getHours()+ ':' + minutes;
+	if (how === "long") {
+		return date.getDate() + '.' + month + '.' + date.getFullYear() + ' @ ' + date.getHours() + ':' + minutes;
 	}
 	
-	if ( how == "date" ) {
+	if (how === "date") {
 		return date.getDate() + '.' + month + '.' + date.getFullYear();
 	}
 	
-	if ( how == "time" ) {
-		return date.getHours()+ ':' + minutes;
+	if (how === "time") {
+		return date.getHours() + ':' + minutes;
 	}
 	
-	if ( how == "relative-date" ) {
+	if (how === "relative-date") {
 		return '';
 	}
 
-	if ( how == "relative-time" ) {
+	if (how === "relative-time") {
 		return '';
 	}
 }
