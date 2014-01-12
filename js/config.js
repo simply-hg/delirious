@@ -86,7 +86,7 @@ var last_fever_refresh = 0; // unix timestamps in seconds when Server last refre
 var last_dm_group_show = now();
 
 function getSettings() {
-
+	"use strict";
 	dm_key            = $.jStorage.get("dm-key", "");
 	dm_url            = $.jStorage.get("dm-url", "");
 	dm_user           = $.jStorage.get("dm-user", "");
@@ -111,10 +111,9 @@ function getSettings() {
 	return true;
 
 }
-
-
 			
-$(document).bind("mobileinit", function() {
+$(document).bind("mobileinit", function () {
+	"use strict";
 	//apply overrides here
 	console.log("mobilestart");
 	getSettings();
