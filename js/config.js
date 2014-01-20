@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 var dm_key, dm_url, dm_user;
 
+// These should be arrays i think
 var groups       = {};
 var feeds        = {};
 var feeds_groups = {};
