@@ -22,20 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-function registerEventHandlers() { 
-
-	$("#dm-homescreen-message").on("vclick", function(e) { e.stopPropagation(); $(this).empty(); });
+function registerEventHandlers() {
 	
-	$(document).on("pagecreate", ".dm-page", function(e) {
+	$(document).on("pagecreate", ".dm-page", function (e) {
 		//console.log("pagecreate: " + $(this).attr("id") );
 	});
-	$(document).on("pageinit", ".dm-page", function(e) {
+	$(document).on("pageinit", ".dm-page", function (e) {
 		//console.log("pageinit: " + $(this).attr("id") );
 	});
 	
-	$(document).on("pagebeforeshow", ".dm-page", function(e, o) {
+	$(document).on("pagebeforeshow", ".dm-page", function (e, o) {
 		
-		id = $(this).attr("id");
+		var id = $(this).attr("id");
 		
 		if ( _.isUndefined( $(o.prevPage).attr("id") ) ) {
 			console.log("prev page is empty, startup assumed");

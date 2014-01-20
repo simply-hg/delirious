@@ -22,31 +22,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-widget_places = ["a1", "b1", "a2", "b2", "a3", "b3", "a4", "b4", "a5", "b5", "a6", "b6", "a7", "b7", "a8", "b8", "a9", "b9"];
+var widget_places = ["a1", "b1", "a2", "b2", "a3", "b3", "a4", "b4", "a5", "b5", "a6", "b6", "a7", "b7", "a8", "b8", "a9", "b9"];
 var defined_widgets = [
 	// Some Buttons:
-	{ fnc: "widgetButtonHotView", title: "Button: Show Hot Items", desc: ""},
-	{ fnc: "widgetButtonSaved", title: "Button: Show Saved Items", desc: ""},
-	{ fnc: "widgetButtonKindling", title: "Button: Show Kindling Items", desc: ""},
-	{ fnc: "widgetButtonSparks", title: "Button: Show Sparks", desc: ""},
-	{ fnc: "widgetButtonAllFeeds", title: "Button: Show All Feeds", desc: ""},
-	{ fnc: "widgetButtonGroups", title: "Button: Show Groups", desc: ""},
-	{ fnc: "widgetButtonReloadFavicons", title: "Button: Reload Favicons", desc: ""},
-	{ fnc: "widgetButtonSettings", title: "Button: Show Settings", desc: "" },
-	{ fnc: "widgetButtonEditHomescreen", title: "Button: Edit Homescreen", desc: "" },
-	{ fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc: "" },
-	{ fnc: "widgetButtonMarkAllRead", title: "Button: Mark all read", desc: "" },
-	{ fnc: "widgetButtonUnreadLastItems", title: "Button: Last items unread", desc: "" },
+	{fnc: "widgetButtonHotView", title: "Button: Show Hot Items", desc: ""},
+	{fnc: "widgetButtonSaved", title: "Button: Show Saved Items", desc: ""},
+	{fnc: "widgetButtonKindling", title: "Button: Show Kindling Items", desc: ""},
+	{fnc: "widgetButtonSparks", title: "Button: Show Sparks", desc: ""},
+	{fnc: "widgetButtonAllFeeds", title: "Button: Show All Feeds", desc: ""},
+	{fnc: "widgetButtonGroups", title: "Button: Show Groups", desc: ""},
+	{fnc: "widgetButtonReloadFavicons", title: "Button: Reload Favicons", desc: ""},
+	{fnc: "widgetButtonSettings", title: "Button: Show Settings", desc: "" },
+	{fnc: "widgetButtonEditHomescreen", title: "Button: Edit Homescreen", desc: ""},
+	{fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc: "" },
+	{fnc: "widgetButtonMarkAllRead", title: "Button: Mark all read", desc: "" },
+	{fnc: "widgetButtonUnreadLastItems", title: "Button: Last items unread", desc: ""},
 	
 	// Favourites:
-	{ fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: "" },
-	{ fnc: "widgetShowFavGroups", title: "Show Favourite Groups", desc: "" },
+	{fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: ""},
+	{fnc: "widgetShowFavGroups", title: "Show Favourite Groups", desc: ""},
 	
 	// Groups:
-	{ fnc: "widgetSystemGroups", title: "Show System Groups", desc: "" },
-	{ fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: "" }
+	{fnc: "widgetSystemGroups", title: "Show System Groups", desc: ""},
+	{fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: ""}
 ];
 function parseWidget(widget) {
+	"use strict";
 	return '<div class="dm-widget-container">' + widget + '</div>';
 }
 function widgetEmpty() {
@@ -74,6 +75,7 @@ function widgetSystemGroups() {
 
 	sysgroups += '<li><a href="" class="dm-button" data-dm-fnc="show-all-feeds">All Feeds';
 	sysgroups +=    '<span class="ui-li-count">' + _.size(feeds) + '</span></a></li>';
+	
 	sysgroups += '</ul>';
 	sysgroups += '<p>Last Fever<span style="color:red">°</span> Refresh @ ' + renderDate("time", last_fever_refresh) + '</p>';
 	return parseWidget(sysgroups);
@@ -87,16 +89,17 @@ function widgetCustomGroups() {
 	$.each(groups, function (index, value) {
 		var unread = countUnreadInGroup(value.id);
 		
-		if ( unread === 0 ) {
-			if ( show_empty_groups === "true") {
-				panel_custom_groups += '<li id="dm-group-' + value.id + '"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">' + _.escape(value.title);
-			panel_custom_groups += '<span class="ui-li-count">' + unread + '</span></a></li>';
+		if (unread === 0) {
+			if (show_empty_groups === "true") {
+				panel_custom_groups += '<li id="dm-group-' + value.id + '">';
+				panel_custom_groups += '<a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">';
+				panel_custom_groups += _.escape(value.title);
+				panel_custom_groups += '<span class="ui-li-count">' + unread + '</span></a></li>';
 			}
 		} else {
 			panel_custom_groups += '<li id="dm-group-' + value.id + '"><a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">' + _.escape(value.title);
 			panel_custom_groups += '<span class="ui-li-count">' + unread + '</span></a></li>';
 		}
-		
 		
 	});
 	panel_custom_groups += '</ul>';
@@ -117,15 +120,15 @@ function widgetShowFavGroups() {
 	content_ShowFavGroups = '';
 	$.each(fav_groups, function (index, value) {
 		var unread = countUnreadInGroup(value);
-		if ( unread > 0 ) {
+		if (unread > 0) {
 			var group = _.findWhere(groups, {id: value});
 			content_ShowFavGroups += '<li data-theme="a">';
 			content_ShowFavGroups += '<a href="" data-dm-show-group="' + group.id + '" class="dm-button" data-dm-fnc="show-group-selector">' + _.escape(group.title);
 			content_ShowFavGroups += '<span class="ui-li-count">' + unread + '</span></a></li>';
-		}  
+		}
 	});
 	
-	if ( content_ShowFavGroups ) {
+	if (content_ShowFavGroups) {
 		content_ShowFavGroups = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavGroups;
 		content_ShowFavGroups += '</ul>';
 	} else {
@@ -142,13 +145,12 @@ function widgetShowFavFeeds() {
 	var res_ShowFavFeeds = '';
 	countUnreadItems();
 	content_ShowFavFeeds = '';
-	$.each(fav_feeds, function(index, value) {
+	$.each(fav_feeds, function (index, value) {
 		var feed = _.findWhere(feeds, {id: getNumber(value)});
 		content_ShowFavFeeds += renderListviewItemFeed(feed, false);
 	});
-	if ( content_ShowFavFeeds ) {
-		res_ShowFavFeeds = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavFeeds;
-		res_ShowFavFeeds += '</ul>';
+	if (content_ShowFavFeeds) {
+		res_ShowFavFeeds = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavFeeds + '</ul>';
 	} else {
 		res_ShowFavFeeds = '<p>No new items in your favourite feeds.</p>';
 	}

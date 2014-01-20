@@ -33,7 +33,7 @@ function autoSync() {
 	console.log($.mobile.activePage.attr("id"));
 	// Now we should reload home, if we are here,
 	// or print out a message, asking for a reload
-	switch($.mobile.activePage.attr("id")) {
+	switch ($.mobile.activePage.attr("id")) {
 		case "page-home":
 			// reload home
 			//prepareHome();
@@ -91,7 +91,7 @@ function syncSavedItems(what) {
 							return true;
 						}
 					});
-					console.log("store "+saved_items.length+" saved items");
+					console.log("store " + saved_items.length + " saved items");
 					$.jStorage.set("dm-local-items", saved_items);
 				}
 				

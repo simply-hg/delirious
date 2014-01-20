@@ -28,14 +28,14 @@ function start() {
 	// test-auth
 	console.log("start");
 
-	if ( dm_url == "" ) {
+	if ( dm_url === "" ) {
 		console.log("No URL. To settings please");
 		checkAuth(0);
 	} else {
 		started_items_load = true;
 		console.log("start api call");
 		showHideLoader("start");
-		$.post(dm_url + "?api", { api_key: dm_key }).done(function(data) {
+		$.post(dm_url + "?api", { api_key: dm_key }).done(function (data) {
 			showHideLoader("stop");
 			console.log("Fever API version: " + data.api_version);
 			if ( checkAuth(data.auth) ) {
@@ -47,11 +47,11 @@ function start() {
 				syncFeeds();
 				syncUnreadItems("full");
 				syncSavedItems("start");
-				dm_autosync = window.setInterval("autoSync()", 5*60*1000);
+				dm_autosync = window.setInterval("autoSync()", 5 * 60 * 1000);
 				prepareHome();
 			}
 			
-		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+		}).fail(function () { showHideLoader("stop"); checkAuth(0); });
 	}
 
 }
@@ -62,13 +62,13 @@ function initSettings() {
 	if ( dm_user != "" ) {
 		$("#dm-e-mail").val(dm_user);
 	}
-	$('input:radio[name="dm-setting-transitions"]').filter('[value="'+transition+'"]').prop('checked', true);
-	$('input:radio[name="dm-setting-html-content"]').filter('[value="'+html_content+'"]').prop('checked', true);
-	$('input:radio[name="dm-setting-groupview"]').filter('[value="'+groupview+'"]').prop('checked', true);
-	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="'+show_empty_groups+'"]').prop('checked', true);
-	$('input:radio[name="dm-setting-sharing"]').filter('[value="'+sharing+'"]').prop('checked', true);
-	$('input:radio[name="dm-setting-order"]').filter('[value="'+order_items+'"]').prop('checked', true);
-	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="'+paginate_items+'"]').prop('checked', true);
+	$('input:radio[name="dm-setting-transitions"]').filter('[value="' + transition + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-html-content"]').filter('[value="' + html_content + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-groupview"]').filter('[value="' + groupview + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="' + show_empty_groups + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-sharing"]').filter('[value="' + sharing + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-order"]').filter('[value="' + order_items + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="' + paginate_items + '"]').prop('checked', true);
 	$('#dm-setting-sharing-msg').val(sharing_msg);
 }
 function saveSettings() {
