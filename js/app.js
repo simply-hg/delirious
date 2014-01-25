@@ -56,10 +56,10 @@ function start() {
 
 }
 function initSettings() {
-	if ( dm_url != "" ) {
+	if ( dm_url !== "" ) {
 		$("#dm-fever-url").val(dm_url);
 	}
-	if ( dm_user != "" ) {
+	if ( dm_user !== "" ) {
 		$("#dm-e-mail").val(dm_user);
 	}
 	$('input:radio[name="dm-setting-transitions"]').filter('[value="' + transition + '"]').prop('checked', true);
@@ -245,7 +245,7 @@ function showHot(page) {
 			});	
 
 			var ids_to_get = load_ids.split(',');
-			ids_to_get     = _.compact(_.uniq(ids_to_get));
+			ids_to_get     = _.compact(ids_to_get);
 			// let's see, if some are already loaded...
 			$.each(ids_to_get, function(index, id) {
 				var local = _.findWhere(items, {id: parseInt(id, 10)});
@@ -269,14 +269,7 @@ function showHot(page) {
 			
 			//$("#page-hot").trigger("create");
 			if ( page == 1) {
-				//if ( called_hot == false ) {
-					//called_hot = true;
-				//} else {
-					//$(".dm-to-listview").listview().removeClass("dm-to-listview");
-					//$("#page-hot").trigger("create");
-				//}
-				//$.mobile.navigate("#page-hot", {transition: transition});
-				//$.mobile.silentScroll(0);
+
 				return false;
 			} else {
 				//$(".dm-to-listview").listview().removeClass("dm-to-listview");
@@ -434,9 +427,8 @@ function buildGroup(id) {
 	$("#dm-mark-group-read").data("dm-item-ids", item_ids_in_group);
 	$("#dm-mark-group-read").data("fdm-group-id", id);
 	// build part of group
-	if (called_group == true ) {
-		$("#page-group").enhanceWithin();
-	}
+	$("#page-group").enhanceWithin();
+
 }
 
 function showGroup(id) {
@@ -716,12 +708,7 @@ function showSparks() {
 		}
 	});
 	$("#dm-sparks").data("dm-current-ids", item_ids_in_sparks);
-	if (called_sparks == false ) {
-		called_sparks = true;
-	} else {
-		//$("#dm-sparks-view").listview();
-		//$("#page-sparks").trigger("create");
-	}
+
 	$.mobile.navigate("#page-sparks", {transition: transition});
 	//$.mobile.silentScroll(0);
 	return false;
@@ -751,13 +738,7 @@ function buildAllFeeds() {
 	$("#page-all-feeds").data("title", title);
 	$("#dm-all-feeds-title").html(title);
 	
-	
-	if (called_all_feeds == false ) {
-		called_all_feeds = true;
-	} else {
-		//$("#dm-all-feeds-view").listview();
-		
-	}
+
 	//$("#page-all-feeds").trigger("create");
 	//$.mobile.navigate("#page-all-feeds", {transition: transition});
 	//$.mobile.silentScroll(0);
@@ -971,32 +952,31 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 
 function prepareHome() {
 	// Which Widgets to display?
+	var curr_page = $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
 	console.log("preparing home");
 	
 	$.each(widgets, function(index, value) {
-		var result = '';
 		$("#dm-widget-place-"+value.place).html(eval(value.fnc));
 	});
 
-	switch($.mobile.activePage.attr("id")) {
+	switch(curr_page) {
 		case "page-home":
 			// reload home
 			document.title = "Delirious° ("+ items.length +")";
 			$("#dm-header").html('Delirious<span style="color:red">°</span> ('+items.length+')');
+			$("#page-home").enhanceWithin();
 		break;
 		default:
 			// do nothing for now
 		break;
 	}
 
-	$("#page-home").enhanceWithin();
-	
 }
 
 function showHome() {
 
 	$.mobile.navigate("#page-home", {transition: transition});
-	$.mobile.silentScroll(0);
+	//$.mobile.silentScroll(0);
 	return false;
 }
 
