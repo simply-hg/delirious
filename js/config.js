@@ -25,12 +25,12 @@ THE SOFTWARE.
 var dm_key, dm_url, dm_user;
 
 // These should be arrays i think
-var groups       = {};
-var feeds        = {};
-var feeds_groups = {};
-var favicons     = {};
+var groups       = [];
+var feeds        = [];
+var feeds_groups = [];
+var favicons     = [];
 
-// Some settings
+// Some default settings
 var transition   = "slide";
 var html_content = "escape";
 var show_empty_groups = "false";
@@ -47,6 +47,7 @@ var session_read_items = [];
 var unread_counter = {};
 var items_loaded = false;
 var started_items_load = false;
+var last_group_count = 0;
 
 var fav_groups = [];
 var fav_feeds  = [];
@@ -65,20 +66,6 @@ var default_widgets = [
 	{place: "a6", fnc: "widgetButtonEditHomescreen", options: {}}
 ];
 var widgets = [];
-
-// For navigation purposes to refresh listviews
-var called_group     = false;
-var called_saved     = false;
-var called_feed      = false;
-var called_sparks    = false;
-var called_hot       = false;
-var called_all_feeds = false;
-var called_kindling  = false;
-var called_single    = false;
-var called_home      = false; // well, we are not calling home :s just a naming coincidence
-var called_feedgroup = false;
-var called_groups    = false;
-var called_edit_homescreen = false;
 
 var loading           = 0; // counts current loading processes
 var auth_success      = false; // if a successful auth has been registered this is true. helps on stopped or failed connections. Not (!) used for authentification
