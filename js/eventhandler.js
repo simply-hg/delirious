@@ -37,9 +37,9 @@ function registerEventHandlers() {
 		
 		if ( _.isUndefined( $(o.prevPage).attr("id") ) ) {
 			console.log("prev page is empty, startup assumed");
-			if ( id != "page-home" ) {
+			if ( id !== "page-home" ) {
 				console.log("show home instead");
-				if ( dm_url != "" && id != "page-settings" ) {
+				if ( dm_url !== "" && id !== "page-settings" ) {
 					// if no url is given, chences are,
 					// we are running into settings screen
 					showHome();

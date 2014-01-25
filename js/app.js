@@ -655,7 +655,6 @@ function renderSingleItem(data) {
 		var email_button = '<a href="mailto:?subject='+encodeURI('Check it out: '+data.title)+'&amp;body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
 		$("#dm-single-sharing-buttons").append(email_button);
 	}
-
 	
 	if (sharing ==="all" || sharing === "email") {
 		/*
@@ -775,6 +774,7 @@ function showHideLoader(state) {
 	
 	if ( loading == 0 ) {
 		$.mobile.loading( "hide" );
+		prepareHome();
 	}
 	
 	if ( loading == 1 && state == "start") {
@@ -983,14 +983,16 @@ function prepareHome() {
 	switch(curr_page) {
 		case "page-home":
 			// reload home
-			document.title = "Delirious° ("+ items.length +")";
-			$("#dm-header").html('Delirious<span style="color:red">°</span> ('+items.length+')');
+			document.title = "Delirious° (" + items.length + ")";
+			$("#dm-header").html('Delirious<span style="color:red">°</span> (' + items.length + ')');
 			$("#page-home").enhanceWithin();
+
 		break;
 		default:
 			// do nothing for now
 		break;
 	}
+	
 
 }
 

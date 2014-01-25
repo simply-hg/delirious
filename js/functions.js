@@ -94,3 +94,8 @@ function renderDate(how, timestamp) {
 		return '';
 	}
 }
+
+function getCurrentPageID() {
+	"use strict";
+	return $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
+}

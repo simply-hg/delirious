@@ -30,13 +30,13 @@ function autoSync() {
 	syncSavedItems("sync");
 	syncUnreadItems("sync");
 
-	console.log($.mobile.activePage.attr("id"));
+	console.log("Current Page: " + getCurrentPageID());
 	// Now we should reload home, if we are here,
 	// or print out a message, asking for a reload
-	switch ($.mobile.activePage.attr("id")) {
+	switch (getCurrentPageID()) {
 		case "page-home":
 			// reload home
-			//prepareHome();
+			prepareHome();
 		break;
 		default:
 			// do nothing for now
@@ -175,6 +175,7 @@ function refreshItems() {
 			ids = _.compact(ids);
 			items = [];
 			if ( ids.length == 0 ) {
+				last_fever_refresh = data.last_refreshed_on_time;
 				runAfterItemLoad();
 			} else {
 				afterItemLoad = _.after(ids.length, runAfterItemLoad);
@@ -584,7 +585,7 @@ function syncGroups() {
 				return 0;
 			});				
 			feeds_groups = data.feeds_groups;
-
+			prepareHome();
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
@@ -606,7 +607,7 @@ function syncFeeds() {
 				}
 				return 0;
 			});
-
+			prepareHome();
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
