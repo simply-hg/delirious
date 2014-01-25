@@ -656,6 +656,27 @@ function renderSingleItem(data) {
 		$("#dm-single-sharing-buttons").append(email_button);
 	}
 
+	
+	if (sharing ==="all" || sharing === "email") {
+		/*
+		These are the links:
+		<a  href="https://twitter.com/intent/tweet?text=YOUR-TITLE&url=YOUR-URL&via=TWITTER-HANDLE">Tweet</a>
+		<a  href="http://www.facebook.com/sharer/sharer.php?u=YOUR-URL">Share on Facebook</a>
+		<a  href="https://plus.google.com/share?url=YOUR-URL">Plus on Google+</a>
+		*/
+		
+		var passive_buttons = '<div data-role="navbar"><ul>';
+		
+		passive_buttons += '<li><a  href="http://www.facebook.com/sharer/sharer.php?u='+encodeURI(data.url)+'" target="_blank">Facebook</a></li>';
+		passive_buttons += '<li><a  href="https://twitter.com/intent/tweet?text=Look&url='+encodeURI(data.url)+'" target="_blank">Tweet</a></li>';
+		passive_buttons += '<li><a  href="https://plus.google.com/share?url='+encodeURI(data.url)+'" target="_blank">Google+</a></li>';
+		
+		passive_buttons += '</ul></div>';
+		$("#dm-single-passive-sharing-buttons").empty();
+		$("#dm-single-passive-sharing-buttons").append(passive_buttons);
+		
+		
+	}
 
 	if ( sharing == "all" ) {
 		// twitter button needs to be refreshed
