@@ -225,6 +225,7 @@ function runAfterItemLoad() {
 function runAfterItemLoadNoHome() {
 	console.log("Finished items load");
 	items = _.sortBy(items, "created_on_time");
+	items = _.uniq(items);
 	if ( order_items == "desc" ) {
 		items.reverse();
 	}
