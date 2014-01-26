@@ -273,7 +273,7 @@ function showHot(page) {
 				return false;
 			} else {
 				//$(".dm-to-listview").listview().removeClass("dm-to-listview");
-				$("#page-hot").enhanceWithin();
+				//$("#page-hot").enhanceWithin();
 				return false;
 			}
 		}
@@ -357,7 +357,7 @@ function replacePlaceholder(value) {
 function buildGroup(id) {
 	last_dm_group_show = now();
 	id = getNumber(id);
-	console.log(paginate_items);
+	//console.log(paginate_items);
 	$("#dm-group-content").empty();
 	$("#dm-group-more").empty();
 	$("#dm-group-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-dm-fnc="show-feeds-group" data-dm-group-id="'+id+'" id="dm-group-show-feeds" class="dm-button">Show Feeds of Group</a></div>');
@@ -427,7 +427,9 @@ function buildGroup(id) {
 	$("#dm-mark-group-read").data("dm-item-ids", item_ids_in_group);
 	$("#dm-mark-group-read").data("fdm-group-id", id);
 	// build part of group
-	$("#page-group").enhanceWithin();
+	$.mobile.resetActivePageHeight();
+
+	//$("#page-group").enhanceWithin();
 
 }
 
@@ -530,6 +532,7 @@ function showFeed(id) {
 	} else {
 		$("#dm-feed-favmarker").html("Mark Feed as Favourite");
 	}
+	//$.mobile.resetActivePageHeight();
 
 	return false;
 }
@@ -686,6 +689,7 @@ function renderSingleItem(data) {
 			console.log("twitter object seems to be missing...");
 		} 
 	}		
+	$.mobile.resetActivePageHeight();
 
 	return false;
 }
@@ -829,13 +833,14 @@ function buildKindling() {
 	$("#dm-kindling-header").html('Fever<span style="color:red">°</span> Kindling Items (' + items.length + ')');
 	document.title = 'Fever° Kindling Items (' + items.length + ')';
 	$("#page-kindling").data("title", 'Fever° Kindling Items (' + items.length + ')');
-
+	$.mobile.resetActivePageHeight();
+	//$("#page-kindling").enhanceWithin();
+	return true;
 }
 
 function showKindling() {
 	console.log("check");
 	buildKindling();
-
 	return false;
 }
 
@@ -985,8 +990,8 @@ function prepareHome() {
 			// reload home
 			document.title = "Delirious° (" + items.length + ")";
 			$("#dm-header").html('Delirious<span style="color:red">°</span> (' + items.length + ')');
+			$.mobile.resetActivePageHeight();
 			$("#page-home").enhanceWithin();
-
 		break;
 		default:
 			// do nothing for now
