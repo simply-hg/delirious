@@ -267,7 +267,6 @@ function showHot(page) {
 			
 			fillLinkPlaceholder(ids_to_get, 'link' );
 			
-			//$("#page-hot").trigger("create");
 			if ( page == 1) {
 
 				return false;
