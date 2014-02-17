@@ -319,7 +319,7 @@
 		</div>
 		<div data-role="main" class="ui-content">
 		
-			<h1>Authentification</h1>
+			<h2>Authentification</h2>
 
 			<label for="dm-fever-url">Fever<span style="color:red">°</span>-URL:</label>
 			<input name="dm-fever-url" id="dm-fever-url" placeholder="http://www.host.example/path/to/fever/" value="" type="url" />
@@ -332,7 +332,7 @@
 
 			<p><strong>Please note</strong>: In order to change your E-Mail, you also need to provide your password, because your login changes with your e-mail. Your password is <strong>not stored</strong> on your device.</p>
 		
-			<h1>Page transitions</h1>
+			<h2>Page transitions</h2>
 
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-transitions-group">
 				<input id="dm-setting-transitions-1" name="dm-setting-transitions" value="none" type="radio">
@@ -372,7 +372,7 @@
 				</label>
 			</fieldset>
 			
-			<h1>Order of Feed Items</h1>
+			<h2>Order of Feed Items</h2>
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-order-group">
 				<input id="dm-setting-order-1" name="dm-setting-order" value="asc" type="radio">
 				<label for="dm-setting-order-1">
@@ -384,7 +384,7 @@
 				</label>
 			</fieldset>			
 			
-			<h1>Show Empty Groups in Overview</h1>
+			<h2>Show Empty Groups in Overview</h2>
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-empty-groups-group">
 				<input id="dm-setting-empty-groups-1" name="dm-setting-empty-groups" value="false" type="radio">
 				<label for="dm-setting-empty-groups-1">
@@ -398,7 +398,7 @@
 				</label>
 			</fieldset>
 			
-			<h1>How to View Groups</h1>
+			<h2>How to View Groups</h2>
 
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-groupview-group">
 				<input id="dm-setting-groupview-1" name="dm-setting-groupview" value="items" type="radio">
@@ -413,7 +413,7 @@
 				</label>
 			</fieldset>
 
-			<h1>Paginate Items in Groups</h1>
+			<h2>Paginate Items in Groups</h2>
 
 				<fieldset data-role="controlgroup" data-type="horizontal">
 					<legend>Maximum number of items to show at once:</legend>
@@ -431,7 +431,7 @@
 					All</label>
 				</fieldset>
 
-			<h1>Single Item View</h1>
+			<h2>Single Item View</h2>
 			<fieldset data-role="controlgroup" id="dm-setting-html-content-group"> 
 				<input type="radio" name="dm-setting-html-content" id="dm-setting-html-content-1" value="escape" />
 				<label for="dm-setting-html-content-1">
@@ -445,7 +445,7 @@
 				</label>     	
 			</fieldset>
 			
-			<h1>Show Sharing Buttons</h1>
+			<h2>Show Sharing Buttons</h2>
 			<fieldset data-role="controlgroup" id="dm-setting-sharing-group"> 
 				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-1" value="all" />
 				<label for="dm-setting-sharing-1">
@@ -455,7 +455,7 @@
 				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-2" value="email" />       	
 				<label for="dm-setting-sharing-2">
 					<h3 class="ui-li-heading">Show Only E-Mail Button</h3>
-					<p class="ui-li-desc">Just offer sharing by E-Mail. No privacy concerns here.</p>
+					<p class="ui-li-desc">Just offer sharing by E-Mail and passive links. No privacy concerns here.</p>
 				</label>
 				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-3" value="none" />       	
 				<label for="dm-setting-sharing-3">
@@ -464,6 +464,7 @@
 				</label>
 				<p>Some feeds post urls which lead to a feed proxy or something like it. If you share an item this url gets shared. Most times this is a 'by-feed-phenomenom', so you will be able to share the correct urls on some feeds, on some others this is not possible.</p> 
 			</fieldset>
+			
 			<h2>Default Sharing Message</h2>
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup">
@@ -472,15 +473,16 @@
 				</fieldset>
 				<p>Please Note: %url% gets replaced with the url of the item.</p>
 			</div>
-			<h1>Save Settings</h1>
+			
+			<h2>Save Settings</h2>
 			<a data-role="button" data-icon="check" href="" class="dm-button" data-dm-fnc="save-settings">Save Settings</a>
 			<a href="" class="dm-to-home-button" data-role="button" data-icon="delete">Cancel</a>
 			
 
-			<h1>Log out</h1>
+			<h2>Log out</h2>
 			<a data-role="button" data-icon="delete" href="" class="dm-button" data-dm-fnc="logout" data-theme="d">Log Out and Delete Data</a>
 			
-			<h1>Tools</h1>
+			<h2>Tools</h2>
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-saved-items">Reload All Saved Items</a>
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-items">Reload All Unread Items</a>
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-favicons">Refresh Favicons</a>
@@ -553,18 +555,19 @@
 
 			<h1>Help, Credits and Copyrights <span style="color:red">&copy;</span></h1>
 		</div>
-		<div data-role="main" class="ui-content" class="dm-content">
+		<div data-role="main" class="ui-content dm-content">
 			<h2>Support, Bug Reports et. al.</h2>
 			<p>This app is still a work in progress. It works quite well, but has not been fully tested for security, compatibility and such aspects.</p>
 			<p>If you encounter bugs, miss features or have a comment about Delirious<span style="color:red">°</span>, go to <a href="https://github.com/simply-hg/delirious" target="_blank">Delirious<span style="color:red">°</span> on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to Delirious<span style="color:red">°</span> on github.com in any way you find fitting. If you want to make your own adjustments to Delirious<span style="color:red">°</span> I suggest to fork it on github. That way your features may flow back into Delirious<span style="color:red">°</span>.</p>
 			<p>News, comments and announcements about Delirious<span style="color:red">°</span> are posted to my webpage.</p>
-			<p>You like social networks? If so, you can like Delirious<span style="color:red">°</span> and tell your friends about it on Google+. Have question about fever-js? You can send me a tweet to <a href="https://twitter.com/simplyhg" target="_blank">@simplyhg</a> on twitter (I'm not too active there, but I receive and try to answer messages and tweets - maybe I even get more active there, who knows).</p>
-			<h1>Delirious<span style="color:red">°</span> License</h1>
-			<p>Delirious<span style="color:red">°</span> is provided as is without any guarantees or warranties. It is licensed under MIT-style terms. If you redistribute or modify it, please leave this license in place. If you use it in your project I'd be happy to hear about it. Also, I kindly ask you, to put up a link to the homepage of fever-js (<a href="http://www.simply-hg.de/delirious" target="_blank">simply-hg.de/fever-js/</a>) in case you use it as a base of your own work. Thank you very much.</p>
+			<p>You like social networks? If so, you can like Delirious<span style="color:red">°</span> and tell your friends about it on Google+. Have question about fever-js? You can send me a tweet to <a href="https://twitter.com/simplyhg" target="_blank">@simplyhg</a> on twitter.</p>
+			
+			<h2>Delirious<span style="color:red">°</span> License</h2>
+			<p>Delirious<span style="color:red">°</span> is provided as is without any guarantees or warranties. It is licensed under MIT-style terms. If you redistribute or modify it, please leave this license in place. If you use it in your project I'd be happy to hear about it. Also, I kindly ask you, to put up a link to the homepage of Delirious<span style="color:red">°</span> (<a href="http://www.simply-hg.de/delirious/" target="_blank">simply-hg.de/delirious//</a>) in case you use it as a base of your own work. Thank you very much.</p>
 
 			<h2>The MIT License (MIT)</h2>
 
-			<p>Delirious<span style="color:red">°</span> copyright &copy; 2013 by Hans-Georg Kluge</p>
+			<p>Delirious<span style="color:red">°</span> copyright &copy; 2013-2014 by Hans-Georg Kluge</p>
 			<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 			<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 			<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
@@ -576,7 +579,7 @@
 			<p><a href="http://www.jquery.com/" target="_blank">jQuery</a> and <a href="http://jquerymobile.com/" target="_blank">jQuery Mobile</a> are used under their <a href="https://jquery.org/license/" target="_blank">license terms (MIT)</a>.</p>
 			<p><a href="http://www.jstorage.info/" target="_blank">jStorage</a> is licensed under MIT-styled terms. You can <a href="http://www.jstorage.info/static/license.txt" target="_blank">find its license online</a>.</p>
 			<p>Delirious<span style="color:red">°</span> uses the jQuery plugin <a href="http://www.fitvid.com" target="_blank">fitvid.js</a>.</p>
-			<p>RSS icons used in this app are taken from <a href="http://commons.wikimedia.org/wiki/File:Feed-icon.svg" target="_blank">Wikimedia Commons</a> and <a href="http://www.feedicons.com/" target="_blank">feedicon.com</a>.</p>
+			<p>RSS icons used in this app are taken from <a href="http://commons.wikimedia.org/wiki/File:Feed-icon.svg" target="_blank">Wikimedia Commons</a> and <a href="http://www.feedicons.com/" target="_blank">feedicons.com</a>.</p>
 			<p>MD5 hashing is done with help from an implementation found on <a href="http://www.webtoolkit.info/javascript-md5.html" target="_blank">webtoolkit.info</a>. Some css code for the single item view is also from there, known as <a href="http://www.webtoolkit.info/css-clearfix.html" target="_blank">clearfix</a>. You can find <a href="http://www.webtoolkit.info/license" target="_blank">their license</a> online. </p>
 			<p>Delirious<span style="color:red">°</span> releases will be compressed by <a href="http://www.jscompress.com/" target="_blank">jscompress.com</a>. </p>
 			<p>Some nicer looking parts of the settings screen have been adapted from <a href="http://roughlybrilliant.com/jquery_mobile_best_practices" target="_blank">Roughly Brilliant</a>.</sp>
