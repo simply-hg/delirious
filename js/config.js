@@ -47,7 +47,9 @@ var session_read_items = [];
 var unread_counter = {};
 var items_loaded = false;
 var started_items_load = false;
-var last_group_count = 0;
+
+var feeds_hash = "none";
+var feed_counter = 0;
 
 var fav_groups = [];
 var fav_feeds  = [];
@@ -87,6 +89,8 @@ function getSettings() {
 	sharing           = $.jStorage.get("dm-sharing", sharing);
 	sharing_msg       = $.jStorage.get("dm-sharing-msg", sharing_msg);
 	paginate_items    = $.jStorage.get("dm-paginate-items", paginate_items);
+	feeds_hash        = $.jStorage.get("dm-feed-hash", feeds_hash);
+	feed_counter      = $.jStorage.get("dm-feed-counter", feed_counter);
 	
 	saved_items  = $.jStorage.get("dm-local-items", []);
 	widgets      = $.jStorage.get("dm-widgets", default_widgets);

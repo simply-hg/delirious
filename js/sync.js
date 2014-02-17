@@ -438,7 +438,7 @@ function markGroupRead(what, id) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				//$.mobile.navigate("#page-home", {transition: "slide"});
-				syncUnreadItems("sync");
+				syncItems();
 				//window.history.back();
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -585,6 +585,9 @@ function syncGroups() {
 				return 0;
 			});				
 			feeds_groups = data.feeds_groups;
+			
+
+			
 			prepareHome();
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -607,6 +610,14 @@ function syncFeeds() {
 				}
 				return 0;
 			});
+			
+			if (feeds.length !== feed_counter) {
+				console.log("Refreshing favicons");
+				feed_counter = feeds.length;
+				$.jStorage.set("dm-feed-counter", feed_counter);
+				refreshFavicons();
+			}
+			
 			prepareHome();
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
