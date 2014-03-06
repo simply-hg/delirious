@@ -123,13 +123,17 @@ var content_ShowFavGroups = '';
 function widgetShowFavGroups() {
 	"use strict";
 	content_ShowFavGroups = '';
-	$.each(fav_groups, function (index, value) {
-		var unread = countUnreadInGroup(value);
-		if (unread > 0) {
-			var group = _.findWhere(groups, {id: value});
-			content_ShowFavGroups += '<li data-theme="a">';
-			content_ShowFavGroups += '<a href="" data-dm-show-group="' + group.id + '" class="dm-button" data-dm-fnc="show-group-selector">' + _.escape(group.title);
-			content_ShowFavGroups += '<span class="ui-li-count">' + unread + '</span></a></li>';
+	console.log(fav_groups);
+	$.each(groups, function (index, value) {
+		
+		if ( _.contains(fav_groups, value.id)  ) {
+			var unread = countUnreadInGroup(value.id);
+			if (unread > 0) {
+				var group = _.findWhere(groups, {id: value.id});
+				content_ShowFavGroups += '<li data-theme="a">';
+				content_ShowFavGroups += '<a href="" data-dm-show-group="' + group.id + '" class="dm-button" data-dm-fnc="show-group-selector">' + _.escape(group.title);
+				content_ShowFavGroups += '<span class="ui-li-count">' + unread + '</span></a></li>';
+			}
 		}
 	});
 	
@@ -151,9 +155,11 @@ function widgetShowFavFeeds() {
 	var res_ShowFavFeeds = '';
 	countUnreadItems();
 	content_ShowFavFeeds = '';
-	$.each(fav_feeds, function (index, value) {
-		var feed = _.findWhere(feeds, {id: getNumber(value)});
-		content_ShowFavFeeds += renderListviewItemFeed(feed, false);
+	$.each(feeds, function (index, value) {
+		if ( _.contains(fav_feeds, value.id) ) {
+			var feed = _.findWhere(feeds, {id: getNumber(value.id)});
+			content_ShowFavFeeds += renderListviewItemFeed(feed, false);
+		}
 	});
 	if (content_ShowFavFeeds) {
 		res_ShowFavFeeds = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavFeeds + '</ul>';
