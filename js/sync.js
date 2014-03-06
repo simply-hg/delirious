@@ -583,7 +583,7 @@ function syncGroups() {
 					return 1;
 				}
 				return 0;
-			});				
+			});		
 			feeds_groups = data.feeds_groups;
 			
 
