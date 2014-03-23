@@ -92,10 +92,11 @@ function registerEventHandlers() {
 	});
 	
 	$ ( document ).on("vclick", ".dm-button", function(e) {
-		console.log("vclick button");
 		e.stopPropagation();
 		e.preventDefault();
 		var button = $(this).data("dm-fnc");
+		console.log("vclick button: " + button);
+
 		switch (button) {
 			case "show-item":
 				var id = $(this).data("dm-show-item");
@@ -276,9 +277,13 @@ function registerEventHandlers() {
 				syncItems();
 				showHome();				
 			break;
-			case "":
+			case "show-saved-time":
+				showSavedByTime();
+				$("#page-saved").enhanceWithin();
 			break;	
-			case "":
+			case "show-saved-feed":
+				showSavedByFeed();
+				$("#page-saved").enhanceWithin();
 			break;
 			case "":
 			break;

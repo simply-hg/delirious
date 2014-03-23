@@ -148,6 +148,11 @@ function logout() {
 }
 
 function showSaved() {
+	showSavedByTime();
+	return;
+}
+
+function showSavedByTime() {
 
 	$("#dm-saved-content").empty();
 	$("#dm-saved-content").append('<ul id="dm-saved-view" data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true"></ul>');
@@ -155,6 +160,7 @@ function showSaved() {
 	var title = "Saved Items (" +  saved_items.length + ")";
 	$("#page-saved").data("title", title);
 	$("#dm-saved-header").html(title);
+	document.title = title;
 	if ( saved_items.length > 0 ) {
 		//local_items = _.sortBy(local_items, "created_on_time");
 		$.each(saved_items, function(index, value) {
@@ -167,6 +173,64 @@ function showSaved() {
 
 	return false;
 }
+
+function showSavedByFeed() {
+	var grouped_items;
+	var feed_ids;
+	$("#dm-saved-content").empty();
+	//$("#dm-saved-content").append('<ul id="dm-saved-view" data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true"></ul>');
+	//var local_items = $.jStorage.get("dm-local-items", []);
+	var title = "Saved Items (" +  saved_items.length + ")";
+	
+	$("#page-saved").data("title", title);
+	document.title = title;	
+	$("#dm-saved-header").html(title);
+	
+	if ( saved_items.length > 0 ) {
+		grouped_items = _.groupBy(saved_items, "feed_id");
+		feed_ids = _.keys(grouped_items);
+		//console.log(feed_ids);
+		
+		$.each(feeds, function(index,value){
+			//console.log(value.id + " " + value.title );
+			//console.log(feed_ids);
+			if ( _.contains( feed_ids, getString(value.id) ) ) {
+				console.log(value.title);
+				var saved_part = "<h2>" + value.title + "</h2>";
+				var show_pieces = _.filter( saved_items, function(saves){
+					//console.log(saves);
+					//console.log(value.id + " -> " + saves.feed_id );
+					if ( getNumber(saves.feed_id) === getNumber(value.id) ) {
+						return true;
+					} else {
+						return false;
+					} 
+				});
+				console.log(show_pieces);
+				
+				saved_part += '<ul data-role="listview" data-divider-theme="a" data-inset="true">';
+				
+				$.each(show_pieces, function(index, value) {
+					saved_part += renderListviewItem(value, true, true, "long");
+				});
+				
+				saved_part += '</ul>';
+				
+				$("#dm-saved-content").append(saved_part);
+			}
+		});
+		
+		/*$.each(saved_items, function(index, value) {
+			var item = "";
+			item += renderListviewItem(value, true, true, "long");
+			$("#dm-saved-view").append(item);
+
+		});*/
+	}
+
+	return false;
+}
+
 
 function showHot(page) {
 
