@@ -148,6 +148,9 @@ function logout() {
 }
 
 function showSaved() {
+	$("#dm-select-saved-time").removeClass("ui-btn-active");
+	$("#dm-select-saved-time").addClass("ui-btn-active");
+	
 	showSavedByTime();
 	return;
 }
