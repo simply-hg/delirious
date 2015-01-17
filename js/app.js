@@ -67,12 +67,15 @@ function initSettings() {
 	$('input:radio[name="dm-setting-groupview"]').filter('[value="' + groupview + '"]').prop('checked', true);
 	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="' + show_empty_groups + '"]').prop('checked', true);
 	$('input:radio[name="dm-setting-sharing"]').filter('[value="' + sharing + '"]').prop('checked', true);
+	
+	$('#dm-setting-sharing-mobile').prop("checked", sharing_mobile);
+	
 	$('input:radio[name="dm-setting-order"]').filter('[value="' + order_items + '"]').prop('checked', true);
 	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="' + paginate_items + '"]').prop('checked', true);
 	$('#dm-setting-sharing-msg').val(sharing_msg);
 }
 function saveSettings() {
-	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, sharing_text, item_order, page;
+	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, share_mobile, sharing_text, item_order, page;
 	
 	url           = $.trim($("#dm-fever-url").val());
 	user          = $.trim($("#dm-e-mail").val());
@@ -83,6 +86,7 @@ function saveSettings() {
 	groupview     = $('input[name=dm-setting-groupview]:checked').val();
 	emptygroups   = $('input[name=dm-setting-empty-groups]:checked').val();
 	share_buttons = $('input[name=dm-setting-sharing]:checked').val();
+	share_mobile  = $('#dm-setting-sharing-mobile').prop("checked");
 	sharing_text  = $('#dm-setting-sharing-msg').val();
 	item_order    = $('input[name=dm-setting-order]:checked').val();
 	page          = $('input[name=dm-setting-paginate-items]:checked').val();
@@ -103,6 +107,7 @@ function saveSettings() {
 	$.jStorage.set("dm-groupview", groupview);
 	$.jStorage.set("dm-show-empty-groups", emptygroups);
 	$.jStorage.set("dm-sharing", share_buttons);
+	$.jStorage.set("dm-sharing-mobile", share_mobile);
 	$.jStorage.set("dm-sharing-msg", sharing_text);
 	$.jStorage.set("dm-order-items", item_order);
 	$.jStorage.set("dm-paginate-items", page);
@@ -736,14 +741,17 @@ function renderSingleItem(data) {
 		var passive_buttons = '<div data-role="navbar"><ul>';
 		
 		passive_buttons += '<li><a href="http://www.facebook.com/sharer/sharer.php?u='+encodeURI(data.url)+'" target="_blank">Facebook</a></li>';
-		passive_buttons += '<li><a href="https://twitter.com/intent/tweet?text=Look&url='+encodeURI(data.url)+'" target="_blank">Tweet</a></li>';
+		passive_buttons += '<li><a href="https://twitter.com/intent/tweet?text=Look&url='+encodeURI(data.url)+'" target="_blank">Twitter</a></li>';
 		passive_buttons += '<li><a href="https://plus.google.com/share?url='+encodeURI(data.url)+'" target="_blank">Google+</a></li>';
 		
-		passive_buttons += '<li><a href="whatsapp://send?text=' + encodeURI( data.title + ' - ' + data.url ) + '" target="_blank">WhatApp</a></li>';
-		passive_buttons += '<li><a href="threema://compose?text=' + encodeURI( data.title + ' - ' + data.url ) + '" target="_blank">Threema</a></li>';
-		
-		
 		passive_buttons += '</ul></div>';
+		
+		if (  ) {
+			passive_buttons += '<div data-role="navbar"><ul>';
+			passive_buttons += '<li><a href="whatsapp://send?text=' + encodeURI( data.title + ' - ' + data.url ) + '">WhatApp</a></li>';
+			passive_buttons += '<li><a href="threema://compose?text=' + encodeURI( data.title + ' - ' + data.url ) + '">Threema</a></li>';
+			passive_buttons += '</ul></div>';
+		}
 		$("#dm-single-passive-sharing-buttons").empty();
 		$("#dm-single-passive-sharing-buttons").append(passive_buttons);
 		

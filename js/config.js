@@ -35,6 +35,7 @@ var transition   = "slide";
 var html_content = "escape";
 var show_empty_groups = "false";
 var sharing = "email";
+var sharing_mobile = true;
 var sharing_msg = "Check out this nice article I found: %url%";
 var started = false;
 var order_items = "asc";
@@ -87,6 +88,7 @@ function getSettings() {
 	show_empty_groups = $.jStorage.get("dm-show-empty-groups", show_empty_groups);
 	order_items       = $.jStorage.get("dm-order-items", order_items);
 	sharing           = $.jStorage.get("dm-sharing", sharing);
+	sharing_mobile    = $.jStorage.get("dm-sharing-mobile", sharing_mobile);
 	sharing_msg       = $.jStorage.get("dm-sharing-msg", sharing_msg);
 	paginate_items    = $.jStorage.get("dm-paginate-items", paginate_items);
 	feeds_hash        = $.jStorage.get("dm-feed-hash", feeds_hash);
