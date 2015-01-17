@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 
@@ -21,7 +22,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
 
 function autoSync() {
 	console.log("starting autosync");
@@ -107,7 +107,7 @@ function syncSavedItems(what) {
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
 
-
+var afterItemLoad;
 function syncUnreadItems(what) {
 	// This function compares your local unread items with all unread items online.
 	// if some are missing here, we load them.
@@ -164,6 +164,7 @@ function syncUnreadItems(what) {
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }
+
 
 function refreshItems() {
 	//last_dm_refresh =  Math.round(+new Date()/1000); // from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
@@ -234,7 +235,7 @@ function runAfterItemLoadNoHome() {
 	return true;
 }
 
-
+var processLoadedSaveItems;
 function refreshSavedItems() {
 	showHideLoader("start");
 	$.post(dm_url + "?api&saved_item_ids", { api_key: dm_key }).done(function(data) {
@@ -300,6 +301,7 @@ function loadSavedItems(ids) {
 }
 
 function markItemsRead(ids) {
+	var ids_to_mark_read;
 	if ( _.isArray(ids) ) {
 		// An array of ids
 		ids_to_mark_read = ids;
@@ -400,6 +402,7 @@ function markGroupAsRead(group_id, ids) {
 
 function markGroupRead(what, id) {
 	console.log(what + " :" + id);
+	var feed_ids_to_mark_read;
 	if ( what == "feed" ) {
 		feed_ids_to_mark_read = [ getString(id) ];
 	}

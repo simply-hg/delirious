@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 
@@ -262,7 +263,7 @@ function showHot(page) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 		
-			load_ids = '';
+			var load_ids = '';
 			$.each(data.links, function(index, value) {
 				var item = '';
 				var id_list = '';
@@ -325,7 +326,7 @@ function showHot(page) {
 					local = _.findWhere(session_read_items, {id: parseInt(id, 10)});
 				}
 				if ( local ) {
-					local_check_id = id;
+					var local_check_id = id;
 					ids_to_get = _.filter(ids_to_get, function(id) {
 						if (id == local_check_id ) {
 							return false;
@@ -438,7 +439,7 @@ function buildGroup(id) {
 	var group = _.findWhere(groups, {id: id});
 	var ids_to_show = _.findWhere(feeds_groups, {group_id: id});
 	
-	feeds_for_group = [];
+	var feeds_for_group = [];
 	feeds_for_group = _.map( ids_to_show.feed_ids.split(","), function(id) {
 		return getNumber(id);
 	});
@@ -453,7 +454,7 @@ function buildGroup(id) {
 	var unread = group_items.length;
 	
 	// check if we need to group items...
-	item_ids_in_group = '';
+	var item_ids_in_group = '';
 	//group_item_counter = 0;
 	console.log( getNumber(paginate_items) );
 	if ( paginate_items == "all" || getNumber(paginate_items) >= unread ) {
@@ -540,7 +541,7 @@ function buildFeed(id) {
 	var unread = feed_items.length;
 	
 	// check if we need to group items...
-	item_ids_in_feed = '';
+	var item_ids_in_feed = '';
 	//group_item_counter = 0;
 	//console.log( getNumber(paginate_items) );
 	//console.log(feed_items);
@@ -772,17 +773,16 @@ function renderSingleItem(data) {
 	return false;
 }
 
-
 function getUnreadSparks() {
 	var spark_feeds = _.where(feeds, {is_spark: 1});
 
-	feeds_for_sparks_unread = [];
+	var feeds_for_sparks_unread = [];
 	$.each(spark_feeds, function(index, value) {
 		feeds_for_sparks_unread.push(value.id);
 	});
 	
-	unread_in_sparks_counter = 0;
-	unread_sparks = [];
+	var unread_in_sparks_counter = 0;
+	var unread_sparks = [];
 	$.each(items, function(index, value) {
 		if ( $.inArray(value.feed_id, feeds_for_sparks_unread ) == true && value.is_read == 0 ) {
 			unread_in_sparks_counter++;
@@ -794,12 +794,12 @@ function getUnreadSparks() {
 }
 
 function showSparks() {
-		last_dm_group_show = now();
+	last_dm_group_show = now();
 	$("#dm-sparks-content").empty();
 	$("#dm-sparks-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" id="dm-sparks-view"></ul>');
 
 	var sparks = getUnreadSparks();
-	item_ids_in_sparks = "";
+	var item_ids_in_sparks = "";
 	$.each(sparks.items, function(index, value) {
 		if ( value.is_read == 0 ) {
 			var item = "";
@@ -873,7 +873,7 @@ function buildKindling() {
 	$("#dm-kindling-content").empty();
 	$("#dm-kindling-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-kindling-view"></ul>');
 	$("#dm-kindling-more").empty();
-	paginated_ids = '';
+	var paginated_ids = '';
 	console.log("check2");
 	if ( paginate_items == "all" ) {
 		$.each(items, function(index, value) {
@@ -972,6 +972,7 @@ function showFeedsInGroup(id) {
 	
 	var gr_feeds = [];
 	
+	var feed_id;
 	for ( feed_id in feeds_to_show) {	
 		gr_feeds.push( _.findWhere(feeds, {id: getNumber( feeds_to_show[feed_id]  )}) );
 	}
@@ -1138,14 +1139,14 @@ function countUnreadInGroup(id) {
 		return 0;
 	}
 	
-	count_feeds_to_show = ids_to_show.feed_ids.split(",");
+	var count_feeds_to_show = ids_to_show.feed_ids.split(",");
 
-	count_feeds_for_group = [];
+	var count_feeds_for_group = [];
 	$.each(count_feeds_to_show, function(index, value) {
 		count_feeds_for_group.push(parseInt(value, 10));
 	});
 
-	count_group_item_counter = 0;
+	var count_group_item_counter = 0;
 	$.each(items, function(index, value) {
 		if ( $.inArray(value.feed_id, count_feeds_for_group ) !== -1 && value.is_read == 0 ) {
 			count_group_item_counter++;
@@ -1156,7 +1157,7 @@ function countUnreadInGroup(id) {
 
 function showEditHomescreen() {
 
-	widget_place_options = '<option value="widgetEmpty">None</option>';
+	var widget_place_options = '<option value="widgetEmpty">None</option>';
 	defined_widgets = _.sortBy(defined_widgets, "title");
 	$.each(defined_widgets, function(index, value) {
 		widget_place_options += '<option value="'+value.fnc+'">'+value.title+'</option>';

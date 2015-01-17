@@ -1,3 +1,4 @@
+"use strict";
 /*
 The MIT License (MIT)
 
@@ -54,6 +55,8 @@ var feed_counter = 0;
 
 var fav_groups = [];
 var fav_feeds  = [];
+
+var dm_autosync;
 
 var default_widgets = [
 	{place: "a1", fnc: "widgetButtonHotView", options: {}},
