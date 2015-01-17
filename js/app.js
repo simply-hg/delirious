@@ -76,7 +76,7 @@ function initSettings() {
 	$('#dm-setting-sharing-msg').val(sharing_msg);
 }
 function saveSettings() {
-	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, share_mobile, sharing_text, item_order, page;
+	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, share_mobile, sharing_text, item_order, page, key;
 	
 	url           = $.trim($("#dm-fever-url").val());
 	user          = $.trim($("#dm-e-mail").val());
@@ -100,7 +100,6 @@ function saveSettings() {
 		password = "";
 		$.jStorage.set("dm-user", user);
 		$.jStorage.set("dm-key", key);
-		
 	}
 	
 	$.jStorage.set("dm-transition", transition);

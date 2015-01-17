@@ -408,7 +408,7 @@ function markGroupRead(what, id) {
 	}
 	if ( what == "group" ) {
 		console.log(feeds_groups);
-		feed_ids_to_mark_read_x = _.findWhere( feeds_groups, {group_id: getNumber(id)} );
+		var feed_ids_to_mark_read_x = _.findWhere( feeds_groups, {group_id: getNumber(id)} );
 		feed_ids_to_mark_read = feed_ids_to_mark_read_x.feed_ids.split(",");
 	}
 	feed_ids_to_mark_read = _.compact(feed_ids_to_mark_read);
