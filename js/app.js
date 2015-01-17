@@ -746,7 +746,7 @@ function renderSingleItem(data) {
 		
 		passive_buttons += '</ul></div>';
 		
-		if (  ) {
+		if ( sharing_mobile ) {
 			passive_buttons += '<div data-role="navbar"><ul>';
 			passive_buttons += '<li><a href="whatsapp://send?text=' + encodeURI( data.title + ' - ' + data.url ) + '">WhatApp</a></li>';
 			passive_buttons += '<li><a href="threema://compose?text=' + encodeURI( data.title + ' - ' + data.url ) + '">Threema</a></li>';
