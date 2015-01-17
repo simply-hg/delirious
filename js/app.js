@@ -735,9 +735,13 @@ function renderSingleItem(data) {
 		
 		var passive_buttons = '<div data-role="navbar"><ul>';
 		
-		passive_buttons += '<li><a  href="http://www.facebook.com/sharer/sharer.php?u='+encodeURI(data.url)+'" target="_blank">Facebook</a></li>';
-		passive_buttons += '<li><a  href="https://twitter.com/intent/tweet?text=Look&url='+encodeURI(data.url)+'" target="_blank">Tweet</a></li>';
-		passive_buttons += '<li><a  href="https://plus.google.com/share?url='+encodeURI(data.url)+'" target="_blank">Google+</a></li>';
+		passive_buttons += '<li><a href="http://www.facebook.com/sharer/sharer.php?u='+encodeURI(data.url)+'" target="_blank">Facebook</a></li>';
+		passive_buttons += '<li><a href="https://twitter.com/intent/tweet?text=Look&url='+encodeURI(data.url)+'" target="_blank">Tweet</a></li>';
+		passive_buttons += '<li><a href="https://plus.google.com/share?url='+encodeURI(data.url)+'" target="_blank">Google+</a></li>';
+		
+		passive_buttons += '<li><a href="whatsapp://send?text=' + encodeURI( data.title + ' - ' + data.url ) + '" target="_blank">WhatApp</a></li>';
+		passive_buttons += '<li><a href="threema://compose?text=' + encodeURI( data.title + ' - ' + data.url ) + '" target="_blank">Threema</a></li>';
+		
 		
 		passive_buttons += '</ul></div>';
 		$("#dm-single-passive-sharing-buttons").empty();
