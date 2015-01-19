@@ -43,6 +43,8 @@ var order_items = "asc";
 var groupview = "items";
 var paginate_items = "100";
 
+var widget_recent_items = 10;
+
 var items              = [];
 var saved_items        = [];
 var session_read_items = [];
@@ -96,6 +98,8 @@ function getSettings() {
 	paginate_items    = $.jStorage.get("dm-paginate-items", paginate_items);
 	feeds_hash        = $.jStorage.get("dm-feed-hash", feeds_hash);
 	feed_counter      = $.jStorage.get("dm-feed-counter", feed_counter);
+	
+	widget_recent_items = $.jStorage.get("dm-widget-recent-items", widget_recent_items);
 	
 	saved_items  = $.jStorage.get("dm-local-items", []);
 	widgets      = $.jStorage.get("dm-widgets", default_widgets);

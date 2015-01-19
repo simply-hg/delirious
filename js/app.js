@@ -69,14 +69,19 @@ function initSettings() {
 	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="' + show_empty_groups + '"]').prop('checked', true);
 	$('input:radio[name="dm-setting-sharing"]').filter('[value="' + sharing + '"]').prop('checked', true);
 	
+	
+	
 	$('#dm-setting-sharing-mobile').prop("checked", sharing_mobile);
 	
 	$('input:radio[name="dm-setting-order"]').filter('[value="' + order_items + '"]').prop('checked', true);
 	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="' + paginate_items + '"]').prop('checked', true);
+	
+	$('input:radio[name="dm-setting-widget-recent-items-count"]').filter('[value="' + widget_recent_items + '"]').prop('checked', true);
+	
 	$('#dm-setting-sharing-msg').val(sharing_msg);
 }
 function saveSettings() {
-	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, share_mobile, sharing_text, item_order, page, key;
+	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, share_mobile, sharing_text, item_order, page, key, recent_items;
 	
 	url           = $.trim($("#dm-fever-url").val());
 	user          = $.trim($("#dm-e-mail").val());
@@ -91,7 +96,7 @@ function saveSettings() {
 	sharing_text  = $('#dm-setting-sharing-msg').val();
 	item_order    = $('input[name=dm-setting-order]:checked').val();
 	page          = $('input[name=dm-setting-paginate-items]:checked').val();
-	
+	recent_items = $('input[name=dm-setting-widget-recent-items-count]:checked').val();
 
 	$.jStorage.set("dm-url", url);
 	
@@ -111,6 +116,8 @@ function saveSettings() {
 	$.jStorage.set("dm-sharing-msg", sharing_text);
 	$.jStorage.set("dm-order-items", item_order);
 	$.jStorage.set("dm-paginate-items", page);
+
+	$.jStorage.set("dm-widget-recent-items", recent_items);
 
 
 	restart();

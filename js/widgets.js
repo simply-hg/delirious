@@ -42,21 +42,19 @@ var defined_widgets = [
 	// Favourites:
 	{fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: ""},
 	{fnc: "widgetShowFavGroups", title: "Show Favourite Groups", desc: ""},
+	{fnc: "widgetFavFeedsLastItems", title: "Recent Favourite Items", dec: ""},
 	
 	// Groups:
 	{fnc: "widgetSystemGroups", title: "Show System Groups", desc: ""},
 	{fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: ""}
 ];
 function parseWidget(widget) {
-	"use strict";
 	return '<div class="dm-widget-container">' + widget + '</div>';
 }
 function widgetEmpty() {
-	"use strict";
 	return '';
 }
 function widgetSystemGroups() {
-	"use strict";
 	var sysgroups = '';
 
 	sysgroups += '<h2>Fever<span style="color:red">°</span> Groups</h2>';
@@ -84,11 +82,9 @@ function widgetSystemGroups() {
 	return parseWidget(sysgroups);
 }
 
-var panel_custom_groups = '';
 function widgetCustomGroups() {
-	"use strict";
 
-	panel_custom_groups = '<h2>My Groups</h2>';
+	var panel_custom_groups = '<h2>My Groups</h2>';
 	panel_custom_groups += '<ul data-role="listview" data-filter-theme="a" data-divider-theme="a" data-theme="a" data-inset="true" data-filter="true" id="dm-groups" class="dm-home-views">';
 
 	$.each(groups, function (index, value) {
@@ -112,18 +108,16 @@ function widgetCustomGroups() {
 }
 
 function widgetHotView() {
-	"use strict";
+	return '';
 }
 
 function widgetShowGroup() {
 	// shows a group
-	"use strict";
+	return '';
 }
 
-var content_ShowFavGroups = '';
 function widgetShowFavGroups() {
-	"use strict";
-	content_ShowFavGroups = '';
+	var content_ShowFavGroups = '';
 	console.log(fav_groups);
 	$.each(groups, function (index, value) {
 		
@@ -147,15 +141,12 @@ function widgetShowFavGroups() {
 	return parseWidget(content_ShowFavGroups);
 }
 
-
-var content_ShowFavFeeds = '';
 function widgetShowFavFeeds() {
-	"use strict";
 	// These feeds are being shown if they have items
 	//
 	var res_ShowFavFeeds = '';
 	countUnreadItems();
-	content_ShowFavFeeds = '';
+	var content_ShowFavFeeds = '';
 	$.each(feeds, function (index, value) {
 		if ( _.contains(fav_feeds, value.id) ) {
 			var feed = _.findWhere(feeds, {id: getNumber(value.id)});
@@ -170,65 +161,83 @@ function widgetShowFavFeeds() {
 	return parseWidget(res_ShowFavFeeds);
 }
 
+function widgetFavFeedsLastItems() {
+	var fav_items = _.filter(items, function(item){ 
+		if ( _.contains(fav_feeds, item.feed_id) ) {
+			return true; 
+		} else {
+			return false;
+		}
+	});
+	
+	if ( order_items === "asc" ) {
+		var recent_ten = _.last(fav_items, getNumber(widget_recent_items));
+		recent_ten.reverse();
+	} else {
+		var recent_ten = _.first(fav_items, getNumber(widget_recent_items));
+	}
+	
+	if ( recent_ten.length > 0 ) {
+		var last_ten_html = '<h2>Recent Favourite Items</h2><ul data-role="listview" data-divider-theme="a" data-inset="true">';
+		
+		$.each(recent_ten, function(index, value) {
+			last_ten_html += renderListviewItem(value, false, true, "long");
+		});
+		
+		last_ten_html += '</ul>';
+		
+		return parseWidget(last_ten_html);
+	} else {
+		return parseWidget('No news');
+	}
+}
 
 /* Some simple Buttons... */
 
 function widgetButtonSparks() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button"class="dm-button"  data-dm-fnc="show-sparks">Show Sparks</a>');
 }
 
 function widgetButtonKindling() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-kindling">Show Kindling</a>');
 }
 
 function widgetButtonSaved() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-saved">Show Saved</a>');
 }
 
 function widgetButtonHotView() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-hot">Show Hot Items</a>');
 }
 function widgetButtonAllFeeds() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-all-feeds">Show All Feeds</a>');
 }
 function widgetButtonGroups() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" class="dm-button" data-dm-fnc="show-groups">Show Groups</a>');
 }
 
 // ------------------------------
 
 function widgetButtonSettings() {
-	"use strict";
 	return parseWidget('<a href="#page-settings" data-icon="gear" data-role="button">Edit Settings</a>');
 }
 
 function widgetButtonReloadFavicons() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="dm-button" data-dm-fnc="refresh-favicons">Reload Favicons</a>');
 }
 
 function widgetButtonEditHomescreen() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" data-icon="grid" class="dm-button" data-dm-fnc="show-edit-homescreen">Edit Homescreen</a>');
 }
 
 function widgetButtonSyncItems() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" data-icon="refresh" class="dm-button" data-dm-fnc="sync-items">Sync with Fever<span style="color:red;">°</span></a>');
 }
 
 function widgetButtonMarkAllRead() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" data-icon="check" class="dm-button" data-dm-fnc="mark-all-read">Mark all Read</a>');
 }
 
 function widgetButtonUnreadLastItems() {
-	"use strict";
 	return parseWidget('<a href="" data-role="button" data-icon="eye" class="dm-button" data-dm-fnc="unread-last-items">Mark Last Items Unread</a>');
 }

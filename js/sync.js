@@ -70,7 +70,7 @@ function syncSavedItems(what) {
 				console.log("let's load all saved items");
 				refreshSavedItems();
 			} else {
-				local_ids = [];
+				var local_ids = [];
 			
 				$.each(saved_items, function(index, value) {
 					local_ids.push(value.id.toString());
@@ -128,7 +128,7 @@ function syncUnreadItems(what) {
 			var online_unread_ids = data.unread_item_ids.split(',');
 			last_fever_refresh = data.last_refreshed_on_time;
 
-			local_unread_ids = [];
+			var local_unread_ids = [];
 			$.each(items, function(index, value) {
 				local_unread_ids.push(value.id.toString());
 			});
