@@ -87,6 +87,11 @@ function registerEventHandlers() {
 				var id = $( this ).data("dm-item-id");
 				console.log("single-id: "+id);
 			break;
+			case "page-login":
+				if ( auth_success === true ) {
+					$.mobile.navigate("#page-home", {transition: transition});
+				}
+			break;
 		}
 		
 		$(this).enhanceWithin();
@@ -227,6 +232,11 @@ function registerEventHandlers() {
 				var feed_id = $(this).data("dm-feed-id");
 				markFeedAsRead(feed_id, ids);
 			break;
+			case "mark-read-recent-fav-items":
+				var ids = $(this).data("dm-item-ids");
+				markItemsRead(ids);
+				showHome();
+			break;
 			case "toggle-group-fav":
 			case "mark-group-fav":
 				markGroupAsFav();
@@ -286,7 +296,8 @@ function registerEventHandlers() {
 				showSavedByFeed();
 				$("#page-saved").enhanceWithin();
 			break;
-			case "":
+			case "login":
+				login();
 			break;
 			case "":
 			break;

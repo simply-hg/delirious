@@ -171,31 +171,34 @@ function widgetFavFeedsLastItems() {
 	});
 	
 	if ( order_items === "asc" ) {
-		var recent_ten = _.last(fav_items, getNumber(widget_recent_items));
+		var recent_ten = _.last(fav_items, getNumber(getOption("widget_recent_items")));
 		recent_ten.reverse();
 	} else {
-		var recent_ten = _.first(fav_items, getNumber(widget_recent_items));
+		var recent_ten = _.first(fav_items, getNumber(getOption("widget_recent_items")));
 	}
 	
 	if ( recent_ten.length > 0 ) {
 		var last_ten_html = '<h2>Recent Favourite Items</h2><ul data-role="listview" data-divider-theme="a" data-inset="true">';
-		
+		var last_ten_ids = [];
 		$.each(recent_ten, function(index, value) {
-			last_ten_html += renderListviewItem(value, false, true, "long");
+			last_ten_ids.push(value.id);
+			last_ten_html += renderListviewItem(value, true, true, "long");
 		});
 		
 		last_ten_html += '</ul>';
 		
+		last_ten_html += '<a href="" data-role="button" class="dm-button"  data-dm-fnc="mark-read-recent-fav-items" data-dm-item-ids="'+last_ten_ids.join(",")+'">Mark Items Read</a>';
+		
 		return parseWidget(last_ten_html);
 	} else {
-		return parseWidget('No news');
+		return parseWidget('No new items in favourite feeds.');
 	}
 }
 
 /* Some simple Buttons... */
 
 function widgetButtonSparks() {
-	return parseWidget('<a href="" data-role="button"class="dm-button"  data-dm-fnc="show-sparks">Show Sparks</a>');
+	return parseWidget('<a href="" data-role="button" class="dm-button"  data-dm-fnc="show-sparks">Show Sparks</a>');
 }
 
 function widgetButtonKindling() {

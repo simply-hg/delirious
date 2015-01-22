@@ -31,7 +31,8 @@ function start() {
 
 	if ( dm_url === "" ) {
 		console.log("No URL. To settings please");
-		checkAuth(0);
+		$.mobile.navigate("#page-login");
+		//checkAuth(0);
 	} else {
 		started_items_load = true;
 		console.log("start api call");
@@ -46,8 +47,10 @@ function start() {
 				
 				syncGroups();
 				syncFeeds();
+				
 				syncUnreadItems("full");
 				syncSavedItems("start");
+				
 				dm_autosync = window.setInterval("autoSync()", 5 * 60 * 1000);
 				prepareHome();
 			}
@@ -64,39 +67,57 @@ function initSettings() {
 		$("#dm-e-mail").val(dm_user);
 	}
 	$('input:radio[name="dm-setting-transitions"]').filter('[value="' + transition + '"]').prop('checked', true);
-	$('input:radio[name="dm-setting-html-content"]').filter('[value="' + html_content + '"]').prop('checked', true);
+		
 	$('input:radio[name="dm-setting-groupview"]').filter('[value="' + groupview + '"]').prop('checked', true);
 	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="' + show_empty_groups + '"]').prop('checked', true);
 	$('input:radio[name="dm-setting-sharing"]').filter('[value="' + sharing + '"]').prop('checked', true);
-	
-	
-	
-	$('#dm-setting-sharing-mobile').prop("checked", sharing_mobile);
-	
 	$('input:radio[name="dm-setting-order"]').filter('[value="' + order_items + '"]').prop('checked', true);
-	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="' + paginate_items + '"]').prop('checked', true);
-	
-	$('input:radio[name="dm-setting-widget-recent-items-count"]').filter('[value="' + widget_recent_items + '"]').prop('checked', true);
-	
+	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="' + paginate_items + '"]').prop('checked', true);	
 	$('#dm-setting-sharing-msg').val(sharing_msg);
+	
+	// New:
+	//console.log("share mobile: " + getOption("sharing_mobile"));
+	$('#dm-setting-sharing-mobile').prop("checked", getOption ( "sharing_mobile") );
+	
+	$('input:radio[name="dm-setting-widget-recent-items-count"]').filter('[value="' + getOption("widget_recent_items") + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-html-content"]').filter('[value="' + getOption("html_content") + '"]').prop('checked', true);
+	
+	
 }
 function saveSettings() {
-	var url, user, password, transition, html_content, groupview, emptygroups, share_buttons, share_mobile, sharing_text, item_order, page, key, recent_items;
+	var url, user, password, transition, groupview, emptygroups, share_buttons, sharing_text, item_order, page, key;
 	
+	// New:
+	setOption("html_content",        $('input[name=dm-setting-html-content]:checked').val());
+	//console.log("save share mobile: " + $('#dm-setting-sharing-mobile').is(":checked")); //val());
+	setOption("sharing_mobile",      $('#dm-setting-sharing-mobile').is(":checked"));
+	setOption("widget_recent_items", $('input[name=dm-setting-widget-recent-items-count]:checked').val());
+
+	// New, not yet implemented:
+	setOption("transition",     $('input[name=dm-setting-transitions]:checked').val());
+	setOption("url",            $.trim($("#dm-fever-url").val()));
+	setOption("user",           $.trim($("#dm-e-mail").val()));
+	setOption("groupview",      $('input[name=dm-setting-groupview]:checked').val());
+	setOption("emptygroups",    $('input[name=dm-setting-empty-groups]:checked').val());
+	setOption("share_buttons",  $('input[name=dm-setting-sharing]:checked').val());
+	setOption("sharing_text",   $('#dm-setting-sharing-msg').val());
+	setOption("item_order",     $('input[name=dm-setting-order]:checked').val());
+	setOption("page",           $('input[name=dm-setting-paginate-items]:checked').val());
+
+	// Old:
 	url           = $.trim($("#dm-fever-url").val());
 	user          = $.trim($("#dm-e-mail").val());
 	password      = $.trim($("#dm-password").val());
 	$("#dm-password").val("");
 	transition    = $('input[name=dm-setting-transitions]:checked').val();
-	html_content  = $('input[name=dm-setting-html-content]:checked').val();
+	//html_content  = $('input[name=dm-setting-html-content]:checked').val();
 	groupview     = $('input[name=dm-setting-groupview]:checked').val();
 	emptygroups   = $('input[name=dm-setting-empty-groups]:checked').val();
 	share_buttons = $('input[name=dm-setting-sharing]:checked').val();
-	share_mobile  = $('#dm-setting-sharing-mobile').prop("checked");
 	sharing_text  = $('#dm-setting-sharing-msg').val();
 	item_order    = $('input[name=dm-setting-order]:checked').val();
 	page          = $('input[name=dm-setting-paginate-items]:checked').val();
-	recent_items = $('input[name=dm-setting-widget-recent-items-count]:checked').val();
+	//recent_items  = $('input[name=dm-setting-widget-recent-items-count]:checked').val();
 
 	$.jStorage.set("dm-url", url);
 	
@@ -105,20 +126,25 @@ function saveSettings() {
 		password = "";
 		$.jStorage.set("dm-user", user);
 		$.jStorage.set("dm-key", key);
+		
+		setOption("key", key);
 	}
 	
 	$.jStorage.set("dm-transition", transition);
-	$.jStorage.set("dm-html-content", html_content);
+	//$.jStorage.set("dm-html-content", html_content);
 	$.jStorage.set("dm-groupview", groupview);
 	$.jStorage.set("dm-show-empty-groups", emptygroups);
 	$.jStorage.set("dm-sharing", share_buttons);
-	$.jStorage.set("dm-sharing-mobile", share_mobile);
+	//$.jStorage.set("dm-sharing-mobile", share_mobile);
 	$.jStorage.set("dm-sharing-msg", sharing_text);
 	$.jStorage.set("dm-order-items", item_order);
 	$.jStorage.set("dm-paginate-items", page);
+	//$.jStorage.set("dm-widget-recent-items", recent_items);
 
-	$.jStorage.set("dm-widget-recent-items", recent_items);
-
+	// New:
+	saveOptions();
+	//$.jStorage.set("dm-config", dm_config);
+	//$.jStorage.set("dm-data", dm_data);
 
 	restart();
 	$.mobile.navigate("#page-home", {transition: transition});
@@ -126,32 +152,86 @@ function saveSettings() {
 	return false;	
 }
 
+
 function restart() {
 	getSettings();
 	start();
 }
 
+function login() {
+	var url           = $.trim($("#dm-login-url").val());
+	var user          = $.trim($("#dm-login-e-mail").val());
+	var password      = $.trim($("#dm-login-password").val());
+	var key = MD5(user + ":" + password);
+
+	$.post(url + "?api", { api_key: key }).done(function (data) {
+		//console.log("Fever API version: " + data.api_version);
+		console.log(data);
+		if ( data.auth == 1 ) {
+			auth_success = true;
+			// Get groups and build them
+			console.log("first success");
+			// save url, email und key
+			setOption("url", url);
+			setOption("key", key);
+			setOption("user", user);
+			
+			dm_key = key;
+			dm_url = url;
+			dm_user = user;
+			$.jStorage.set("dm-user", user);
+			$.jStorage.set("dm-key", key);
+			$.jStorage.set("dm-url", url);
+		
+		setOption("key", key);
+
+			// start
+			start();
+			// home
+			$.mobile.navigate("#page-home", {transition: transition});		
+		} else {
+			// Nichts wars, nochmal versuchen
+			alert("Wrong credentials. Please try again.");
+		}
+			
+		}).fail(function () { checkAuth(0); });
+	// Test
+
+}
+
 function logout() {
+	// Old Settings:
+	$.jStorage.deleteKey("dm-sharing-mobile");
+	$.jStorage.deleteKey("dm-html-content");
+
+	// Still in use:
 	$.jStorage.deleteKey("dm-key");
 	$.jStorage.deleteKey("dm-url");
 	$.jStorage.deleteKey("dm-user");
 	$.jStorage.deleteKey("dm-favicons");
 	$.jStorage.deleteKey("dm-local-items");
 	$.jStorage.deleteKey("dm-transition");
-	$.jStorage.deleteKey("dm-html-content");
 	$.jStorage.deleteKey("dm-groupview");
 	$.jStorage.deleteKey("dm-sharing");
 	$.jStorage.deleteKey("dm-sharing-msg");
 	$.jStorage.deleteKey("dm-order-items");
+	$.jStorage.deleteKey("dm-widget-recent-items");
 
 	$.jStorage.deleteKey("dm-fav-feeds");
 	$.jStorage.deleteKey("dm-fav-groups");
 	$.jStorage.deleteKey("dm-widgets");
 	$.jStorage.deleteKey("dm-show-empty-groups");
+	
+	$.jStorage.deleteKey("dm-config");
+	$.jStorage.deleteKey("dm-data");
+	
+	
 	dm_key   = '';
 	dm_url   = '';
 	dm_user  = '';
 	favicons = '';
+	dm_config = {};
+	dm_data = {};
 	items = [];
 	saved_items = [];
 	session_read_items = [];
@@ -392,7 +472,7 @@ function replacePlaceholder(value) {
 	var class_prefix = 'link';
 	var feed_class="dm-is-read";
 	
-	if (html_content == "raw" ) {
+	if ( getOption("html_content") == "raw" ) {
 		$(".dm-"+class_prefix+"-"+value.id+"-title").html($.parseHTML(value.title));
 		$(".dm-"+class_prefix+"-"+value.id+"-content").html(_.escape(value.html));
 	} else {
@@ -648,7 +728,7 @@ function showSingleItem(id) {
 function renderSingleItem(data) {
 	//console.log(data);
 	$("#dm-single-content").empty();
-	if ( html_content == "raw") {
+	if ( getOption("html_content") == "raw") {
 		try {
 			var content = $.parseHTML(data.html);
 			$("#dm-single-content").append(content);
@@ -753,7 +833,8 @@ function renderSingleItem(data) {
 		
 		passive_buttons += '</ul></div>';
 		
-		if ( sharing_mobile ) {
+		if ( getOption("sharing_mobile") ) {
+			console.log("mobile Sharing: " + getOption("sharing_mobile") );
 			passive_buttons += '<div data-role="navbar"><ul>';
 			passive_buttons += '<li><a href="whatsapp://send?text=' + encodeURI( data.title + ' - ' + data.url ) + '">WhatApp</a></li>';
 			passive_buttons += '<li><a href="threema://compose?text=' + encodeURI( data.title + ' - ' + data.url ) + '">Threema</a></li>';

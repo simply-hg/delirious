@@ -570,7 +570,29 @@
 			</div>
 		</div>
 	</div><!-- / All feeds -->
+	
+	<div data-role="page" id="page-login" data-title="Login" class="dm-page" data-theme="a">
+		<div data-role="main" class="ui-content">
 
+			<h1>Login to Delirious</h1>
+
+			<label for="dm-login-url">Fever<span style="color:red">°</span>-URL:</label>
+			<input name="dm-login-url" id="dm-login-url" placeholder="https://www.host.example/path/to/fever/" value="" type="url" />
+
+			<label for="dm-login-e-mail">E-Mail / Username:</label>
+			<input name="dm-login-e-mail" id="dm-login-e-mail" placeholder="user@example.com" value="" type="email" />
+
+			<label for="dm-login-password">Password:</label>
+			<input name="dm-login-password" id="dm-login-password" placeholder="" value="" type="password" />
+
+			<a href="" data-role="button" class="dm-button" data-dm-fnc="login">Login</a>
+			
+			<label>
+			<input type="checkbox" checked="checked"> Remember Password
+			</label>
+		</div>
+	</div>
+	
 	<div data-role="page" id="page-support" data-title="Help and Support" class="dm-page" data-theme="a">
 
 		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">

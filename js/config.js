@@ -33,10 +33,10 @@ var favicons     = [];
 
 // Some default settings
 var transition   = "slide";
-var html_content = "escape";
+//var html_content = "escape";
 var show_empty_groups = "false";
 var sharing = "email";
-var sharing_mobile = true;
+//var sharing_mobile = true;
 var sharing_msg = "Check out this nice article I found: %url%";
 var started = false;
 var order_items = "asc";
@@ -75,6 +75,28 @@ var default_widgets = [
 ];
 var widgets = [];
 
+var dm_config = {
+	"url": "",
+	"key": "",
+	"user": "",
+	"transition": "slide",
+	"html_content": "escape",
+	"show_empty_groups": false,
+	"sharing": "email",
+	"sharing_mobile": true,
+	"sharing_msg": "Check out this nice article I found: %url%",
+	"order_items": "asc",
+	"groupview": "items",
+	"paginate_items": 100,
+	"widget_recent_items": 10
+}
+
+var dm_data = {
+	feed_counter: 0,
+	feeds_hash: "none",
+	favicons: []
+}
+
 var loading           = 0; // counts current loading processes
 var auth_success      = false; // if a successful auth has been registered this is true. helps on stopped or failed connections. Not (!) used for authentification
 var last_dm_refresh    = 0; // unix timestamps in seconds when were items refreshed last time
@@ -82,18 +104,20 @@ var last_fever_refresh = 0; // unix timestamps in seconds when Server last refre
 var last_dm_group_show = now();
 
 function getSettings() {
-	"use strict";
+	dm_config         = $.jStorage.get("dm-config", dm_config);
+	dm_data           = $.jStorage.get("dm-data", dm_data);
+	
 	dm_key            = $.jStorage.get("dm-key", "");
 	dm_url            = $.jStorage.get("dm-url", "");
 	dm_user           = $.jStorage.get("dm-user", "");
-	favicons          = $.jStorage.get("dm-favicons", []);
+	favicons          = $.jStorage.get("dm-favicons", favicons);
 	transition        = $.jStorage.get("dm-transition", transition);
-	html_content      = $.jStorage.get("dm-html-content", html_content);
+	//html_content      = $.jStorage.get("dm-html-content", html_content);
 	groupview         = $.jStorage.get("dm-groupview", groupview);
 	show_empty_groups = $.jStorage.get("dm-show-empty-groups", show_empty_groups);
 	order_items       = $.jStorage.get("dm-order-items", order_items);
 	sharing           = $.jStorage.get("dm-sharing", sharing);
-	sharing_mobile    = $.jStorage.get("dm-sharing-mobile", sharing_mobile);
+	//sharing_mobile    = $.jStorage.get("dm-sharing-mobile", sharing_mobile);
 	sharing_msg       = $.jStorage.get("dm-sharing-msg", sharing_msg);
 	paginate_items    = $.jStorage.get("dm-paginate-items", paginate_items);
 	feeds_hash        = $.jStorage.get("dm-feed-hash", feeds_hash);
@@ -107,6 +131,15 @@ function getSettings() {
 	fav_feeds  = $.jStorage.get("dm-fav-feeds", []);
 	fav_groups = $.jStorage.get("dm-fav-groups", []);
 	
+	// Some compatibility-things...
+	// Just so users are not logged out, once these settings are
+	// transferes into the new config-object
+	
+	setOption("key", dm_key);
+	setOption("url", dm_url);
+	setOption("user", dm_user);
+	saveOptions();
+	
 	$.mobile.defaultPageTransition = transition;
 
 	return true;
@@ -114,10 +147,38 @@ function getSettings() {
 }
 			
 $(document).bind("mobileinit", function () {
-	"use strict";
 	//apply overrides here
 	console.log("mobilestart");
 	getSettings();
 	registerEventHandlers();
 	start();
 });
+
+function getFever(args) {
+	
+	return getOption("url") + "?api&" + args;
+	
+}
+
+function getOption(which) {
+	if ( _.has(dm_config), which ) {
+		return dm_config[which];
+	} else {
+		console.log("Get Config unbekannt: " + which);
+		return -1;
+	}
+}
+
+function saveOptions() {
+	$.jStorage.set("dm-config", dm_config);
+}
+
+function setOption(which, value) {
+	if ( _.has(dm_config), which ) {
+		dm_config[which] = value;
+		//$.jStorage.set("dm-config", dm_config);
+	} else {
+		console.log("Set Config unbekannt: " + which);
+		return -1;
+	}	
+}

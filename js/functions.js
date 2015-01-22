@@ -25,14 +25,16 @@ THE SOFTWARE.
 */
 
 function now() {
-    "use strict";
 	// from: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
 	return Math.round(+new Date() / 1000);
 }
 
+function debugMsg(msg, overwrite) {
+	console.log(msg);
+	return true;
+}
 
 function getNumber(val) {
-    "use strict";
 	var str_type = $.type(val);
 	if (str_type === "number") {
 		return val;
@@ -43,7 +45,6 @@ function getNumber(val) {
 }
 
 function getString(val) {
-    "use strict";
 	var str_type = $.type(val);
     
 	if (str_type === "number") {
@@ -55,7 +56,6 @@ function getString(val) {
 }
 
 function sortHelper(a, b) {
-    "use strict";
 	var str_a = a.title.toLowerCase(), str_b = b.title.toLowerCase();
     
 	if (str_a < str_b) {
@@ -68,7 +68,6 @@ function sortHelper(a, b) {
 }
 
 function renderDate(how, timestamp) {
-    "use strict";
 	var now  = new Date(), date = new Date(timestamp * 1000), month = date.getMonth() + 1, minutes = date.getMinutes();
     
 	if (minutes < 10) {
@@ -97,6 +96,5 @@ function renderDate(how, timestamp) {
 }
 
 function getCurrentPageID() {
-	"use strict";
 	return $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
 }

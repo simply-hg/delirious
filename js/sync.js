@@ -78,7 +78,7 @@ function syncSavedItems(what) {
 
 				var load_em = _.difference(online_ids, local_ids);
 
-				delete_em =  _.difference(local_ids, online_ids);
+				var delete_em =  _.difference(local_ids, online_ids);
 
 
 			
@@ -134,7 +134,7 @@ function syncUnreadItems(what) {
 			});
 
 			var load_unread_em = _.difference(online_unread_ids, local_unread_ids);
-			delete_unread_em =  _.difference(local_unread_ids, online_unread_ids);
+			var delete_unread_em =  _.difference(local_unread_ids, online_unread_ids);
 			
 			if ( load_unread_em.length > 0 ) {
 				// load unread items
@@ -190,9 +190,9 @@ function loadItems(ids) {
 
 	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
 
-	if ( ids.length > 40 ) {
-		var first = _.first(ids, 40);
-		var rest  = _.rest(ids, 40);
+	if ( ids.length > 50 ) {
+		var first = _.first(ids, 50);
+		var rest  = _.rest(ids, 50);
 	} else {
 		var first = ids;
 		var rest = [];
@@ -307,7 +307,13 @@ function markItemsRead(ids) {
 		ids_to_mark_read = ids;
 	} else {
 		// a comma seperated string
+		//console.log(ids);
+		ids = getString(ids);
 		ids_to_mark_read = _.compact(ids.split(","));
+		
+		if ( _.isArray( ids_to_mark_read ) !== true ) {
+			ids_to_mark_read = [ids];
+		}
 	}
 	var read_items = [];
 	read_items = _.reject(items, function(item) {
@@ -441,7 +447,7 @@ function markGroupRead(what, id) {
 			showHideLoader("stop");
 			if ( checkAuth(data.auth) ) {
 				//$.mobile.navigate("#page-home", {transition: "slide"});
-				syncItems();
+				//syncItems();
 				//window.history.back();
 			}
 		}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
@@ -565,6 +571,10 @@ function refreshFavicons() {
 		if ( checkAuth(data.auth) ) {
 			favicons = data.favicons;
 			$.jStorage.set("dm-favicons", favicons);
+			feed_counter = favicons.length;
+			$.jStorage.set("dm-feed-counter", feed_counter);
+
+			
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	return false;
@@ -614,11 +624,13 @@ function syncFeeds() {
 				return 0;
 			});
 			
-			if (feeds.length !== feed_counter) {
+			if (feeds.length !== favicons.length) {
 				console.log("Refreshing favicons");
-				feed_counter = feeds.length;
-				$.jStorage.set("dm-feed-counter", feed_counter);
+				//feed_counter = feeds.length;
+				//$.jStorage.set("dm-feed-counter", feed_counter);
 				refreshFavicons();
+			} else {
+				console.log("Feeds: " + feeds.length + ", Counter: " + feed_counter + ", Favicons: " + favicons.length);
 			}
 			
 			prepareHome();
@@ -638,10 +650,15 @@ function checkAuth(auth) {
 			// initial loading can happen quite often...
 			console.log("Probably stopped or network issue.");
 		} else {
-			//console.log("Forbidden");
-			alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");
-			initSettings();
-			$.mobile.navigate("#page-settings", {transition: transition});
+			
+			if ( dm_url === "" ) {
+				console.log("No URL, Login requested");
+
+				$.mobile.navigate("#page-login", {transition: transition});	
+			}
+			//alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");
+			//initSettings();
+			//$.mobile.navigate("#page-settings", {transition: transition});
 			//$.mobile.silentScroll(0);
 			return false;		
 		}
