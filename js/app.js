@@ -731,6 +731,9 @@ function renderSingleItem(data) {
 	if ( getOption("html_content") == "raw") {
 		try {
 			var content = $.parseHTML(data.html);
+			$(content).find("img").removeAttr("onerror");
+			$(content).find("img").removeAttr("onload");
+					
 			$("#dm-single-content").append(content);
 		} catch(e) {
 			console.log("error in html of item");
@@ -739,6 +742,7 @@ function renderSingleItem(data) {
 		$("#dm-single-content a").attr("target", "_blank");
 		$("#dm-single-content img").attr("height", "");
 		$("#dm-single-content img").attr("width", "");
+		
 		$("#dm-single-content").fitVids();
 	} else {
 		$("#dm-single-content").html(_.escape(data.html));
