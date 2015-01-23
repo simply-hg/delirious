@@ -44,6 +44,21 @@ function getNumber(val) {
 	}
 }
 
+function getBool(what) {
+
+	switch(what) {
+		case true:
+		case "true":
+		case "on":
+		case "ja":
+		case "yes":
+			return true;
+		break;
+		default:
+			return false;
+	}
+}
+
 function getString(val) {
 	var str_type = $.type(val);
     

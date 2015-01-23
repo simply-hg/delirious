@@ -228,7 +228,7 @@ function runAfterItemLoadNoHome() {
 	console.log("Finished items load");
 	items = _.sortBy(items, "created_on_time");
 	items = _.uniq(items);
-	if ( order_items == "desc" ) {
+	if ( getOption("order_items") == "desc" ) {
 		items.reverse();
 	}
 	items_loaded = true;
@@ -255,7 +255,7 @@ function refreshSavedItems() {
 function storeLoadedSavedItems() {
 	console.log("store "+saved_items.length+" saved items 2");
 	saved_items = _.sortBy(saved_items, "created_on_time");
-	if ( order_items == "desc" ) {
+	if ( getOption("order_items") == "desc" ) {
 		saved_items.reverse();
 	}
 	console.log("store "+saved_items.length+" saved items 2");
@@ -651,20 +651,17 @@ function checkAuth(auth) {
 			console.log("Probably stopped or network issue.");
 		} else {
 			
-			if ( dm_url === "" ) {
-				console.log("No URL, Login requested");
-
-				$.mobile.navigate("#page-login", {transition: transition});	
-			}
+			$.mobile.navigate("#page-login", {transition: transition});	
+		}
 			//alert("Please check your Login-credentials. This could also mean, that your internet connection is lost. Or maybe you stopped loading a page.");
 			//initSettings();
 			//$.mobile.navigate("#page-settings", {transition: transition});
 			//$.mobile.silentScroll(0);
-			return false;		
-		}
-
+		return false;		
 	}
+
 }
+
 
 function unreadLastItems() {
 	showHideLoader("start");

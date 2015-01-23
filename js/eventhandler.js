@@ -90,6 +90,8 @@ function registerEventHandlers() {
 			case "page-login":
 				if ( auth_success === true ) {
 					$.mobile.navigate("#page-home", {transition: transition});
+				} else {
+					$.jStorage.flush();
 				}
 			break;
 		}
@@ -119,7 +121,7 @@ function registerEventHandlers() {
 			break;
 			case "show-group-selector":
 				var id = $(this).data("dm-show-group");
-				if ( groupview == "feeds" ) {
+				if ( getOption("groupview") == "feeds" ) {
 					// feeds 
 					//var id = $(this).data("dm-group-id");
 					$("#page-feedgroup").data("dm-group-id", id);
@@ -252,17 +254,19 @@ function registerEventHandlers() {
 				saveHomescreen();
 			break;
 			case "logout":
-				logout();
+				if ( confirm("Logout deletes all your data and connot be undone. Are you sure?") ) {
+					logout();
+				}
 			break;
 			case "toggle-save-item":
 			case "save-item":
 				var id = $(this).data("dm-save-item-id");
-				id = parseInt(id, 10);
-				console.log(id);
+				id = getNumber(id);
+				//console.log(id);
 				
 				var save_state = isItemSaved(id);
 				
-				console.log("Save state id: "+ id + " -> " + save_state);
+				//console.log("Save state id: "+ id + " -> " + save_state);
 				if ( !save_state ) {
 					$(this).text("Unsave");
 					//$(this).buttonMarkup();

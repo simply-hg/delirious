@@ -60,20 +60,21 @@ function start() {
 
 }
 function initSettings() {
+	console.log(dm_config);
 	if ( dm_url !== "" ) {
 		$("#dm-fever-url").val(dm_url);
 	}
 	if ( dm_user !== "" ) {
 		$("#dm-e-mail").val(dm_user);
 	}
-	$('input:radio[name="dm-setting-transitions"]').filter('[value="' + transition + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-transitions"]').filter('[value="' + getOption("transition") + '"]').prop('checked', true);
 		
-	$('input:radio[name="dm-setting-groupview"]').filter('[value="' + groupview + '"]').prop('checked', true);
-	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="' + show_empty_groups + '"]').prop('checked', true);
-	$('input:radio[name="dm-setting-sharing"]').filter('[value="' + sharing + '"]').prop('checked', true);
-	$('input:radio[name="dm-setting-order"]').filter('[value="' + order_items + '"]').prop('checked', true);
-	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="' + paginate_items + '"]').prop('checked', true);	
-	$('#dm-setting-sharing-msg').val(sharing_msg);
+	$('input:radio[name="dm-setting-groupview"]').filter('[value="' + getOption("groupview") + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-empty-groups"]').filter('[value="' + getOption("show_empty_groups") + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-sharing"]').filter('[value="' + getOption("sharing") + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-order"]').filter('[value="' + getOption("order_items") + '"]').prop('checked', true);
+	$('input:radio[name="dm-setting-paginate-items"]').filter('[value="' + getOption("paginate_items") + '"]').prop('checked', true);	
+	$('#dm-setting-sharing-msg').val(getOption("sharing_msg"));
 	
 	// New:
 	//console.log("share mobile: " + getOption("sharing_mobile"));
@@ -85,68 +86,65 @@ function initSettings() {
 	
 }
 function saveSettings() {
-	var url, user, password, transition, groupview, emptygroups, share_buttons, sharing_text, item_order, page, key;
+	var url, user, password, transition, page, key;
 	
 	// New:
 	setOption("html_content",        $('input[name=dm-setting-html-content]:checked').val());
-	//console.log("save share mobile: " + $('#dm-setting-sharing-mobile').is(":checked")); //val());
-	setOption("sharing_mobile",      $('#dm-setting-sharing-mobile').is(":checked"));
-	setOption("widget_recent_items", $('input[name=dm-setting-widget-recent-items-count]:checked').val());
+	setOption("sharing_mobile",      getBool($('#dm-setting-sharing-mobile').is(":checked")));
+	setOption("widget_recent_items", getNumber($('input[name=dm-setting-widget-recent-items-count]:checked').val()));
+	setOption("transition",          $('input[name=dm-setting-transitions]:checked').val());
+	setOption("groupview",           $('input[name=dm-setting-groupview]:checked').val());
+	setOption("show_empty_groups",   getBool($('input[name=dm-setting-empty-groups]:checked').val()));
+	setOption("sharing",             $('input[name=dm-setting-sharing]:checked').val());
+	setOption("sharing_msg",         $('#dm-setting-sharing-msg').val());
+	setOption("order_items",         $('input[name=dm-setting-order]:checked').val());
+	setOption("paginate_items",      getNumber($('input[name=dm-setting-paginate-items]:checked').val()));
 
-	// New, not yet implemented:
-	setOption("transition",     $('input[name=dm-setting-transitions]:checked').val());
-	setOption("url",            $.trim($("#dm-fever-url").val()));
-	setOption("user",           $.trim($("#dm-e-mail").val()));
-	setOption("groupview",      $('input[name=dm-setting-groupview]:checked').val());
-	setOption("emptygroups",    $('input[name=dm-setting-empty-groups]:checked').val());
-	setOption("share_buttons",  $('input[name=dm-setting-sharing]:checked').val());
-	setOption("sharing_text",   $('#dm-setting-sharing-msg').val());
-	setOption("item_order",     $('input[name=dm-setting-order]:checked').val());
-	setOption("page",           $('input[name=dm-setting-paginate-items]:checked').val());
-
-	// Old:
+	// Still needed
 	url           = $.trim($("#dm-fever-url").val());
 	user          = $.trim($("#dm-e-mail").val());
 	password      = $.trim($("#dm-password").val());
 	$("#dm-password").val("");
-	transition    = $('input[name=dm-setting-transitions]:checked').val();
-	//html_content  = $('input[name=dm-setting-html-content]:checked').val();
-	groupview     = $('input[name=dm-setting-groupview]:checked').val();
-	emptygroups   = $('input[name=dm-setting-empty-groups]:checked').val();
-	share_buttons = $('input[name=dm-setting-sharing]:checked').val();
-	sharing_text  = $('#dm-setting-sharing-msg').val();
-	item_order    = $('input[name=dm-setting-order]:checked').val();
-	page          = $('input[name=dm-setting-paginate-items]:checked').val();
-	//recent_items  = $('input[name=dm-setting-widget-recent-items-count]:checked').val();
-
-	$.jStorage.set("dm-url", url);
 	
 	if ( password != "" ) {
-		key = MD5(user + ":" + password);
+		key = MD5( user + ":" + password );
 		password = "";
-		$.jStorage.set("dm-user", user);
-		$.jStorage.set("dm-key", key);
 		
-		setOption("key", key);
+		setOption("url",  $.trim($("#dm-fever-url").val()));
+		setOption("user", $.trim($("#dm-e-mail").val()));
+		setOption("key",  key);
+		
+		auth_success = false;
+		saveOptions();
+
+		$.post(url + "?api", { api_key: key }).done(function (data) {
+			//console.log("Fever API version: " + data.api_version);
+			//console.log(data);
+			if ( data.auth === 1 ) {
+				auth_success = true;
+				// Get groups and build them
+				//console.log("first success");
+				// save url, email und key
+				setOption("url", url);
+				setOption("key", key);
+				setOption("user", user);
+				saveOptions();
+
+				restart();
+				// home
+				$.mobile.navigate("#page-home", {transition: transition});		
+			} else {
+				// Nichts wars, nochmal versuchen
+				alert("Wrong credentials. Please try again.");
+			}
+
+			}).fail(function () { checkAuth(0); });		
+		
+		return false;
 	}
 	
-	$.jStorage.set("dm-transition", transition);
-	//$.jStorage.set("dm-html-content", html_content);
-	$.jStorage.set("dm-groupview", groupview);
-	$.jStorage.set("dm-show-empty-groups", emptygroups);
-	$.jStorage.set("dm-sharing", share_buttons);
-	//$.jStorage.set("dm-sharing-mobile", share_mobile);
-	$.jStorage.set("dm-sharing-msg", sharing_text);
-	$.jStorage.set("dm-order-items", item_order);
-	$.jStorage.set("dm-paginate-items", page);
-	//$.jStorage.set("dm-widget-recent-items", recent_items);
-
-	// New:
 	saveOptions();
-	//$.jStorage.set("dm-config", dm_config);
-	//$.jStorage.set("dm-data", dm_data);
-
-	restart();
+	getSettings();
 	$.mobile.navigate("#page-home", {transition: transition});
 	//$.mobile.silentScroll(0);
 	return false;	
@@ -175,17 +173,13 @@ function login() {
 			setOption("url", url);
 			setOption("key", key);
 			setOption("user", user);
-			
-			dm_key = key;
-			dm_url = url;
-			dm_user = user;
-			$.jStorage.set("dm-user", user);
-			$.jStorage.set("dm-key", key);
-			$.jStorage.set("dm-url", url);
-		
-		setOption("key", key);
-
+			saveOptions();
+	
+			$("#dm-login-url").val("");
+			$("#dm-login-e-mail").val("");
+			$("#dm-login-password").val("");			
 			// start
+			getSettings();
 			start();
 			// home
 			$.mobile.navigate("#page-home", {transition: transition});		
@@ -201,30 +195,7 @@ function login() {
 
 function logout() {
 	// Old Settings:
-	$.jStorage.deleteKey("dm-sharing-mobile");
-	$.jStorage.deleteKey("dm-html-content");
-
-	// Still in use:
-	$.jStorage.deleteKey("dm-key");
-	$.jStorage.deleteKey("dm-url");
-	$.jStorage.deleteKey("dm-user");
-	$.jStorage.deleteKey("dm-favicons");
-	$.jStorage.deleteKey("dm-local-items");
-	$.jStorage.deleteKey("dm-transition");
-	$.jStorage.deleteKey("dm-groupview");
-	$.jStorage.deleteKey("dm-sharing");
-	$.jStorage.deleteKey("dm-sharing-msg");
-	$.jStorage.deleteKey("dm-order-items");
-	$.jStorage.deleteKey("dm-widget-recent-items");
-
-	$.jStorage.deleteKey("dm-fav-feeds");
-	$.jStorage.deleteKey("dm-fav-groups");
-	$.jStorage.deleteKey("dm-widgets");
-	$.jStorage.deleteKey("dm-show-empty-groups");
-	
-	$.jStorage.deleteKey("dm-config");
-	$.jStorage.deleteKey("dm-data");
-	
+	$.jStorage.flush();	
 	
 	dm_key   = '';
 	dm_url   = '';
@@ -542,8 +513,8 @@ function buildGroup(id) {
 	// check if we need to group items...
 	var item_ids_in_group = '';
 	//group_item_counter = 0;
-	console.log( getNumber(paginate_items) );
-	if ( paginate_items == "all" || getNumber(paginate_items) >= unread ) {
+	//console.log( getNumber(paginate_items) );
+	if ( getOption("paginate_items") == "all" || getNumber(getOption("paginate_items")) >= unread ) {
 		//no, just show all items
 		console.log("check all");
 		$.each(group_items, function(index, value) {
@@ -561,7 +532,7 @@ function buildGroup(id) {
 	} else {
 		// yes, show just some items
 		console.log("check paginate");
-		$.each( _.first(group_items, getNumber(paginate_items) ), function(index, value) {
+		$.each( _.first(group_items, getNumber(getOption("paginate_items")) ), function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, true, true, "long");
 			item_ids_in_group += value.id +",";
@@ -614,7 +585,7 @@ function showGroup(id) {
 function buildFeed(id) {
 	last_dm_group_show = now();
 	id = getNumber(id);
-	console.log(paginate_items);
+	//console.log(paginate_items);
 	$("#dm-feed-content").empty();
 	$("#dm-feed-more").empty();
 
@@ -631,7 +602,7 @@ function buildFeed(id) {
 	//group_item_counter = 0;
 	//console.log( getNumber(paginate_items) );
 	//console.log(feed_items);
-	if ( paginate_items == "all" || getNumber(paginate_items) >= unread ) {
+	if ( getOption("paginate_items") == "all" || getNumber(getOption("paginate_items")) >= unread ) {
 		//no, just show all items
 		console.log("check all");
 		$.each(feed_items, function(index, value) {
@@ -649,7 +620,7 @@ function buildFeed(id) {
 	} else {
 		// yes, show just some items
 		console.log("check paginate");
-		$.each( _.first(feed_items, getNumber(paginate_items) ), function(index, value) {
+		$.each( _.first(feed_items, getNumber(getOption("paginate_items")) ), function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, true, true, "long");
 			item_ids_in_feed += value.id +",";
@@ -781,7 +752,7 @@ function renderSingleItem(data) {
 	}
 	$("#dm-single-sharing-buttons").empty();
 	//var sharing_buttons = '';
-	if (sharing == "all" ) {
+	if ( getOption("sharing") == "all" ) {
 		// Add Facebook-Button
 		var fb_button = '<iframe src="//www.facebook.com/plugins/like.php?href='+encodeURI(data.url)+'&amp;send=false&amp;layout=box_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:90px;" allowTransparency="true"></iframe>';
 		
@@ -814,14 +785,14 @@ function renderSingleItem(data) {
 		}
 	}
 	
-	if ( sharing == "all" || sharing == "email" ) {
+	if ( getOption("sharing") == "all" || getOption("sharing") == "email" ) {
 		// Add E-Mail-Button
-		var e_mail_msg = sharing_msg.split("%url%").join(data.url);
+		var e_mail_msg = getOption("sharing_msg").split("%url%").join(data.url);
 		var email_button = '<a href="mailto:?subject='+encodeURI('Check it out: '+data.title)+'&amp;body='+encodeURI(e_mail_msg)+'" data-role="button">Share Link by E-Mail</a>';
 		$("#dm-single-sharing-buttons").append(email_button);
 	}
 	
-	if (sharing ==="all" || sharing === "email") {
+	if (getOption("sharing") ==="all" || getOption("sharing") === "email") {
 		/*
 		These are the links:
 		<a  href="https://twitter.com/intent/tweet?text=YOUR-TITLE&url=YOUR-URL&via=TWITTER-HANDLE">Tweet</a>
@@ -850,7 +821,7 @@ function renderSingleItem(data) {
 		
 	}
 
-	if ( sharing == "all" ) {
+	if ( getOption("sharing") == "all" ) {
 		// twitter button needs to be refreshed
 		try {
 			twttr.widgets.load();
@@ -966,7 +937,7 @@ function buildKindling() {
 	$("#dm-kindling-more").empty();
 	var paginated_ids = '';
 	console.log("check2");
-	if ( paginate_items == "all" ) {
+	if ( getOption("paginate_items") == "all" ) {
 		$.each(items, function(index, value) {
 			if ( value.is_read == 0 ) {
 				var item = renderListviewItem(value, true, true, "long");
@@ -975,7 +946,7 @@ function buildKindling() {
 			}
 		});
 	} else {
-		var kindling = _.first(items, getNumber(paginate_items));
+		var kindling = _.first(items, getNumber(getOption("paginate_items")));
 		console.log(kindling.length);
 		$.each(kindling, function(index, value) {
 			if ( value.is_read == 0 ) {
@@ -985,7 +956,7 @@ function buildKindling() {
 			}
 		});
 		
-		if ( items.length > getNumber(paginate_items) ) {
+		if ( items.length > getNumber(getOption("paginate_items")) ) {
 			var btn_text = "Show More";
 			$("#dm-kindling-more").append('<button data-dm-fnc="show-kindling-more" class="dm-button" data-dm-ids="'+paginated_ids+'">'+btn_text+'</button>');
 		} else {
@@ -1035,7 +1006,7 @@ function getFavicon(feed, css_classes) {
 }
 
 function showGroupSelector(id) {
-	if ( groupview == "feeds" ) {
+	if ( getOption("groupview") == "feeds" ) {
 		// feeds 
 		showFeedsInGroup(id);
 	} else {
@@ -1099,10 +1070,10 @@ function renderListviewItemFeed(feed, show_all) {
 	if ( _.isUndefined(feed) ) {
 		return '';
 	}
-	var unread = getUnreadCountFeed(feed.id);//_.where(items, {is_read:0, feed_id:feed.id});
+	var unread = getNumber(getUnreadCountFeed(feed.id));//_.where(items, {is_read:0, feed_id:feed.id});
 	
-	if ( unread == 0 ) {
-		if ( show_empty_groups == "false" && show_all == false) {
+	if ( unread === 0 ) {
+		if ( getOption("show_empty_groups") === false && show_all === false) {
 			return '';
 		}
 	}

@@ -31,17 +31,6 @@ var feeds        = [];
 var feeds_groups = [];
 var favicons     = [];
 
-// Some default settings
-var transition   = "slide";
-//var html_content = "escape";
-var show_empty_groups = "false";
-var sharing = "email";
-//var sharing_mobile = true;
-var sharing_msg = "Check out this nice article I found: %url%";
-var started = false;
-var order_items = "asc";
-var groupview = "items";
-var paginate_items = "100";
 
 var widget_recent_items = 10;
 
@@ -71,7 +60,8 @@ var default_widgets = [
 	{place: "b4", fnc: "widgetButtonSparks", options: {}},
 	{place: "a5", fnc: "widgetButtonReloadFavicons", options: {}},
 	{place: "b5", fnc: "widgetButtonSettings", options: {}},
-	{place: "a6", fnc: "widgetButtonEditHomescreen", options: {}}
+	{place: "a6", fnc: "widgetButtonEditHomescreen", options: {}},
+	{place: "b6", fnc: "widgetButtonLogout", options: {}}
 ];
 var widgets = [];
 
@@ -80,9 +70,9 @@ var dm_config = {
 	"key": "",
 	"user": "",
 	"transition": "slide",
-	"html_content": "escape",
+	"html_content": "escape", // Values: "raw", "escape"
 	"show_empty_groups": false,
-	"sharing": "email",
+	"sharing": "email", // "email", "all"
 	"sharing_mobile": true,
 	"sharing_msg": "Check out this nice article I found: %url%",
 	"order_items": "asc",
@@ -90,6 +80,14 @@ var dm_config = {
 	"paginate_items": 100,
 	"widget_recent_items": 10
 }
+
+// Some default settings
+var transition   = "slide";
+//var html_content = "escape";
+
+var started = false;
+
+
 
 var dm_data = {
 	feed_counter: 0,
@@ -104,41 +102,44 @@ var last_fever_refresh = 0; // unix timestamps in seconds when Server last refre
 var last_dm_group_show = now();
 
 function getSettings() {
-	dm_config         = $.jStorage.get("dm-config", dm_config);
-	dm_data           = $.jStorage.get("dm-data", dm_data);
+	console.log(dm_config);
+	dm_config = $.jStorage.get("dm-config", dm_config);
+	dm_data   = $.jStorage.get("dm-data", dm_data);
+	console.log(dm_config);
+
+	dm_key  = getOption("key");//$.jStorage.get("dm-key", "");
+	dm_url  = getOption("url");//$.jStorage.get("dm-url", "");
+	dm_user = getOption("user");//$.jStorage.get("dm-user", "");
 	
-	dm_key            = $.jStorage.get("dm-key", "");
-	dm_url            = $.jStorage.get("dm-url", "");
-	dm_user           = $.jStorage.get("dm-user", "");
-	favicons          = $.jStorage.get("dm-favicons", favicons);
-	transition        = $.jStorage.get("dm-transition", transition);
-	//html_content      = $.jStorage.get("dm-html-content", html_content);
-	groupview         = $.jStorage.get("dm-groupview", groupview);
-	show_empty_groups = $.jStorage.get("dm-show-empty-groups", show_empty_groups);
-	order_items       = $.jStorage.get("dm-order-items", order_items);
-	sharing           = $.jStorage.get("dm-sharing", sharing);
-	//sharing_mobile    = $.jStorage.get("dm-sharing-mobile", sharing_mobile);
-	sharing_msg       = $.jStorage.get("dm-sharing-msg", sharing_msg);
-	paginate_items    = $.jStorage.get("dm-paginate-items", paginate_items);
-	feeds_hash        = $.jStorage.get("dm-feed-hash", feeds_hash);
-	feed_counter      = $.jStorage.get("dm-feed-counter", feed_counter);
-	
-	widget_recent_items = $.jStorage.get("dm-widget-recent-items", widget_recent_items);
-	
-	saved_items  = $.jStorage.get("dm-local-items", []);
-	widgets      = $.jStorage.get("dm-widgets", default_widgets);
+	transition = getOption("transition");//$.jStorage.get("dm-transition", transition);
+
+	feeds_hash   = $.jStorage.get("dm-feed-hash", feeds_hash);
+	feed_counter = $.jStorage.get("dm-feed-counter", feed_counter);
+	favicons     = $.jStorage.get("dm-favicons", favicons);
+
+	saved_items = $.jStorage.get("dm-local-items", []);
+	widgets     = $.jStorage.get("dm-widgets", default_widgets);
 	
 	fav_feeds  = $.jStorage.get("dm-fav-feeds", []);
 	fav_groups = $.jStorage.get("dm-fav-groups", []);
 	
-	// Some compatibility-things...
-	// Just so users are not logged out, once these settings are
-	// transferes into the new config-object
-	
-	setOption("key", dm_key);
-	setOption("url", dm_url);
-	setOption("user", dm_user);
-	saveOptions();
+	// Let's be sure that old settings are removed...
+	$.jStorage.deleteKey("dm-sharing-mobile");
+	$.jStorage.deleteKey("dm-html-content");
+
+	// Still in use:
+	$.jStorage.deleteKey("dm-key");
+	$.jStorage.deleteKey("dm-url");
+	$.jStorage.deleteKey("dm-user");
+	$.jStorage.deleteKey("dm-favicons");
+	$.jStorage.deleteKey("dm-local-items");
+	$.jStorage.deleteKey("dm-transition");
+	$.jStorage.deleteKey("dm-groupview");
+	$.jStorage.deleteKey("dm-sharing");
+	$.jStorage.deleteKey("dm-sharing-msg");
+	$.jStorage.deleteKey("dm-order-items");
+	$.jStorage.deleteKey("dm-widget-recent-items");
+	$.jStorage.deleteKey("dm-show-empty-groups");
 	
 	$.mobile.defaultPageTransition = transition;
 
@@ -155,9 +156,10 @@ $(document).bind("mobileinit", function () {
 });
 
 function getFever(args) {
-	
-	return getOption("url") + "?api&" + args;
-	
+	return getOption("url") + "?api" + args;	
+}
+function getURL() {
+	return getOption("url");
 }
 
 function getOption(which) {

@@ -38,7 +38,8 @@ var defined_widgets = [
 	{fnc: "widgetButtonSyncItems", title: "Button: Sync Items", desc: "" },
 	{fnc: "widgetButtonMarkAllRead", title: "Button: Mark all read", desc: "" },
 	{fnc: "widgetButtonUnreadLastItems", title: "Button: Last items unread", desc: ""},
-	
+	{fnc: "widgetButtonLogout", title: "Button: Logout", desc: ""},
+
 	// Favourites:
 	{fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: ""},
 	{fnc: "widgetShowFavGroups", title: "Show Favourite Groups", desc: ""},
@@ -91,7 +92,7 @@ function widgetCustomGroups() {
 		var unread = countUnreadInGroup(value.id);
 		
 		if (unread === 0) {
-			if (show_empty_groups === "true") {
+			if ( getOption("show_empty_groups") === "true") {
 				panel_custom_groups += '<li id="dm-group-' + value.id + '">';
 				panel_custom_groups += '<a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">';
 				panel_custom_groups += _.escape(value.title);
@@ -118,7 +119,7 @@ function widgetShowGroup() {
 
 function widgetShowFavGroups() {
 	var content_ShowFavGroups = '';
-	console.log(fav_groups);
+	//console.log(fav_groups);
 	$.each(groups, function (index, value) {
 		
 		if ( _.contains(fav_groups, value.id)  ) {
@@ -170,7 +171,7 @@ function widgetFavFeedsLastItems() {
 		}
 	});
 	
-	if ( order_items === "asc" ) {
+	if ( getOption("order_items") === "asc" ) {
 		var recent_ten = _.last(fav_items, getNumber(getOption("widget_recent_items")));
 		recent_ten.reverse();
 	} else {
@@ -243,4 +244,9 @@ function widgetButtonMarkAllRead() {
 
 function widgetButtonUnreadLastItems() {
 	return parseWidget('<a href="" data-role="button" data-icon="eye" class="dm-button" data-dm-fnc="unread-last-items">Mark Last Items Unread</a>');
+}
+
+
+function widgetButtonLogout() {
+	return parseWidget('<a href="" data-role="button" data-icon="power" data-theme="d" class="dm-button" data-dm-fnc="logout">Logout</a>');
 }
