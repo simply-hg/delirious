@@ -513,8 +513,9 @@ function buildGroup(id) {
 	// check if we need to group items...
 	var item_ids_in_group = '';
 	//group_item_counter = 0;
-	//console.log( getNumber(paginate_items) );
-	if ( getOption("paginate_items") == "all" || getNumber(getOption("paginate_items")) >= unread ) {
+	console.log( getOption("paginate_items") );
+	
+	if ( getNumber(getOption("paginate_items")) === 0 || getNumber(getOption("paginate_items")) >= unread ) {
 		//no, just show all items
 		console.log("check all");
 		$.each(group_items, function(index, value) {
@@ -602,7 +603,7 @@ function buildFeed(id) {
 	//group_item_counter = 0;
 	//console.log( getNumber(paginate_items) );
 	//console.log(feed_items);
-	if ( getOption("paginate_items") == "all" || getNumber(getOption("paginate_items")) >= unread ) {
+	if ( getNumber(getOption("paginate_items")) === 0 || getNumber(getOption("paginate_items")) >= unread ) {
 		//no, just show all items
 		console.log("check all");
 		$.each(feed_items, function(index, value) {
@@ -946,7 +947,7 @@ function buildKindling() {
 	$("#dm-kindling-more").empty();
 	var paginated_ids = '';
 	console.log("check2");
-	if ( getOption("paginate_items") == "all" ) {
+	if ( getOption("paginate_items") === 0 ) {
 		$.each(items, function(index, value) {
 			if ( value.is_read == 0 ) {
 				var item = renderListviewItem(value, true, true, "long");
