@@ -708,7 +708,12 @@ function renderSingleItem(data) {
 			$("#dm-single-content").append(content);
 		} catch(e) {
 			console.log("error in html of item");
-			$("#dm-single-content").html(_.escape(data.html));
+			
+			var content = _.escape(data.html);
+			
+			content = content.split("\n").join("<br>");
+			
+			$("#dm-single-content").html(content);
 		}
 		$("#dm-single-content a").attr("target", "_blank");
 		$("#dm-single-content img").attr("height", "");
@@ -716,7 +721,11 @@ function renderSingleItem(data) {
 		
 		$("#dm-single-content").fitVids();
 	} else {
-		$("#dm-single-content").html(_.escape(data.html));
+		
+		var content = _.escape(data.html);
+		content = content.split("\n").join("<br>");
+	
+		$("#dm-single-content").html(content);
 	}
 
 	$("#dm-single-content").data("dm-single-item-current", data.id);

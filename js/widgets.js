@@ -139,7 +139,7 @@ function widgetShowFavGroups() {
 	} else {
 		content_ShowFavGroups = '<p>No new items in your favourite groups.</p>';
 	}
-	return parseWidget(content_ShowFavGroups);
+	return parseWidget('<h2>Favourite Groups</h2>' + content_ShowFavGroups);
 }
 
 function widgetShowFavFeeds() {
@@ -155,9 +155,9 @@ function widgetShowFavFeeds() {
 		}
 	});
 	if (content_ShowFavFeeds) {
-		res_ShowFavFeeds = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavFeeds + '</ul>';
+		res_ShowFavFeeds = '<h2>Favourite Feeds</h2><ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavFeeds + '</ul>';
 	} else {
-		res_ShowFavFeeds = '<p>No new items in your favourite feeds.</p>';
+		res_ShowFavFeeds = '<h2>Favourite Feeds</h2><p>No new items in your favourite feeds.</p>';
 	}
 	return parseWidget(res_ShowFavFeeds);
 }
@@ -192,7 +192,7 @@ function widgetFavFeedsLastItems() {
 		
 		return parseWidget(last_ten_html);
 	} else {
-		return parseWidget('No new items in favourite feeds.');
+		return parseWidget('<h2>Recent Favourite Items</h2><p>No new items in favourite feeds.</p>');
 	}
 }
 

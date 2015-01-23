@@ -113,3 +113,7 @@ function renderDate(how, timestamp) {
 function getCurrentPageID() {
 	return $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
 }
+
+function exportSettings() {}
+
+function importSettings() {}
