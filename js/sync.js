@@ -24,13 +24,13 @@ THE SOFTWARE.
 */
 
 function autoSync() {
-	console.log("starting autosync");
+	dbgMsg("starting autosync");
 	syncGroups();
 	syncFeeds();
 	syncSavedItems("sync");
 	syncUnreadItems("sync");
 
-	console.log("Current Page: " + getCurrentPageID());
+	dbgMsg("Current Page: " + getCurrentPageID());
 	// Now we should reload home, if we are here,
 	// or print out a message, asking for a reload
 	switch (getCurrentPageID()) {
@@ -50,62 +50,6 @@ function syncItems() {
 	return false;
 }
 
-function syncSavedItems(what) {
-	// This function compares your local stored items with all saved items online.
-	// if some are missing here, we load them.
-	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
-	// It is done by comparing ids
-	
-	if ( what == "full" ) {
-		refreshSavedItems();
-		return;
-	}
-	showHideLoader("start");
-	$.post(dm_url + "?api&saved_item_ids", { api_key: dm_key }).done(function(data) {
-		showHideLoader("stop");
-		if ( checkAuth(data.auth) ) {
-			var online_ids = data.saved_item_ids.split(',');
-			if ( saved_items.length == 0 && online_ids.length > 0) {
-				// get a full load
-				console.log("let's load all saved items");
-				refreshSavedItems();
-			} else {
-				var local_ids = [];
-			
-				$.each(saved_items, function(index, value) {
-					local_ids.push(value.id.toString());
-				});
-
-				var load_em = _.difference(online_ids, local_ids);
-
-				var delete_em =  _.difference(local_ids, online_ids);
-
-
-			
-				if ( delete_em.length > 0 ) {
-					saved_items = _.reject(saved_items, function(item) {
-	
-						if ( $.inArray(item.id.toString(), delete_em ) == -1 )  {
-							return false;
-						} else {
-							return true;
-						}
-					});
-					console.log("store " + saved_items.length + " saved items");
-					$.jStorage.set("dm-local-items", saved_items);
-				}
-				
-				if ( load_em.length > 0 ) {
-					processLoadedSaveItems = _.after(load_em.length, storeLoadedSavedItems);
-					loadSavedItems(load_em);
-				}
-			}
-			
-			
-
-		}
-	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-}
 
 var afterItemLoad;
 function syncUnreadItems(what) {
@@ -115,7 +59,7 @@ function syncUnreadItems(what) {
 	// It is done by comparing ids
 
 	last_dm_refresh = now();
-	console.log(last_dm_refresh);
+	//dbgMsg(last_dm_refresh);
 	if ( what == "full" ) {
 		refreshItems();
 		return;
@@ -225,7 +169,7 @@ function runAfterItemLoad() {
 }
 
 function runAfterItemLoadNoHome() {
-	console.log("Finished items load");
+	dbgMsg("Finished items load");
 	items = _.sortBy(items, "created_on_time");
 	items = _.uniq(items);
 	if ( getOption("order_items") == "desc" ) {
@@ -235,70 +179,8 @@ function runAfterItemLoadNoHome() {
 	return true;
 }
 
-var processLoadedSaveItems;
-function refreshSavedItems() {
-	showHideLoader("start");
-	$.post(dm_url + "?api&saved_item_ids", { api_key: dm_key }).done(function(data) {
-		showHideLoader("stop");
-		if ( checkAuth(data.auth) ) {
-			$.jStorage.set("dm-local-items", []);
-			saved_items = [];
-			if ( data.saved_item_ids != "") {
-				var ids = data.saved_item_ids.split(',');
-				processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
-				loadSavedItems(ids);
-			}
-		}
-	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-}
 
-function storeLoadedSavedItems() {
-	console.log("store "+saved_items.length+" saved items 2");
-	saved_items = _.sortBy(saved_items, "created_on_time");
-	if ( getOption("order_items") == "desc" ) {
-		saved_items.reverse();
-	}
-	console.log("store "+saved_items.length+" saved items 2");
-	$.jStorage.set("dm-local-items", saved_items);
-	prepareHome();
-}
 
-function loadSavedItems(ids) {
-	//console.log("Loading saved item ids");
-	//console.log(ids);
-	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
-	if ( ids.length > 40 ) {
-		var first = _.first(ids, 40);
-		var rest  = _.rest(ids, 40);
-	} else {
-		var first = ids;
-		var rest = [];
-	}
-	var get_ids = first.join(",");
-	
-	showHideLoader("start");
-	$.post(dm_url + "?api&items&with_ids=" + get_ids, { api_key: dm_key }).done(function(data) {
-		showHideLoader("stop");
-		if ( checkAuth(data.auth) ) {
-			$.each(data.items, function(index, value) {
-				//var local_items = $.jStorage.get("dm-local-items", []);
-				//console.log("psuhing an item");
-				saved_items.push(value);
-				processLoadedSaveItems();
-				//processLoadedSaveItems();
-				//$.jStorage.set("dm-local-items", local_items);
-			});
-			
-		}
-	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
-	
-	if ( rest.length > 0 ) {
-		loadSavedItems(rest);
-	} else {
-		storeLoadedSavedItems();
-	}
-	
-}
 
 function markItemsRead(ids) {
 	var ids_to_mark_read;
@@ -307,7 +189,7 @@ function markItemsRead(ids) {
 		ids_to_mark_read = ids;
 	} else {
 		// a comma seperated string
-		//console.log(ids);
+		//dbgMsg(ids);
 		ids = getString(ids);
 		ids_to_mark_read = _.compact(ids.split(","));
 		
@@ -338,7 +220,7 @@ function markItemsRead(ids) {
 	$.each(ids_to_mark_read, function(index, value) {
 		markItemRead(value);
 	});	
-	runAfterItemLoad();
+	//runAfterItemLoadNoHome();
 }
 
 function markItemRead(id) {
@@ -396,29 +278,25 @@ function markAllRead() {
 
 
 function markGroupAsRead(group_id, ids) {
-	//var data     = $("#dm-group-content").data("dm-current-ids");
-	//var group_id = $("#dm-group-content").data("dm-current-group-id");
-	//$("#dm-group-content").removeData("dm-current-ids");
 	$("#dm-group-content").removeData("dm-current-group-id");
 	markGroupRead("group", getNumber(group_id) );//what, id, ids
-	//$.mobile.navigate("#page-home");
 	window.history.back();
 	return false;
 }
 
 function markGroupRead(what, id) {
-	console.log(what + " :" + id);
+	dbgMsg(what + " :" + id);
 	var feed_ids_to_mark_read;
 	if ( what == "feed" ) {
 		feed_ids_to_mark_read = [ getString(id) ];
 	}
 	if ( what == "group" ) {
-		console.log(feeds_groups);
+		dbgMsg(feeds_groups);
 		var feed_ids_to_mark_read_x = _.findWhere( feeds_groups, {group_id: getNumber(id)} );
 		feed_ids_to_mark_read = feed_ids_to_mark_read_x.feed_ids.split(",");
 	}
 	feed_ids_to_mark_read = _.compact(feed_ids_to_mark_read);
-	//console.log(feed_ids_to_mark_read);
+	//dbgMsg(feed_ids_to_mark_read);
 	
 	var read_items = [];
 	read_items = _.reject(items, function(item) {
@@ -458,53 +336,47 @@ function markGroupRead(what, id) {
 function saveItem(id) {
 	//id = $.trim(id);
 	if ( $.trim(id) != "") {
-		console.log("Save: " + id);
-		//var local_items = $.jStorage.get("dm-local-items", []);
+		dbgMsg("Save: " + id);
+		//var local_items = simpleStorage.get("dm-local-items", []);
 		var item = _.findWhere(items, {id: id});
-		//console.log(id);
-		if ( item ) {
-			//
-			item.is_saved = 1;
-			saved_items.push(item);
-			$.jStorage.set("dm-local-items", saved_items);
-		} else {
+		//dbgMsg(id);
+		if ( !item ) {
 			item = _.findWhere(session_read_items, {id: id});
-			if ( item ) {
-				item.is_saved = 1;
-				saved_items.push(item);
-				$.jStorage.set("dm-local-items", saved_items);
-			}
-			
 		}
-		showHideLoader("start");
-		$.post(dm_url + "?api", { api_key: dm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
-			showHideLoader("stop");
-			if ( checkAuth(data.auth) ) {
-				console.log(data);
-			}
-		}).fail(function(){ showHideLoader("stop"); checkAuth(0); console.log("Save fail"); });
+		if ( item ) {
+			item.is_saved = 1;
+			item.html = "";
+			item.url = "";
+			saved_items.push(item);
+		
+			storeLoadedSavedItems()
+			showHideLoader("start");
+			$.post(dm_url + "?api", { api_key: dm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
+				showHideLoader("stop");
+				if ( checkAuth(data.auth) ) {
+				}
+			}).fail(function(){ showHideLoader("stop"); checkAuth(0); dbgMsg("Save fail"); });
+		}
 	}
 }
 
 function unsaveItem(id) {
 	if ( $.trim(id) != "") {
-		//var saved_items = $.jStorage.get("dm-local-items", []);
-		current_unsave_id = id;
+		//var saved_items = simpleStorage.get("dm-local-items", []);
+		var current_unsave_id = id;
 		var unsave_item = _.findWhere(saved_items, {id:id});
 		
 		unsave_item.id_saved = 0;
-		session_read_items.push(unsave_item);
+		//session_read_items.push(unsave_item);
 		
 		saved_items = _.reject(saved_items, function(item) {
 			if ( item.id != current_unsave_id )  {
 				return false;
 			} else {
-
 				return true;
 			}
 		});
-		$.jStorage.set("dm-local-items", saved_items);
-
+		storeLoadedSavedItems()
 		showHideLoader("start");
 		$.post(dm_url + "?api", { api_key: dm_key, mark: "item", as: "unsaved", id: $.trim(_.escape(id))  }).done(function(data) {
 			showHideLoader("stop");
@@ -533,21 +405,11 @@ function toggleSaveState(id) {
 }
 
 function saveCurrentItem(id) {
-	//var id = $("#dm-single-btn-save").data("dm-save-item-id");
 	saveItem(id);
-	//$("#dm-single-btn-save .ui-btn-text").html("Unsave");
-	//$("#dm-single-btn-save").attr("onclick", "unsaveCurrentItem();");
-	//$("#dm-single-btn-save" ).buttonMarkup({ icon: "minus" });
-
 	return false;
 }
 function unsaveCurrentItem(id) {
-	//var id = $("#dm-single-btn-save").data("dm-save-item-id");
 	unsaveItem(id);
-	//$("#dm-single-btn-save .ui-btn-text").html("Save");
-	//$("#dm-single-btn-save").attr("onclick", "saveCurrentItem();");
-	//$("#dm-single-btn-save" ).buttonMarkup({ icon: "plus" });
-
 	return false;
 }
 
@@ -570,11 +432,11 @@ function refreshFavicons() {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			favicons = data.favicons;
-			$.jStorage.set("dm-favicons", favicons);
-			feed_counter = favicons.length;
-			$.jStorage.set("dm-feed-counter", feed_counter);
-
-			
+			var worked = simpleStorage.set("dm-favicons", favicons);
+			dbgMsg("Message from saving faviocons -> Favicons: " + favicons.length );
+			dbgMsg(worked);
+			feed_counter = feeds.length;
+			simpleStorage.set("dm-feed-counter", feed_counter);
 		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 	return false;
@@ -624,13 +486,12 @@ function syncFeeds() {
 				return 0;
 			});
 			
-			if (feeds.length !== favicons.length) {
-				console.log("Refreshing favicons");
-				//feed_counter = feeds.length;
-				//$.jStorage.set("dm-feed-counter", feed_counter);
+			if ( feeds.length !== getNumber(feed_counter) ) {
+				dbgMsg("Feeds: " + feeds.length + ", Counter: " + feed_counter + ", Favicons: " + favicons.length);
 				refreshFavicons();
 			} else {
-				console.log("Feeds: " + feeds.length + ", Counter: " + feed_counter + ", Favicons: " + favicons.length);
+				dbgMsg("All favicons are here because:")
+				dbgMsg("Feeds: " + feeds.length + ", Counter: " + feed_counter + ", Favicons: " + favicons.length);
 			}
 			
 			prepareHome();
@@ -639,7 +500,7 @@ function syncFeeds() {
 }
 
 function checkAuth(auth) {
-	console.log("checking auth");
+	//dbgMsg("checking auth");
 	if ( auth == 1 ) {
 		return true;
 	} else {
@@ -648,7 +509,7 @@ function checkAuth(auth) {
 			// a stop or anything else, just log it, and don't do anything at all.
 			// an alert would be ok too, but this might be unwise, as 
 			// initial loading can happen quite often...
-			console.log("Probably stopped or network issue.");
+			dbgMsg("Probably stopped or network issue.");
 		} else {
 			
 			$.mobile.navigate("#page-login", {transition: transition});	
@@ -667,5 +528,160 @@ function unreadLastItems() {
 	showHideLoader("start");
 	$.post(dm_url + "?api", { api_key: dm_key, unread_recently_read: "1" }).done(function(data) {
 		showHideLoader("stop");
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
+
+// Funcions fpr saved items
+
+var processLoadedSaveItems;
+function syncSavedItems(what) {
+	// This function compares your local stored items with all saved items online.
+	// if some are missing here, we load them.
+	// if some are missing there, we remove our copy (because it was probably unsaved somewhere else...).
+	// It is done by comparing ids
+	
+	if ( what == "full" ) {
+		refreshSavedItems();
+		return;
+	}
+	showHideLoader("start");
+	$.post(dm_url + "?api&saved_item_ids", { api_key: dm_key }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			
+			dbgMsg( saved_items );
+			dbgMsg( "Saved items: " + data.saved_item_ids );
+			
+			var online_ids = data.saved_item_ids.split(',');
+			
+			if ( saved_items.length == 0 && online_ids.length > 0) {
+				// get a full load
+				dbgMsg("Saved items: Load all saved items" );
+				refreshSavedItems();
+				
+			} else {
+				dbgMsg("Saved items: Sync saved items");
+				
+				var local_ids = [];
+				$.each(saved_items, function(index, value) {
+					local_ids.push(value.id.toString());
+				});
+
+				var load_em   = _.difference(online_ids, local_ids);
+				var delete_em = _.difference(local_ids, online_ids);
+
+				if ( delete_em.length > 0 ) {
+					saved_items = _.reject(saved_items, function(item) {
+						if ( $.inArray(item.id.toString(), delete_em ) == -1 )  {
+							return false;
+						} else {
+							return true;
+						}
+					});
+					dbgMsg("Saved items: Deleted " + delete_em.length + " saved items.");
+					storeLoadedSavedItems();
+				} else {
+					dbgMsg("Saved items: Nothing to delete.");
+				}
+				
+				if ( load_em.length > 0 ) {
+					dbgMsg("Saved items: Load " + load_em.length + " items" );
+					processLoadedSaveItems = _.after(load_em.length, storeLoadedSavedItems);
+					loadSavedItems(load_em);
+				} else {
+					dbgMsg("Saved items: Nothing to load.");
+				}
+			}
+			
+			
+
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+}
+
+function loadSavedItems(ids) {
+	//dbgMsg("Loading saved item ids");
+	//dbgMsg(ids);
+	// Fever-API allows to get a maximum of 50 links per request, we need to split it, obviously
+	if ( ids.length > 50 ) {
+		var first = _.first(ids, 50);
+		var rest  = _.rest(ids, 50);
+	} else {
+		var first = ids;
+		var rest = [];
+	}
+	var get_ids = first.join(",");
+	
+	showHideLoader("start");
+	$.post(dm_url + "?api&items&with_ids=" + get_ids, { api_key: dm_key }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			$.each(data.items, function(index, value) {
+				//var local_items = simpleStorage.get("dm-local-items", []);
+				//dbgMsg("psuhing an item");
+				value.html = ""//_.escape(value.html);
+				value.url  = "";
+				saved_items.push(value);
+				//dbgMsg("saved_items length: " + saved_items.length);
+				processLoadedSaveItems();
+				//processLoadedSaveItems();
+				//simpleStorage.set("dm-local-items", local_items);
+			});
+			
+		}
+	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
+	
+	if ( rest.length > 0 ) {
+		loadSavedItems(rest);
+	} else {
+		//storeLoadedSavedItems();
+	}
+	
+}
+
+
+function storeLoadedSavedItems() {
+	//dbgMsg("storeLoadedSavedItems(): store "+saved_items.length+" saved items");
+	saved_items = _.sortBy(saved_items, "created_on_time");
+	
+	if ( getOption("order_items") == "desc" ) {
+		saved_items.reverse();
+	}
+	
+	dbgMsg("storeLoadedSavedItems(): store " + saved_items.length + " saved items");
+	var reduced = JSON.stringify(saved_items);
+	dbgMsg("Raw size: " + reduced.length);
+	
+	var compressed = LZString.compressToUTF16(reduced);
+	dbgMsg("Compressed size: " + compressed.length);
+	
+	
+	
+	var dbg_inf = simpleStorage.set("dm-saved-items", compressed);
+	
+	dbgMsg(dbg_inf);
+	
+	//var test = simpleStorage.get("dm-local-items");
+	//dbgMsg(test);
+	
+	prepareHome();
+}
+
+function refreshSavedItems() {
+	//dbgMsg("refreshSavedItems()");
+	showHideLoader("start");
+	$.post(dm_url + "?api&saved_item_ids", { api_key: dm_key }).done(function(data) {
+		showHideLoader("stop");
+		if ( checkAuth(data.auth) ) {
+			//
+			dbgMsg("refreshSavedItems(): Clearing saved items.");
+			simpleStorage.set("dm-saved-items", []);
+			saved_items = [];
+			if ( data.saved_item_ids != "") {
+				var ids = data.saved_item_ids.split(',');
+				processLoadedSaveItems = _.after(ids.length, storeLoadedSavedItems);
+				loadSavedItems(ids);
+			}
+		}
 	}).fail(function(){ showHideLoader("stop"); checkAuth(0); });
 }

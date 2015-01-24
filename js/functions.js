@@ -29,8 +29,8 @@ function now() {
 	return Math.round(+new Date() / 1000);
 }
 
-function debugMsg(msg, overwrite) {
-	console.log(msg);
+function dbgMsg(msg) {
+	//console.log(msg);
 	return true;
 }
 

@@ -44,10 +44,13 @@ var defined_widgets = [
 	{fnc: "widgetShowFavFeeds", title: "Show Favourite Feeds", desc: ""},
 	{fnc: "widgetShowFavGroups", title: "Show Favourite Groups", desc: ""},
 	{fnc: "widgetFavFeedsLastItems", title: "Recent Favourite Items", dec: ""},
-	
+	// Saved Items:
+	{fnc: "widgetLastSavedItems", title: "Recent Saved Items", dec: ""},
+	{fnc: "widgetDebug", title: "Debug Infos", dec: ""},
+
 	// Groups:
 	{fnc: "widgetSystemGroups", title: "Show System Groups", desc: ""},
-	{fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: ""}
+	{fnc: "widgetCustomGroups", title: "Show Custom Groups", desc: ""},
 ];
 function parseWidget(widget) {
 	return '<div class="dm-widget-container">' + widget + '</div>';
@@ -119,7 +122,7 @@ function widgetShowGroup() {
 
 function widgetShowFavGroups() {
 	var content_ShowFavGroups = '';
-	//console.log(fav_groups);
+	//dbgMsg(fav_groups);
 	$.each(groups, function (index, value) {
 		
 		if ( _.contains(fav_groups, value.id)  ) {
@@ -195,6 +198,57 @@ function widgetFavFeedsLastItems() {
 		return parseWidget('<h2>Recent Favourite Items</h2><p>No new items in favourite feeds.</p>');
 	}
 }
+
+
+function widgetLastSavedItems() {
+
+	
+	if ( getOption("order_items") === "asc" ) {
+		var recent_saves = _.last(saved_items, getNumber(getOption("widget_recent_items")));
+		recent_saves.reverse();
+	} else {
+		var recent_saves = _.first(saved_items, getNumber(getOption("widget_recent_items")));
+	}
+	
+	if ( recent_saves.length > 0 ) {
+		var last_saves_html = '<h2>Recent Saved Items</h2><ul data-role="listview" data-divider-theme="a" data-inset="true">';
+		var last_saves_ids = [];
+		$.each(recent_saves, function(index, value) {
+			//dbgMsg(value);
+			last_saves_ids.push(value.id);
+			last_saves_html += renderListviewItem(value, true, true, "long");
+		});
+		
+		last_saves_html += '</ul>';
+		
+		return parseWidget(last_saves_html);
+	} else {
+		return parseWidget('<h2>Recent Saved Items</h2><p>No saved items</p>');
+	}
+}
+
+function widgetDebug() {
+	
+	var debug_inf = "<h2>Debug info</h2>";
+	
+	debug_inf += "Storage available: " + simpleStorage.canUse() + "<br>";
+	
+	//debug_inf += "Current Backend: " + simpleStorage.currentBackend() + "<br>";
+	
+	debug_inf += "Storage used: " + simpleStorage.storageSize() / 1024 + " kB<br>";
+	
+	var index = simpleStorage.index();
+	
+	$.each(index, function(key, value) {
+		debug_inf += "Key: " + value + "<br>";
+	});
+	
+	dbgMsg("Debug-Widget - Saved items in Storage:");
+	dbgMsg( simpleStorage.get("dm-saved-items") );
+	
+	return parseWidget(debug_inf);
+}
+
 
 /* Some simple Buttons... */
 

@@ -27,23 +27,23 @@ THE SOFTWARE.
 
 function start() {
 	// test-auth
-	console.log("start");
+	dbgMsg("start");
 
 	if ( dm_url === "" ) {
-		console.log("No URL. To settings please");
+		dbgMsg("No URL. To settings please");
 		$.mobile.navigate("#page-login");
 		//checkAuth(0);
 	} else {
 		started_items_load = true;
-		console.log("start api call");
+		dbgMsg("start api call");
 		showHideLoader("start");
 		$.post(dm_url + "?api", { api_key: dm_key }).done(function (data) {
 			showHideLoader("stop");
-			console.log("Fever API version: " + data.api_version);
+			dbgMsg("Fever API version: " + data.api_version);
 			if ( checkAuth(data.auth) ) {
 				auth_success = true;
 				// Get groups and build them
-				console.log("first success");
+				dbgMsg("first success");
 				
 				syncGroups();
 				syncFeeds();
@@ -60,7 +60,7 @@ function start() {
 
 }
 function initSettings() {
-	console.log(dm_config);
+	dbgMsg(dm_config);
 	if ( dm_url !== "" ) {
 		$("#dm-fever-url").val(dm_url);
 	}
@@ -77,7 +77,6 @@ function initSettings() {
 	$('#dm-setting-sharing-msg').val(getOption("sharing_msg"));
 	
 	// New:
-	//console.log("share mobile: " + getOption("sharing_mobile"));
 	$('#dm-setting-sharing-mobile').prop("checked", getOption ( "sharing_mobile") );
 	
 	$('input:radio[name="dm-setting-widget-recent-items-count"]').filter('[value="' + getOption("widget_recent_items") + '"]').prop('checked', true);
@@ -118,18 +117,19 @@ function saveSettings() {
 		saveOptions();
 
 		$.post(url + "?api", { api_key: key }).done(function (data) {
-			//console.log("Fever API version: " + data.api_version);
-			//console.log(data);
+			//dbgMsg("Fever API version: " + data.api_version);
+			//dbgMsg(data);
 			if ( data.auth === 1 ) {
 				auth_success = true;
 				// Get groups and build them
-				//console.log("first success");
+				//dbgMsg("first success");
 				// save url, email und key
 				setOption("url", url);
 				setOption("key", key);
 				setOption("user", user);
 				saveOptions();
-
+				
+				storeLoadedSavedItems();
 				restart();
 				// home
 				$.mobile.navigate("#page-home", {transition: transition});		
@@ -145,6 +145,8 @@ function saveSettings() {
 	
 	saveOptions();
 	getSettings();
+	runAfterItemLoadNoHome();
+	storeLoadedSavedItems();
 	$.mobile.navigate("#page-home", {transition: transition});
 	//$.mobile.silentScroll(0);
 	return false;	
@@ -163,12 +165,12 @@ function login() {
 	var key = MD5(user + ":" + password);
 
 	$.post(url + "?api", { api_key: key }).done(function (data) {
-		//console.log("Fever API version: " + data.api_version);
-		console.log(data);
+		//dbgMsg("Fever API version: " + data.api_version);
+		dbgMsg(data);
 		if ( data.auth == 1 ) {
 			auth_success = true;
 			// Get groups and build them
-			console.log("first success");
+			dbgMsg("first success");
 			// save url, email und key
 			setOption("url", url);
 			setOption("key", key);
@@ -195,7 +197,7 @@ function login() {
 
 function logout() {
 	// Old Settings:
-	$.jStorage.flush();	
+	simpleStorage.flush();	
 	
 	dm_key   = '';
 	dm_url   = '';
@@ -215,6 +217,7 @@ function showSaved() {
 	$("#dm-select-saved-time").addClass("ui-btn-active");
 	
 	showSavedByTime();
+	
 	return;
 }
 
@@ -222,19 +225,19 @@ function showSavedByTime() {
 
 	$("#dm-saved-content").empty();
 	$("#dm-saved-content").append('<ul id="dm-saved-view" data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true"></ul>');
-	//var local_items = $.jStorage.get("dm-local-items", []);
+	//var local_items = simpleStorage.get("dm-local-items", []);
 	var title = "Saved Items (" +  saved_items.length + ")";
 	$("#page-saved").data("title", title);
 	$("#dm-saved-header").html(title);
 	document.title = title;
 	if ( saved_items.length > 0 ) {
 		//local_items = _.sortBy(local_items, "created_on_time");
+		var items_html = "";
 		$.each(saved_items, function(index, value) {
-			var item = "";
-			item += renderListviewItem(value, true, true, "long");
-			$("#dm-saved-view").append(item);
-
+			items_html += renderListviewItem(value, true, true, "long");
 		});
+		$("#dm-saved-view").append(items_html);
+
 	}
 
 	return false;
@@ -245,7 +248,7 @@ function showSavedByFeed() {
 	var feed_ids;
 	$("#dm-saved-content").empty();
 	//$("#dm-saved-content").append('<ul id="dm-saved-view" data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true"></ul>');
-	//var local_items = $.jStorage.get("dm-local-items", []);
+	//var local_items = simpleStorage.get("dm-local-items", []);
 	var title = "Saved Items (" +  saved_items.length + ")";
 	
 	$("#page-saved").data("title", title);
@@ -255,24 +258,24 @@ function showSavedByFeed() {
 	if ( saved_items.length > 0 ) {
 		grouped_items = _.groupBy(saved_items, "feed_id");
 		feed_ids = _.keys(grouped_items);
-		//console.log(feed_ids);
+		//dbgMsg(feed_ids);
 		
 		$.each(feeds, function(index,value){
-			//console.log(value.id + " " + value.title );
-			//console.log(feed_ids);
+			//dbgMsg(value.id + " " + value.title );
+			//dbgMsg(feed_ids);
 			if ( _.contains( feed_ids, getString(value.id) ) ) {
-				console.log(value.title);
+				dbgMsg(value.title);
 				var saved_part = "<h2>" + value.title + "</h2>";
 				var show_pieces = _.filter( saved_items, function(saves){
-					//console.log(saves);
-					//console.log(value.id + " -> " + saves.feed_id );
+					//dbgMsg(saves);
+					//dbgMsg(value.id + " -> " + saves.feed_id );
 					if ( getNumber(saves.feed_id) === getNumber(value.id) ) {
 						return true;
 					} else {
 						return false;
 					} 
 				});
-				console.log(show_pieces);
+				dbgMsg(show_pieces);
 				
 				saved_part += '<ul data-role="listview" data-divider-theme="a" data-inset="true">';
 				
@@ -464,13 +467,13 @@ function replacePlaceholder(value) {
 
 	
 	if ( value.is_saved == 1 ) {
-		console.log("saved");
+		dbgMsg("saved");
 		$('.dm-link-'+_.escape(value.id)+'-save-button').text("Unsave");
 		$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "minus" });
 		//$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");	
 
 	} else {
-		console.log("unsaved");
+		dbgMsg("unsaved");
 		$('.dm-link-'+_.escape(value.id)+'-save-button').text("Save");
 		$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup({ icon: "plus" });
 		//$('.dm-link-'+_.escape(value.id)+'-save-button').buttonMarkup("refresh");
@@ -486,7 +489,7 @@ function replacePlaceholder(value) {
 function buildGroup(id) {
 	last_dm_group_show = now();
 	id = getNumber(id);
-	//console.log(paginate_items);
+	//dbgMsg(paginate_items);
 	$("#dm-group-content").empty();
 	$("#dm-group-more").empty();
 	$("#dm-group-content").append('<div style="margin-bottom:1em;"><a href="" data-role="button" data-dm-fnc="show-feeds-group" data-dm-group-id="'+id+'" id="dm-group-show-feeds" class="dm-button">Show Feeds of Group</a></div>');
@@ -513,11 +516,11 @@ function buildGroup(id) {
 	// check if we need to group items...
 	var item_ids_in_group = '';
 	//group_item_counter = 0;
-	console.log( getOption("paginate_items") );
+	dbgMsg( getOption("paginate_items") );
 	
 	if ( getNumber(getOption("paginate_items")) === 0 || getNumber(getOption("paginate_items")) >= unread ) {
 		//no, just show all items
-		console.log("check all");
+		dbgMsg("check all");
 		$.each(group_items, function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, true, true, "long");
@@ -532,7 +535,7 @@ function buildGroup(id) {
 		
 	} else {
 		// yes, show just some items
-		console.log("check paginate");
+		dbgMsg("check paginate");
 		$.each( _.first(group_items, getNumber(getOption("paginate_items")) ), function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, true, true, "long");
@@ -586,7 +589,7 @@ function showGroup(id) {
 function buildFeed(id) {
 	last_dm_group_show = now();
 	id = getNumber(id);
-	//console.log(paginate_items);
+	//dbgMsg(paginate_items);
 	$("#dm-feed-content").empty();
 	$("#dm-feed-more").empty();
 
@@ -601,11 +604,11 @@ function buildFeed(id) {
 	// check if we need to group items...
 	var item_ids_in_feed = '';
 	//group_item_counter = 0;
-	//console.log( getNumber(paginate_items) );
-	//console.log(feed_items);
+	//dbgMsg( getNumber(paginate_items) );
+	//dbgMsg(feed_items);
 	if ( getNumber(getOption("paginate_items")) === 0 || getNumber(getOption("paginate_items")) >= unread ) {
 		//no, just show all items
-		console.log("check all");
+		dbgMsg("check all");
 		$.each(feed_items, function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, false, true, "long");
@@ -620,7 +623,7 @@ function buildFeed(id) {
 		
 	} else {
 		// yes, show just some items
-		console.log("check paginate");
+		dbgMsg("check paginate");
 		$.each( _.first(feed_items, getNumber(getOption("paginate_items")) ), function(index, value) {
 			var item = "";
 			item += renderListviewItem(value, true, true, "long");
@@ -673,9 +676,9 @@ function showFeed(id) {
 function showSingleItem(id) {
 	var item = _.findWhere(items, {id: getNumber(id)});
 
-	if ( !item ) {
+	/*if ( !item ) {
 		item = _.findWhere(saved_items, {id: id});
-	} 
+	}*/
 	
 	if ( !item ) {
 		item = _.findWhere(session_read_items, {id: id});
@@ -698,7 +701,7 @@ function showSingleItem(id) {
 }
 
 function renderSingleItem(data) {
-	//console.log(data);
+	//dbgMsg(data);
 	$("#dm-single-content").empty();
 	if ( getOption("html_content") == "raw") {
 		try {
@@ -708,7 +711,7 @@ function renderSingleItem(data) {
 					
 			$("#dm-single-content").append(content);
 		} catch(e) {
-			console.log("error in html of item");
+			dbgMsg("error in html of item");
 			
 			var content = _.escape(data.html);
 			
@@ -781,17 +784,17 @@ function renderSingleItem(data) {
 		try {
 			$("#dm-single-sharing-buttons").append(fb_button);
 		} catch (e) {
-			console.log("fb button caused an error...");
+			dbgMsg("fb button caused an error...");
 		}
 		try {
 			$("#dm-single-sharing-buttons").append(twitter_button);
 		} catch (e) {
-			console.log("twitter button caused an error...");
+			dbgMsg("twitter button caused an error...");
 		}
 		try {
 			$("#dm-single-sharing-buttons").append(gplus_button);
 		} catch (e) {
-			console.log("g+ button caused an error...");
+			dbgMsg("g+ button caused an error...");
 		}
 	}
 	
@@ -819,7 +822,7 @@ function renderSingleItem(data) {
 		passive_buttons += '</ul></div>';
 		
 		if ( getOption("sharing_mobile") ) {
-			console.log("mobile Sharing: " + getOption("sharing_mobile") );
+			dbgMsg("mobile Sharing: " + getOption("sharing_mobile") );
 			passive_buttons += '<div data-role="navbar"><ul>';
 			passive_buttons += '<li><a href="whatsapp://send?text=' + encodeURI( data.title + ' - ' + data.url ) + '">WhatApp</a></li>';
 			passive_buttons += '<li><a href="threema://compose?text=' + encodeURI( data.title + ' - ' + data.url ) + '">Threema</a></li>';
@@ -837,11 +840,11 @@ function renderSingleItem(data) {
 			twttr.widgets.load();
 		} catch (e) {
 			// ignore this one...
-			console.log("twitter object seems to be missing...");
+			dbgMsg("twitter object seems to be missing...");
 		} 
 	}		
 	$.mobile.resetActivePageHeight();
-
+	$("#page-single").enhanceWithin();
 	return false;
 }
 
@@ -899,12 +902,12 @@ function buildAllFeeds() {
 	$("#dm-all-feeds-content").empty();
 	$("#dm-all-feeds-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-all-feeds-view"></ul>');
 	countUnreadItems();
-	//console.log(unread_counter);
-	//console.log("build all feeds");
+	//dbgMsg(unread_counter);
+	//dbgMsg("build all feeds");
 	$.each(feeds, function(index, value){
 		
 		var item = renderListviewItemFeed(value, true);
-		//console.log(item);
+		//dbgMsg(item);
 		$("#dm-all-feeds-view").append(item);
 	});
 
@@ -946,7 +949,7 @@ function buildKindling() {
 	$("#dm-kindling-content").append('<ul data-role="listview" data-divider-theme="a" data-inset="true" data-filter="true" id="dm-kindling-view"></ul>');
 	$("#dm-kindling-more").empty();
 	var paginated_ids = '';
-	console.log("check2");
+	dbgMsg("check2");
 	if ( getOption("paginate_items") === 0 ) {
 		$.each(items, function(index, value) {
 			if ( value.is_read == 0 ) {
@@ -957,7 +960,7 @@ function buildKindling() {
 		});
 	} else {
 		var kindling = _.first(items, getNumber(getOption("paginate_items")));
-		console.log(kindling.length);
+		dbgMsg(kindling.length);
 		$.each(kindling, function(index, value) {
 			if ( value.is_read == 0 ) {
 				var item = renderListviewItem(value, true, true, "long");
@@ -989,28 +992,30 @@ function buildKindling() {
 }
 
 function showKindling() {
-	console.log("check");
+	dbgMsg("check");
 	buildKindling();
 	return false;
 }
 
 function getFavicon(feed, css_classes) {
 	// should a a feed-object
-	if ( !!css_classes ) {
+	if ( !!feed) {
 
-	} else {
-		var css_classes = "dm-favicon";
-	}
+		if ( !!css_classes ) {
 
-	var favicon = _.findWhere(favicons, {id: feed.favicon_id});
-	var item_data = '';
-	if ( favicon ) {
-		if ( favicon.id != 1) {
-			// return feed specific favicon
-			return '<img src="data:'+favicon.data+'" height="16" width="16" class="'+css_classes+'"/>';
+		} else {
+			var css_classes = "dm-favicon";
+		}
+	
+		var favicon = _.findWhere(favicons, {id: feed.favicon_id});
+		var item_data = '';
+		if ( favicon ) {
+			if ( favicon.id != 1) {
+				// return feed specific favicon
+				return '<img src="data:'+favicon.data+'" height="16" width="16" class="'+css_classes+'"/>';
+			}
 		}
 	}
-	
 	// return generic code
 	return '<img src="artwork/feed-icon-generic.png" height="16" width="16" class="'+css_classes+'"/>';
 }
@@ -1101,9 +1106,15 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 	// creates the whole li-string...
 	var li, css_classes;
 	
+	
 	li  = '<li>';
 
 	var feed = _.findWhere(feeds, {id: item.feed_id});
+	
+	if ( !feed ) {
+		return '';	
+	}
+	
 	li += getFavicon(feed, "dm-favicon ui-li-icon");
 	li += '<p class="dm-listview-content">';
 	if ( item.is_read == 0 ) {
@@ -1111,7 +1122,7 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 	} else {
 		css_classes = 'dm-item-is-read';
 	}
-	//console.log("checkpoint");
+	//dbgMsg("checkpoint");
 	li += '<a href="" class="dm-button dm-hot-links dm-single-item-link-'+_.escape(item.id)+' '+css_classes+'" data-dm-show-item="'+_.escape(item.id)+'" data-dm-fnc="show-item">' + _.escape(item.title) + '</a></p><p class="dm-listview-content">posted';
 	if ( with_feed == true ) {
 		li += ' on <a href="" class="dm-hot-links dm-is-read dm-button" data-dm-fnc="show-feed" data-dm-show-feed="'+_.escape(feed.id)+'">'+_.escape(feed.title)+'</a>';
@@ -1130,7 +1141,7 @@ function renderListviewItem(item, with_feed, with_author, with_time) {
 function prepareHome() {
 	// Which Widgets to display?
 	var curr_page = $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
-	console.log("preparing home");
+	dbgMsg("preparing home");
 	
 	$.each(widgets, function(index, value) {
 		$("#dm-widget-place-"+value.place).html(eval(value.fnc));
@@ -1173,12 +1184,12 @@ function markFeedAsFav() {
 	if ( _.contains(fav_feeds, id) ) {
 		// should be removed
 		fav_feeds = _.without(fav_feeds, id);
-		$.jStorage.set("dm-fav-feeds", _.compact(fav_feeds));
+		simpleStorage.set("dm-fav-feeds", _.compact(fav_feeds));
 		$("#dm-feed-favmarker").html("Mark Feed as Favourite");
 		
 	} else {
 		fav_feeds.push(id);
-		$.jStorage.set("dm-fav-feeds", _.compact(fav_feeds));
+		simpleStorage.set("dm-fav-feeds", _.compact(fav_feeds));
 		$("#dm-feed-favmarker").html("Remove Feed from Favourites");
 	}
 
@@ -1191,12 +1202,12 @@ function markGroupAsFav() {
 	if ( _.contains(fav_groups, id) ) {
 		// should be removed
 		fav_groups = _.without(fav_groups, id);
-		$.jStorage.set("dm-fav-groups", _.compact(fav_groups));
+		simpleStorage.set("dm-fav-groups", _.compact(fav_groups));
 		$("#dm-group-favmarker").html("Mark Group as Favourite");
 		
 	} else {
 		fav_groups.push(id);
-		$.jStorage.set("dm-fav-groups", _.compact(fav_groups));
+		simpleStorage.set("dm-fav-groups", _.compact(fav_groups));
 		$("#dm-group-favmarker").html("Remove Group from Favourites");
 	}
 	return false;
@@ -1266,7 +1277,7 @@ function saveHomescreen() {
 		var this_widget = { place: value, fnc: func, options: {} };
 		widgets.push(this_widget);
 	});
-	$.jStorage.set("dm-widgets", widgets);
+	simpleStorage.set("dm-widgets", widgets);
 	showHome();
 
 }
@@ -1274,7 +1285,7 @@ function saveHomescreen() {
 
 function countUnreadItems() {
 	unread_counter = {};
-	console.log("counting unread items");
+	dbgMsg("counting unread items");
 	
 	$.each(items, function(key, value) {
 		if ( value.is_read == 0 ) {
@@ -1292,7 +1303,7 @@ function countUnreadItems() {
 function getUnreadCountFeed(feed_id) {
 	
 	var unread = unread_counter["feed-"+feed_id];
-	//console.log(unread);
+	//dbgMsg(unread);
 	if ( unread ) {
 		return unread_counter["feed-"+feed_id];
 	} else {

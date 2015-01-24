@@ -78,7 +78,8 @@ var dm_config = {
 	"order_items": "asc",
 	"groupview": "items",
 	"paginate_items": 100,
-	"widget_recent_items": 10
+	"widget_recent_items": 10,
+	"saved_items_compressed":false
 }
 
 // Some default settings
@@ -101,46 +102,68 @@ var last_dm_refresh    = 0; // unix timestamps in seconds when were items refres
 var last_fever_refresh = 0; // unix timestamps in seconds when Server last refreshed items
 var last_dm_group_show = now();
 
+function getStorageKey(which, default_value) {
+	if ( simpleStorage.canUse() ) {
+		var data = simpleStorage.get(which);
+
+		if ( _.isUndefined(data) ) {
+			return default_value;
+		} else {
+			return data;
+		}
+	} else {
+		return default_value;
+	}
+}
+
 function getSettings() {
-	console.log(dm_config);
-	dm_config = $.jStorage.get("dm-config", dm_config);
-	dm_data   = $.jStorage.get("dm-data", dm_data);
-	console.log(dm_config);
 
-	dm_key  = getOption("key");//$.jStorage.get("dm-key", "");
-	dm_url  = getOption("url");//$.jStorage.get("dm-url", "");
-	dm_user = getOption("user");//$.jStorage.get("dm-user", "");
+	dm_config = getStorageKey("dm-config", dm_config);
+	dm_data   = getStorageKey("dm-data", dm_data);
+	dbgMsg(dm_config);
+	dm_key  = getOption("key");//simpleStorage.get("dm-key", "");
+	dm_url  = getOption("url");//simpleStorage.get("dm-url", "");
+	dm_user = getOption("user");//simpleStorage.get("dm-user", "");
 	
-	transition = getOption("transition");//$.jStorage.get("dm-transition", transition);
+	transition = getOption("transition");//simpleStorage.get("dm-transition", transition);
 
-	feeds_hash   = $.jStorage.get("dm-feed-hash", feeds_hash);
-	feed_counter = $.jStorage.get("dm-feed-counter", feed_counter);
-	favicons     = $.jStorage.get("dm-favicons", favicons);
+	feeds_hash   = getStorageKey("dm-feed-hash", feeds_hash);
+	feed_counter = getStorageKey("dm-feed-counter", feed_counter);
+	favicons     = getStorageKey("dm-favicons", favicons);
 
-	saved_items = $.jStorage.get("dm-local-items", []);
-	widgets     = $.jStorage.get("dm-widgets", default_widgets);
+	var saved_items_compressed = getStorageKey("dm-saved-items", "");
+	//dbgMsg("Saved items:");
+	//dbgMsg(saved_items_compressed);
+	if ( saved_items_compressed == "" ) {
+		// no saved items
+		saved_items = [];
+	} else {
+		saved_items = JSON.parse( LZString.decompressFromUTF16(saved_items_compressed) );
+	}
 	
-	fav_feeds  = $.jStorage.get("dm-fav-feeds", []);
-	fav_groups = $.jStorage.get("dm-fav-groups", []);
+	widgets    = getStorageKey("dm-widgets", default_widgets);
+	
+	fav_feeds  = getStorageKey("dm-fav-feeds", []);
+	fav_groups = getStorageKey("dm-fav-groups", []);
 	
 	// Let's be sure that old settings are removed...
-	$.jStorage.deleteKey("dm-sharing-mobile");
-	$.jStorage.deleteKey("dm-html-content");
+	simpleStorage.deleteKey("dm-sharing-mobile");
+	simpleStorage.deleteKey("dm-html-content");
 
 	// Still in use:
-	$.jStorage.deleteKey("dm-key");
-	$.jStorage.deleteKey("dm-url");
-	$.jStorage.deleteKey("dm-user");
-	$.jStorage.deleteKey("dm-favicons");
-	$.jStorage.deleteKey("dm-local-items");
-	$.jStorage.deleteKey("dm-transition");
-	$.jStorage.deleteKey("dm-groupview");
-	$.jStorage.deleteKey("dm-sharing");
-	$.jStorage.deleteKey("dm-sharing-msg");
-	$.jStorage.deleteKey("dm-order-items");
-	$.jStorage.deleteKey("dm-widget-recent-items");
-	$.jStorage.deleteKey("dm-show-empty-groups");
-	
+	simpleStorage.deleteKey("dm-key");
+	simpleStorage.deleteKey("dm-url");
+	simpleStorage.deleteKey("dm-user");
+	//simpleStorage.deleteKey("dm-favicons");
+	simpleStorage.deleteKey("dm-local-items");
+	simpleStorage.deleteKey("dm-transition");
+	simpleStorage.deleteKey("dm-groupview");
+	simpleStorage.deleteKey("dm-sharing");
+	simpleStorage.deleteKey("dm-sharing-msg");
+	simpleStorage.deleteKey("dm-order-items");
+	simpleStorage.deleteKey("dm-widget-recent-items");
+	simpleStorage.deleteKey("dm-show-empty-groups");
+	$.jStorage.flush();
 	$.mobile.defaultPageTransition = transition;
 
 	return true;
@@ -149,7 +172,7 @@ function getSettings() {
 			
 $(document).bind("mobileinit", function () {
 	//apply overrides here
-	console.log("mobilestart");
+	dbgMsg("mobilestart");
 	getSettings();
 	registerEventHandlers();
 	start();
@@ -166,21 +189,22 @@ function getOption(which) {
 	if ( _.has(dm_config), which ) {
 		return dm_config[which];
 	} else {
-		console.log("Get Config unbekannt: " + which);
+		dbgMsg("Get Config unbekannt: " + which);
 		return -1;
 	}
 }
 
 function saveOptions() {
-	$.jStorage.set("dm-config", dm_config);
+	var worked = simpleStorage.set("dm-config", dm_config);
+	dbgMsg(worked);
 }
 
 function setOption(which, value) {
 	if ( _.has(dm_config), which ) {
 		dm_config[which] = value;
-		//$.jStorage.set("dm-config", dm_config);
+		//simpleStorage.set("dm-config", dm_config);
 	} else {
-		console.log("Set Config unbekannt: " + which);
+		dbgMsg("Set Config unbekannt: " + which);
 		return -1;
 	}	
 }

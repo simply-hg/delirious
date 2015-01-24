@@ -26,10 +26,10 @@ THE SOFTWARE.
 function registerEventHandlers() {
 	
 	$(document).on("pagecreate", ".dm-page", function (e) {
-		//console.log("pagecreate: " + $(this).attr("id") );
+		//dbgMsg("pagecreate: " + $(this).attr("id") );
 	});
 	$(document).on("pageinit", ".dm-page", function (e) {
-		//console.log("pageinit: " + $(this).attr("id") );
+		//dbgMsg("pageinit: " + $(this).attr("id") );
 	});
 	
 	$(document).on("pagebeforeshow", ".dm-page", function (e, o) {
@@ -37,9 +37,9 @@ function registerEventHandlers() {
 		var id = $(this).attr("id");
 		
 		if ( _.isUndefined( $(o.prevPage).attr("id") ) ) {
-			console.log("prev page is empty, startup assumed");
+			dbgMsg("prev page is empty, startup assumed");
 			if ( id !== "page-home" ) {
-				console.log("show home instead");
+				dbgMsg("show home instead");
 				if ( dm_url !== "" && id !== "page-settings" ) {
 					// if no url is given, chences are,
 					// we are running into settings screen
@@ -50,16 +50,16 @@ function registerEventHandlers() {
 
 				// return and don't do anything, because
 				// home is created after item load
-				console.log("was in pagebeforeshow for " + id);
+				dbgMsg("was in pagebeforeshow for " + id);
 				return;
 			}
 		} else {
-			console.log("from: " + $(o.prevPage).attr("id") );
+			dbgMsg("from: " + $(o.prevPage).attr("id") );
 		}
 		
-		console.log("pagebeforeshow: " + $(this).attr("id") );
-		//console.log("Items loaded: " + items_loaded);
-		//console.log("Items load started: " + started_items_load);
+		dbgMsg("pagebeforeshow: " + $(this).attr("id") );
+		//dbgMsg("Items loaded: " + items_loaded);
+		//dbgMsg("Items load started: " + started_items_load);
 		switch ( id ) {
 			case "page-home":
 				prepareHome();
@@ -85,13 +85,13 @@ function registerEventHandlers() {
 			break;
 			case "page-single":
 				var id = $( this ).data("dm-item-id");
-				console.log("single-id: "+id);
+				dbgMsg("single-id: "+id);
 			break;
 			case "page-login":
 				if ( auth_success === true ) {
 					$.mobile.navigate("#page-home", {transition: transition});
 				} else {
-					$.jStorage.flush();
+					simpleStorage.flush();
 				}
 			break;
 		}
@@ -103,17 +103,18 @@ function registerEventHandlers() {
 		e.stopPropagation();
 		e.preventDefault();
 		var button = $(this).data("dm-fnc");
-		console.log("vclick button: " + button);
+		dbgMsg("vclick button: " + button);
 
 		switch (button) {
 			case "show-item":
 				var id = $(this).data("dm-show-item");
-				//console.log(id);
+				//dbgMsg(id);
 				$( "#page-single" ).data("dm-item-id", id);
 				//showSingleItem(id);
 				showSingleItem(id);
 				$.mobile.navigate("#page-single", {transition: transition});
 			break;
+			
 			case "show-group":
 				var id = $(this).data("dm-show-group");
 				showGroup(id);
@@ -158,7 +159,7 @@ function registerEventHandlers() {
 				markItemsRead( $(this).data("dm-ids") );
 				var data = $(this).data("dm-ids");
 				
-				//console.log( data );
+				//dbgMsg( data );
 				buildKindling();
 				$("#page-kindling").enhanceWithin();
 				$.mobile.silentScroll(0);
@@ -262,11 +263,11 @@ function registerEventHandlers() {
 			case "save-item":
 				var id = $(this).data("dm-save-item-id");
 				id = getNumber(id);
-				//console.log(id);
+				//dbgMsg(id);
 				
 				var save_state = isItemSaved(id);
 				
-				//console.log("Save state id: "+ id + " -> " + save_state);
+				//dbgMsg("Save state id: "+ id + " -> " + save_state);
 				if ( !save_state ) {
 					$(this).text("Unsave");
 					//$(this).buttonMarkup();
