@@ -130,7 +130,7 @@ img.dm-favicon-feed {
 }
 
 .dm-bottom-menu {
-	width:20em;
+	max-width:20em;
 	margin-left:auto;
 	margin-right:auto;
 }
