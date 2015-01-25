@@ -94,8 +94,11 @@ function registerEventHandlers() {
 					simpleStorage.flush();
 				}
 			break;
+			case "page-importexport":
+				showImportExport();
+			break;
 		}
-		
+		$.mobile.resetActivePageHeight();
 		$(this).enhanceWithin();
 	});
 	
@@ -304,12 +307,42 @@ function registerEventHandlers() {
 			case "login":
 				login();
 			break;
-			case "":
+			case "import-settings":
+				importSettings();
 			break;
-			case "":
+			case "download-settings":
+				generateExportFile();
+			break;
+			case "upload-settings":
+				importSettingsFile();
 			break;				
 			default:
 			break;
 		}
 	});
+	$( document ).ready(function() {
+
+		$('#dm-settings-file-import').change( function (ereignis) {
+			var f = ereignis.target.files[0]; 
+			if ( f ) {
+				var r = new FileReader();
+				r.onload = function(e) { 
+					var settings = e.target.result;
+					saveImportedSettings( JSON.parse( LZString.decompressFromEncodedURIComponent( settings )) );
+					
+					getSettings();
+					runAfterItemLoadNoHome();
+					storeLoadedSavedItems();
+					$.mobile.navigate("#page-home", {transition: transition});
+				}
+				r.readAsText(f);
+
+			}
+		});
+		
+		$('.dm-export-box').change( function(e) {
+			showImportExport();
+		}); 
+	});
+
 }

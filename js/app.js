@@ -1166,6 +1166,7 @@ function prepareHome() {
 function showHome() {
 
 	$.mobile.navigate("#page-home", {transition: transition});
+	$.mobile.resetActivePageHeight();
 	//$.mobile.silentScroll(0);
 	return false;
 }
@@ -1327,3 +1328,71 @@ function showSavedItemsGroupedByFeed() {
 	return;
 }
 
+function exportSettings() {
+
+	var settings = {};
+	if ( $("#dm-export-fav").is(":checked")  ) {
+		settings.fav_feeds = fav_feeds;
+		settings.fav_groups = fav_groups;
+	}
+	
+	if ( $("#dm-export-homescreen").is(":checked") ) {
+		settings.widgets = widgets;
+	}
+	
+	if ( $("#dm-export-settings").is(":checked") ) {
+		settings.config = dm_config;
+	}
+	return LZString.compressToEncodedURIComponent( JSON.stringify(settings) );
+}
+
+function saveImportedSettings(settings) {
+	
+		if ( !_.isUndefined(settings.widgets) ) {
+			simpleStorage.set("dm-widgets", settings.widgets);
+		}
+		
+		if ( !_.isUndefined(settings.config) ) {
+			settings.config["url"] = getOption("url");
+			settings.config["key"] = getOption("key");
+			settings.config["user"] = getOption("user");
+			
+			simpleStorage.set("dm-config", settings.config);
+		}
+		
+		if ( !_.isUndefined(settings.fav_feeds) ) {
+			simpleStorage.set("dm-fav-feeds", settings.fav_feeds);
+		}
+		
+		if ( !_.isUndefined(settings.fav_groups) ) {
+			simpleStorage.set("dm-fav-groups", settings.fav_groups);
+		}
+}
+
+function showImportExport() {
+	var settings = exportSettings();
+	$("#dm-export-settings-box").val(settings);
+}
+
+function importSettings() {
+	if ( $("#dm-import-settings").val() ) {
+		var settings = JSON.parse( LZString.decompressFromEncodedURIComponent( $("#dm-import-settings").val() ) );
+	
+		saveImportedSettings();
+		
+	}
+	
+	getSettings();
+	runAfterItemLoadNoHome();
+	storeLoadedSavedItems();
+	$.mobile.navigate("#page-home", {transition: transition});
+}
+
+function generateExportFile() {
+	var settings = exportSettings();
+
+	var settings_file = new Blob( [settings], {type : 'application/octet-stream'});
+
+	saveAs(settings_file, "settings.dm");
+	
+}

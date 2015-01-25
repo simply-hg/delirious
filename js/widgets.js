@@ -95,7 +95,7 @@ function widgetCustomGroups() {
 		var unread = countUnreadInGroup(value.id);
 		
 		if (unread === 0) {
-			if ( getOption("show_empty_groups") === "true") {
+			if ( getOption("show_empty_groups") === true) {
 				panel_custom_groups += '<li id="dm-group-' + value.id + '">';
 				panel_custom_groups += '<a href="" class="dm-button" data-dm-fnc="show-group-selector" data-dm-show-group="' + _.escape(value.id) + '">';
 				panel_custom_groups += _.escape(value.title);

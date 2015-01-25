@@ -159,6 +159,7 @@ function loadItems(ids) {
 		loadItems(rest);
 	} else {
 		// finished
+		runAfterItemLoad();
 	}
 	
 }
@@ -176,6 +177,7 @@ function runAfterItemLoadNoHome() {
 		items.reverse();
 	}
 	items_loaded = true;
+	$.mobile.resetActivePageHeight();
 	return true;
 }
 
@@ -220,7 +222,7 @@ function markItemsRead(ids) {
 	$.each(ids_to_mark_read, function(index, value) {
 		markItemRead(value);
 	});	
-	//runAfterItemLoadNoHome();
+	runAfterItemLoadNoHome();
 }
 
 function markItemRead(id) {
