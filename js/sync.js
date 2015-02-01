@@ -42,6 +42,7 @@ function autoSync() {
 			// do nothing for now
 		break;
 	}
+	//$.mobile.resetActivePageHeight();
 	return false;
 }
 
@@ -177,7 +178,7 @@ function runAfterItemLoadNoHome() {
 		items.reverse();
 	}
 	items_loaded = true;
-	$.mobile.resetActivePageHeight();
+	//$.mobile.resetActivePageHeight();
 	return true;
 }
 
@@ -222,7 +223,7 @@ function markItemsRead(ids) {
 	$.each(ids_to_mark_read, function(index, value) {
 		markItemRead(value);
 	});	
-	runAfterItemLoadNoHome();
+	//runAfterItemLoadNoHome();
 }
 
 function markItemRead(id) {
@@ -551,7 +552,7 @@ function syncSavedItems(what) {
 		showHideLoader("stop");
 		if ( checkAuth(data.auth) ) {
 			
-			dbgMsg( saved_items );
+			//dbgMsg( saved_items );
 			dbgMsg( "Saved items: " + data.saved_item_ids );
 			
 			var online_ids = data.saved_item_ids.split(',');

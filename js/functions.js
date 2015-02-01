@@ -33,6 +33,29 @@ function dbgMsg(msg) {
 	//console.log(msg);
 	return true;
 }
+function checkpoint(msg) {
+	//console.log('Checkpoint: ' + msg);
+	return true;
+}
+
+function escapeString(str) {
+	
+	str = _.escape(str);
+	
+	str = str.split('&amp;amp;').join('&amp;');
+	str = str.split('&amp;quot;').join('&quot;');
+	str = str.split('&amp;rsquo;').join('&rsquo;');
+	str = str.split('&amp;lsquo;').join('&lsquo;');
+	str = str.split('&amp;lsaquo;').join('&lsaquo;');
+	str = str.split('&amp;rsaquo;').join('&rsaquo;');
+	str = str.split('&amp;euro;').join('&euro;');
+	str = str.split('&amp;nbsp;').join('&nbsp;');
+	str = str.split('&amp;shy;').join('&shy;');
+	
+	return str;
+}
+
+
 
 function getNumber(val) {
 	var str_type = $.type(val);
@@ -68,6 +91,8 @@ function getString(val) {
 	if (str_type === "string") {
 		return val;
 	}
+	
+	return '';
 }
 
 function sortHelper(a, b) {

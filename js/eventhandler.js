@@ -31,6 +31,18 @@ function registerEventHandlers() {
 	$(document).on("pageinit", ".dm-page", function (e) {
 		//dbgMsg("pageinit: " + $(this).attr("id") );
 	});
+
+	$( document ).on( "pageshow", function(e,o){
+		
+		$(this).enhanceWithin();
+		
+		try {
+			$( ".dm-toolbar" ).toolbar( "updatePagePadding" );
+		} catch (e) {
+			console.log(e);
+		}
+
+	} );
 	
 	$(document).on("pagebeforeshow", ".dm-page", function (e, o) {
 		
@@ -63,9 +75,11 @@ function registerEventHandlers() {
 		switch ( id ) {
 			case "page-home":
 				prepareHome();
+
 			break;
 			case "page-settings":
 				initSettings();
+
 			break;
 			case "page-all-feeds":
 				showAllFeeds();
@@ -76,6 +90,7 @@ function registerEventHandlers() {
 			case "page-groups":
 				showGroups();
 			break;
+
 			case "page-edit-homescreen":
 				showEditHomescreen();
 			break;
@@ -84,8 +99,9 @@ function registerEventHandlers() {
 				showFeedsInGroup(id);
 			break;
 			case "page-single":
-				var id = $( this ).data("dm-item-id");
-				dbgMsg("single-id: "+id);
+				//var id = $( this ).data("dm-item-id");
+
+				//dbgMsg("single-id: "+id);
 			break;
 			case "page-login":
 				if ( auth_success === true ) {
@@ -98,22 +114,26 @@ function registerEventHandlers() {
 				showImportExport();
 			break;
 		}
-		$.mobile.resetActivePageHeight();
 		$(this).enhanceWithin();
+
+		//$.mobile.resetActivePageHeight();
+		/*try {
+			$( "div[data-position='fixed']" ).toolbar( 'updatePagePadding' );
+		} catch (e) {
+			console.log(e);
+		}*/
 	});
 	
 	$ ( document ).on("vclick", ".dm-button", function(e) {
 		e.stopPropagation();
-		e.preventDefault();
-		var button = $(this).data("dm-fnc");
+		e.preventDefault();		var button = $(this).data("dm-fnc");
 		dbgMsg("vclick button: " + button);
 
 		switch (button) {
 			case "show-item":
 				var id = $(this).data("dm-show-item");
 				//dbgMsg(id);
-				$( "#page-single" ).data("dm-item-id", id);
-				//showSingleItem(id);
+				//$( "#page-single" ).data("dm-item-id", id);
 				showSingleItem(id);
 				$.mobile.navigate("#page-single", {transition: transition});
 			break;
@@ -297,7 +317,7 @@ function registerEventHandlers() {
 				showHome();				
 			break;
 			case "show-saved-time":
-				showSavedByTime();
+				showSavedByTimePage(1);
 				$("#page-saved").enhanceWithin();
 			break;	
 			case "show-saved-feed":
@@ -315,8 +335,15 @@ function registerEventHandlers() {
 			break;
 			case "upload-settings":
 				importSettingsFile();
-			break;				
-			default:
+			break;
+			case 'show-saved-page':
+				var saved_page = $(this).data("dm-saved-page");
+				showSavedByTimePage( getNumber(saved_page) );
+				$("#page-saved").enhanceWithin();
+
+			break;
+				
+			default: 
 			break;
 		}
 	});

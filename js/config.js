@@ -78,8 +78,7 @@ var dm_config = {
 	"order_items": "asc",
 	"groupview": "items",
 	"paginate_items": 100,
-	"widget_recent_items": 10,
-	"saved_items_compressed":false
+	"widget_recent_items": 10
 }
 
 // Some default settings
@@ -104,9 +103,17 @@ var last_dm_group_show = now();
 
 function getStorageKey(which, default_value) {
 	if ( simpleStorage.canUse() ) {
+		
+		var list = simpleStorage.index();
+		
+		if ( _.has(list , which ) ) {}
+		
 		var data = simpleStorage.get(which);
-
+		dbgMsg("getStorageKey("+which+")");
+		//dbgMsg(data);
 		if ( _.isUndefined(data) ) {
+			dbgMsg("return default_value");
+			//dbgMsg(default_value);
 			return default_value;
 		} else {
 			return data;
@@ -134,7 +141,7 @@ function getSettings() {
 	var saved_items_compressed = getStorageKey("dm-saved-items", "");
 	//dbgMsg("Saved items:");
 	//dbgMsg(saved_items_compressed);
-	if ( saved_items_compressed == "" ) {
+	if ( saved_items_compressed === "" ) {
 		// no saved items
 		saved_items = [];
 	} else {
@@ -147,23 +154,6 @@ function getSettings() {
 	fav_groups = getStorageKey("dm-fav-groups", []);
 	
 	// Let's be sure that old settings are removed...
-	simpleStorage.deleteKey("dm-sharing-mobile");
-	simpleStorage.deleteKey("dm-html-content");
-
-	// Still in use:
-	simpleStorage.deleteKey("dm-key");
-	simpleStorage.deleteKey("dm-url");
-	simpleStorage.deleteKey("dm-user");
-	//simpleStorage.deleteKey("dm-favicons");
-	simpleStorage.deleteKey("dm-local-items");
-	simpleStorage.deleteKey("dm-transition");
-	simpleStorage.deleteKey("dm-groupview");
-	simpleStorage.deleteKey("dm-sharing");
-	simpleStorage.deleteKey("dm-sharing-msg");
-	simpleStorage.deleteKey("dm-order-items");
-	simpleStorage.deleteKey("dm-widget-recent-items");
-	simpleStorage.deleteKey("dm-show-empty-groups");
-	$.jStorage.flush();
 	$.mobile.defaultPageTransition = transition;
 
 	return true;
@@ -186,7 +176,7 @@ function getURL() {
 }
 
 function getOption(which) {
-	if ( _.has(dm_config), which ) {
+	if ( _.has(dm_config, which) ) {
 		return dm_config[which];
 	} else {
 		dbgMsg("Get Config unbekannt: " + which);
@@ -200,9 +190,10 @@ function saveOptions() {
 }
 
 function setOption(which, value) {
-	if ( _.has(dm_config), which ) {
+	if ( _.has(dm_config, which) ) {
+		dbgMsg("Has option: " + which);
 		dm_config[which] = value;
-		//simpleStorage.set("dm-config", dm_config);
+		saveOptions();
 	} else {
 		dbgMsg("Set Config unbekannt: " + which);
 		return -1;

@@ -243,8 +243,8 @@ function widgetDebug() {
 		debug_inf += "Key: " + value + "<br>";
 	});
 	
-	dbgMsg("Debug-Widget - Saved items in Storage:");
-	dbgMsg( simpleStorage.get("dm-saved-items") );
+	//dbgMsg("Debug-Widget - Saved items in Storage:");
+	//dbgMsg( simpleStorage.get("dm-saved-items") );
 	
 	return parseWidget(debug_inf);
 }

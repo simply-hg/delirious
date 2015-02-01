@@ -21,7 +21,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
+.no-js {
+visibility: hidden;
+}
 .dm-item-is-unread, .dm-is-unread {
 	font-weight:bold;
 }
@@ -64,28 +66,23 @@ img.dm-favicon-feed {
 	padding:0;
 }
 
-/* integrated clearfix by: http://www.webtoolkit.info/css-clearfix.html */
+/* integrated clearfix by: http://cssmojo.com/latest_new_clearfix_so_far/ */
 #dm-single-content {
-	max-width:100%;
-	overflow:hidden;
-	border:1px solid #ccc;
-	padding:10px;
-	border-radius:1em;
-	background-color:white;
-	display: inline-block;
+    content:"";
+    display:table;
+    clear:both;
 }
 
-#dm-single-content:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
+#dm-single-content {
+	width:100%;
+	max-width:50em;
+	margin-left:auto;
+	margin-right: auto;
+	overflow: auto;
+	padding-top: .5em;
+	padding-bottom: .5em;
 }
-* html #dm-single-content {
-	height: 1%;
-}
+
 .dm-single-below-content {
 	padding-top:0.3em;
 	padding-right:1em;
@@ -118,11 +115,12 @@ img.dm-favicon-feed {
 }
 
 @media all and (max-width: 35em) {
-		.dm-widget-container {
+	.dm-widget-container {
 		padding-left:0;
 		padding-right:0;
 	}
 }
+
 
 #dm-groups-content .dm-widget-container {
 	padding-left:0;
@@ -144,4 +142,7 @@ img.dm-favicon-feed {
 #dm-single-title {
 	color:steelblue;
 	text-decoration:none;
+}
+#page-single h2 {
+	text-align: center;
 }

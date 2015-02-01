@@ -1,48 +1,36 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<html class="no-js">
 
-	<link rel="icon" href="artwork/touch-icon-144.png" type="image/png" />
-	<link rel="shortcut icon" href="artwork/touch-icon-16.png" type="image/png" />
+<head>
+	<style type="text/css">
+		.no-js {
+			display: none;
+		}
+	</style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<link rel="icon" href="artwork/touch-icon-144.png" type="image/png">
+	<link rel="shortcut icon" href="artwork/touch-icon-16.png" type="image/png">
 
 	<!-- Adapted from: http://mathiasbynens.be/notes/touch-icons -->
-	<!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --> 
-	<link rel="apple-touch-icon" href="artwork/touch-icon-57.png" />
+	<!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+	<link rel="apple-touch-icon" href="artwork/touch-icon-57.png">
 	<!-- For first- and second-generation iPad: -->
-	<link rel="apple-touch-icon" sizes="72x72" href="artwork/touch-icon-72.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="artwork/touch-icon-72.png">
 	<!-- For iPhone with high-resolution Retina display: -->
-	<link rel="apple-touch-icon" sizes="114x114" href="artwork/touch-icon-114.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="artwork/touch-icon-114.png">
 	<!-- For third-generation iPad with high-resolution Retina display: -->
-	<link rel="apple-touch-icon" sizes="144x144" href="artwork/touch-icon-144.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="artwork/touch-icon-144.png">
 
 	<title>Delirious° (0)</title>
-	<link rel="stylesheet" href="css/delirious.min.css" />
-	<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" /> 
-	<link rel="stylesheet" href="css/app.css" />
+	<link rel="stylesheet" href="css/delirious.min.css">
+	<link rel="stylesheet" href="css/jquery.mobile.icons.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css">
+	<link rel="stylesheet" href="css/app.css">
 
-	<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-	
-	<script src="lib/FileSaver.min.js"></script>
-	<script src="lib/simpleStorage.min.js"></script>
-	<script src="lib/jstorage.min.js"></script>
-	<script src="lib/lz-string.min.js"></script>
-	<script src="lib/fitvid.min.js"></script>
-	<script src="lib/md5.min.js"></script>
-	
-	<script src="js/functions.js"></script>
-	<script src="js/config.js"></script>
-	<script src="js/app.js"></script>
-	<script src="js/sync.js"></script>
-	<script src="js/widgets.js"></script>
-	<script src="js/eventhandler.js"></script>
-	
-	<script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
 </head>
 
@@ -50,58 +38,101 @@
 	<!-- Home -->
 
 	<div data-role="page" id="page-home" data-title="Delirious° (0)" class="dm-page" data-theme="a">
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<h1 id="dm-header">Delirious<span style="color:red">°</span> (0)</h1>
 			<button data-dm-fnc="sync-items" class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh">Sync</button>
 		</div>
 		<div data-role="main" class="ui-content">
 			<!--<div style="margin-bottom:1em;"></div>-->
 			<div class="ui-grid-a ui-responsive">
-				<div class="ui-block-a"><div id="dm-widget-place-a1"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b1"></div></div>
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a1"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b1"></div>
+				</div>
 
-				<div class="ui-block-a"><div id="dm-widget-place-a2"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b2"></div></div>
-				
-				<div class="ui-block-a"><div id="dm-widget-place-a3"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b3"></div></div>
-				
-				<div class="ui-block-a"><div id="dm-widget-place-a4"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b4"></div></div>
-					
-				<div class="ui-block-a"><div id="dm-widget-place-a5"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b5"></div></div>
-				
-				<div class="ui-block-a"><div id="dm-widget-place-a6"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b6"></div></div>
-				<div class="ui-block-a"><div id="dm-widget-place-a7"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b7"></div></div>
-				<div class="ui-block-a"><div id="dm-widget-place-a8"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b8"></div></div>
-				<div class="ui-block-a"><div id="dm-widget-place-a9"></div></div>
-				<div class="ui-block-b"><div id="dm-widget-place-b9"></div></div>
-			</div><!-- /grid -->		
-			
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a2"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b2"></div>
+				</div>
+
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a3"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b3"></div>
+				</div>
+
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a4"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b4"></div>
+				</div>
+
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a5"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b5"></div>
+				</div>
+
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a6"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b6"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a7"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b7"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a8"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b8"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-widget-place-a9"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-widget-place-b9"></div>
+				</div>
+			</div>
+			<!-- /grid -->
+
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="gear"><a href="#page-settings">Settings</a></li>
-					<li data-icon="grid"><a href="" class="dm-button" data-dm-fnc="show-edit-homescreen">Edit Homescreen</a></li>
-					<li data-icon="info"><a href="#page-support">Help &amp; Credits</a></li>
-					<li data-icon="refresh"><a href="" class="dm-button" data-dm-fnc="sync-items">Sync Items</a></li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="gear"><a href="#page-settings">Settings</a>
+					</li>
+					<li data-icon="grid"><a href="" class="dm-button" data-dm-fnc="show-edit-homescreen">Edit Homescreen</a>
+					</li>
+					<li data-icon="info"><a href="#page-support">Help &amp; Credits</a>
+					</li>
+					<li data-icon="refresh"><a href="" class="dm-button" data-dm-fnc="sync-items">Sync Items</a>
+					</li>
 				</ul>
 			</div>
 		</div>
-	</div><!-- / Home -->
+	</div>
+	<!-- / Home -->
 
 	<!-- Hot-view -->
 	<div data-role="page" id="page-hot" data-title="Hot Items" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>			
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-hot-header">Hot on Fever<span style="color:red">°</span></h1>
 			<a href="" data-dm-fnc="show-hot" class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-refresh">Refresh</a>
-			
+
 		</div>
 		<div data-role="main" class="ui-content">
 			<div data-role="fieldcontain">
@@ -134,68 +165,82 @@
 
 			<div id="dm-hot-content">
 			</div>
-	 		<button id="dm-hot-more" data-role="button" class="dm-button" data-dm-fnc="show-hot-more" data-dm-hot-page="2">Load More</button>
+			<button id="dm-hot-more" data-role="button" class="dm-button" data-dm-fnc="show-hot-more" data-dm-hot-page="2">Load More</button>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
 
-	</div><!-- / Hot view -->
+	</div>
+	<!-- / Hot view -->
 
 	<!-- A Group -->
 	<div data-role="page" id="page-group" data-title="Fever Mobile Group" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-group-header">Fever<span style="color:red">°</span> Custom Group</h1>
 			<a href="" class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="mark-items-read" id="dm-group-read">Mark Read</a>
 		</div>
-		
+
 		<div data-role="main" class="ui-content">
 			<div id="dm-group-content"></div>
 			<div id="dm-group-more"></div>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-group-read" id="dm-mark-group-read">Mark Whole Group as Read</a></li>
-					<li data-icon="star"><a href="" id="dm-group-favmarker" class="dm-button" data-dm-fnc="mark-group-fav">Mark Group as Favourite</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-group-read" id="dm-mark-group-read">Mark Whole Group as Read</a>
+					</li>
+					<li data-icon="star"><a href="" id="dm-group-favmarker" class="dm-button" data-dm-fnc="mark-group-fav">Mark Group as Favourite</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
 
-	</div><!-- / A Group -->
+	</div>
+	<!-- / A Group -->
 
 	<!-- A Group of feeds -->
 	<div data-role="page" id="page-feedgroup" data-title="Fever Mobile Group" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-feedgroup-header">Fever<span style="color:red">°</span> Custom Group</h1>
 		</div>
-		
+
 		<div data-role="main" class="ui-content">
 			<div id="dm-feedgroup-content"></div>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
 
-	</div><!-- / A Group of feeds -->
+	</div>
+	<!-- / A Group of feeds -->
 
 	<!-- Kindling -->
 	<div data-role="page" id="page-kindling" data-title="Fever° Kindling Items" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-kindling-header">Fever<span style="color:red">°</span> Kindling</h1>
 			<a href="" class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" id="dm-kindling-items" data-dm-fnc="show-kindling-more">Show More</a>
@@ -205,19 +250,24 @@
 			<div id="dm-kindling-more"></div>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-kindling-read">Mark Kindling Read</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-kindling-read">Mark Kindling Read</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
-	</div><!-- / Kindling -->
-	
+	</div>
+	<!-- / Kindling -->
+
 	<!-- A Feed -->
 	<div data-role="page" id="page-feed" data-title="A Feed" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-feed-header">Fever<span style="color:red">°</span> View Feed</h1>
 			<a href="" class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="show-feed-more" id="dm-feed-read">Mark Read</a>
@@ -227,59 +277,74 @@
 			<div id="dm-feed-more"></div>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-feed-read" id="dm-mark-feed-read">Mark Feed as Read</a></li>
-					<li data-icon="star"><a href="" class="dm-button" data-dm-fnc="mark-feed-fav" id="dm-feed-favmarker">Mark Feed as Favourite</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="mark-feed-read" id="dm-mark-feed-read">Mark Feed as Read</a>
+					</li>
+					<li data-icon="star"><a href="" class="dm-button" data-dm-fnc="mark-feed-fav" id="dm-feed-favmarker">Mark Feed as Favourite</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
-	</div><!-- / A Feed -->
+	</div>
+	<!-- / A Feed -->
 
 	<!-- Saved -->
 	<div data-role="page" id="page-saved" data-title="Saved Items" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-saved-header">Saved Items</h1>
 
 		</div>
-		
+
 		<div data-role="main" class="ui-content">
 			<div data-role="navbar" id="dm-saved-selector">
 				<ul>
-					<li><a href="#" data-dm-fnc="show-saved-time" class="dm-button" id="dm-select-saved-time">Zeit</a></li>
-					<li><a href="#" data-dm-fnc="show-saved-feed" class="dm-button" id="dm-select-saved-feed">Feed</a></li>
+					<li><a href="#" data-dm-fnc="show-saved-time" class="dm-button" id="dm-select-saved-time">Zeit</a>
+					</li>
+					<li><a href="#" data-dm-fnc="show-saved-feed" class="dm-button" id="dm-select-saved-feed">Feed</a>
+					</li>
 				</ul>
 			</div>
 			<div id="dm-saved-content"></div>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
 
-	</div><!-- / Saved -->
+	</div>
+	<!-- / Saved -->
 
 	<!-- Sparks -->
 	<div data-role="page" id="page-sparks" data-title="Sparks" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-sparks-header">Fever<span style="color:red">°</span> Sparks</h1>
 		</div>
 		<div data-role="main" class="ui-content">
 			<div id="dm-sparks-content"></div>
-		
+
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -289,50 +354,54 @@
 	<!-- Show Groups -->
 	<div data-role="page" id="page-groups" data-title="Fever° Groups" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-groups-header">Fever<span style="color:red">°</span> Groups</h1>
 		</div>
-		
+
 		<div data-role="main" class="ui-content">
 			<div id="dm-groups-content">
 
 			</div>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
 
-	</div><!-- Show all groups -->
-	
-	
+	</div>
+	<!-- Show all groups -->
+
+
 	<!-- Settings -->
 	<div data-role="page" id="page-settings" data-title="Settings" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-settings-header">Delirious<span style="color:red">°</span> Settings</h1>
 			<a href="" class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="save-settings">Save</a>
 		</div>
 		<div data-role="main" class="ui-content">
-		
+
 			<h2>Authentification</h2>
 
 			<label for="dm-fever-url">Fever<span style="color:red">°</span>-URL:</label>
-			<input name="dm-fever-url" id="dm-fever-url" placeholder="http://www.host.example/path/to/fever/" value="" type="url" />
+			<input name="dm-fever-url" id="dm-fever-url" placeholder="http://www.host.example/path/to/fever/" value="" type="url">
 
 			<label for="dm-e-mail">E-Mail / Username:</label>
-			<input name="dm-e-mail" id="dm-e-mail" placeholder="user@example.com" value="" type="email" />
-			
+			<input name="dm-e-mail" id="dm-e-mail" placeholder="user@example.com" value="" type="email">
+
 			<label for="dm-password">Password:</label>
-			<input name="dm-password" id="dm-password" placeholder="" value="" type="password" />
+			<input name="dm-password" id="dm-password" placeholder="" value="" type="password">
 
 			<p><strong>Please note</strong>: In order to change your E-Mail, you also need to provide your password, because your login changes with your e-mail. Your password is <strong>not stored</strong> on your device.</p>
-		
+
 			<h2>Page transitions</h2>
 
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-transitions-group">
@@ -345,7 +414,7 @@
 				<label for="dm-setting-transitions-2">
 					<h3 class="ui-li-heading">Slide</h3>
 					<p class="ui-li-desc">Looks ok and makes sense.</p>
-				</label>				
+				</label>
 				<input id="dm-setting-transitions-3" name="dm-setting-transitions" value="slidefade" type="radio">
 				<label for="dm-setting-transitions-3">
 					<h3 class="ui-li-heading">Slide'n'Fade</h3>
@@ -372,7 +441,7 @@
 					<h3 class="ui-li-heading">Turn</h3>
 				</label>
 			</fieldset>
-			
+
 			<h2>Order of Feed Items</h2>
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-order-group">
 				<input id="dm-setting-order-1" name="dm-setting-order" value="asc" type="radio">
@@ -383,8 +452,8 @@
 				<label for="dm-setting-order-2">
 					<h3 class="ui-li-heading">Show Newest Item First</h3>
 				</label>
-			</fieldset>			
-			
+			</fieldset>
+
 			<h2>Show Empty Groups in Overview</h2>
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-empty-groups-group">
 				<input id="dm-setting-empty-groups-1" name="dm-setting-empty-groups" value="false" type="radio">
@@ -398,7 +467,7 @@
 					<p class="ui-li-desc">You can see even groups with no unread items.</p>
 				</label>
 			</fieldset>
-			
+
 			<h2>How to View Groups</h2>
 
 			<fieldset data-role="controlgroup" data-type="vertical" id="dm-setting-groupview-group">
@@ -416,61 +485,61 @@
 
 			<h2>Paginate Items in Groups</h2>
 
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Maximum number of items to show at once:</legend>
-					<label for="dm-setting-paginate-items-1">
-					<input id="dm-setting-paginate-items-1" name="dm-setting-paginate-items" value="50" type="radio">
-					50</label>
-					<label for="dm-setting-paginate-items-2">
-					<input id="dm-setting-paginate-items-2" name="dm-setting-paginate-items" value="100" type="radio">
-					100</label>
-					<label for="dm-setting-paginate-items-3">
-					<input id="dm-setting-paginate-items-3" name="dm-setting-paginate-items" value="200" type="radio">
-					200</label>
-					<label for="dm-setting-paginate-items-4">
-					<input id="dm-setting-paginate-items-4" name="dm-setting-paginate-items" value="0" type="radio">
-					All</label>
-				</fieldset>
+			<fieldset data-role="controlgroup" data-type="horizontal">
+				<legend>Maximum number of items to show at once:</legend>
+				<label for="dm-setting-paginate-items-1">
+					<input id="dm-setting-paginate-items-1" name="dm-setting-paginate-items" value="50" type="radio"> 50
+				</label>
+				<label for="dm-setting-paginate-items-2">
+					<input id="dm-setting-paginate-items-2" name="dm-setting-paginate-items" value="100" type="radio"> 100
+				</label>
+				<label for="dm-setting-paginate-items-3">
+					<input id="dm-setting-paginate-items-3" name="dm-setting-paginate-items" value="200" type="radio"> 200
+				</label>
+				<label for="dm-setting-paginate-items-4">
+					<input id="dm-setting-paginate-items-4" name="dm-setting-paginate-items" value="0" type="radio"> All
+				</label>
+			</fieldset>
 
 			<h2>Single Item View</h2>
-			<fieldset data-role="controlgroup" id="dm-setting-html-content-group"> 
-				<input type="radio" name="dm-setting-html-content" id="dm-setting-html-content-1" value="escape" />
+			<fieldset data-role="controlgroup" id="dm-setting-html-content-group">
+				<input type="radio" name="dm-setting-html-content" id="dm-setting-html-content-1" value="escape">
 				<label for="dm-setting-html-content-1">
 					<h3 class="ui-li-heading">Escaped HTML</h3>
 					<p class="ui-li-desc">Secure but doesn't look that good.</p>
 				</label>
-				<input type="radio" name="dm-setting-html-content" id="dm-setting-html-content-2" value="raw" />       	
+				<input type="radio" name="dm-setting-html-content" id="dm-setting-html-content-2" value="raw">
 				<label for="dm-setting-html-content-2">
 					<h3 class="ui-li-heading">Raw (parsed) HTML</h3>
 					<p class="ui-li-desc">Looks best, but might raise security issues.</p>
-				</label>     	
+				</label>
 			</fieldset>
-			
+
 			<h2>Show Sharing Buttons</h2>
-			<fieldset data-role="controlgroup" id="dm-setting-sharing-group"> 
-				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-1" value="all" />
+			<fieldset data-role="controlgroup" id="dm-setting-sharing-group">
+				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-1" value="all">
 				<label for="dm-setting-sharing-1">
 					<h3 class="ui-li-heading">All Services</h3>
 					<p class="ui-li-desc">ATM: Facebook, Google+, Twitter, E-Mail. Some data might be sent over to the networks.</p>
 				</label>
-				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-2" value="email" />       	
+				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-2" value="email">
 				<label for="dm-setting-sharing-2">
 					<h3 class="ui-li-heading">Show Only E-Mail Button</h3>
 					<p class="ui-li-desc">Just offer sharing by E-Mail and passive links. No privacy concerns here.</p>
 				</label>
-				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-3" value="none" />       	
+				<input type="radio" name="dm-setting-sharing" id="dm-setting-sharing-3" value="none">
 				<label for="dm-setting-sharing-3">
 					<h3 class="ui-li-heading">No Sharing</h3>
 					<p class="ui-li-desc">If you do not want to show or use any sharing buttons, choose this.</p>
 				</label>
-				
-				<p>Some feeds post urls which lead to a feed proxy or something like it. If you share an item this url gets shared. Most times this is a 'by-feed-phenomenom', so you will be able to share the correct urls on some feeds, on some others this is not possible.</p> 
+
+				<p>Some feeds post urls which lead to a feed proxy or something like it. If you share an item this url gets shared. Most times this is a 'by-feed-phenomenom', so you will be able to share the correct urls on some feeds, on some others this is not possible.</p>
 			</fieldset>
-			
+
 			<label>
 				<input type="checkbox" name="dm-setting-sharing-mobile" id="dm-setting-sharing-mobile" checked="checked"> Activate WhatsApp and Threema Sharing
 			</label>
-			
+
 			<h2>Default Sharing Message</h2>
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup">
@@ -479,86 +548,100 @@
 				</fieldset>
 				<p>Please Note: %url% gets replaced with the url of the item.</p>
 			</div>
-			
-			<h2>Widgets: Recent Items</h2>
-			
 
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Number of items to show:</legend>
-					<label for="dm-setting-widget-recent-items-count-1">
-					<input id="dm-setting-widget-recent-items-count-1" name="dm-setting-widget-recent-items-count" value="5" type="radio">
-					5</label>
-					<label for="dm-setting-widget-recent-items-count-2">
-					<input id="dm-setting-widget-recent-items-count-2" name="dm-setting-widget-recent-items-count" value="10" type="radio">
-					10</label>
-					<label for="dm-setting-widget-recent-items-count-3">
-					<input id="dm-setting-widget-recent-items-count-3" name="dm-setting-widget-recent-items-count" value="15" type="radio">
-					15</label>
-					<label for="dm-setting-widget-recent-items-count-4">
-					<input id="dm-setting-widget-recent-items-count-4" name="dm-setting-widget-recent-items-count" value="20" type="radio">
-					20</label>
-				</fieldset>			
-					
-			
+			<h2>Widgets: Recent Items</h2>
+
+
+			<fieldset data-role="controlgroup" data-type="horizontal">
+				<legend>Number of items to show:</legend>
+				<label for="dm-setting-widget-recent-items-count-1">
+					<input id="dm-setting-widget-recent-items-count-1" name="dm-setting-widget-recent-items-count" value="5" type="radio"> 5
+				</label>
+				<label for="dm-setting-widget-recent-items-count-2">
+					<input id="dm-setting-widget-recent-items-count-2" name="dm-setting-widget-recent-items-count" value="10" type="radio"> 10
+				</label>
+				<label for="dm-setting-widget-recent-items-count-3">
+					<input id="dm-setting-widget-recent-items-count-3" name="dm-setting-widget-recent-items-count" value="15" type="radio"> 15
+				</label>
+				<label for="dm-setting-widget-recent-items-count-4">
+					<input id="dm-setting-widget-recent-items-count-4" name="dm-setting-widget-recent-items-count" value="20" type="radio"> 20
+				</label>
+			</fieldset>
+
+
 			<h2>Save Settings</h2>
 			<a data-role="button" data-icon="check" href="" class="dm-button" data-dm-fnc="save-settings">Save Settings</a>
 			<a href="" class="dm-to-home-button" data-role="button" data-icon="delete">Cancel</a>
-			
+
 
 			<h2>Log out</h2>
 			<a data-role="button" data-icon="power" href="" class="dm-button" data-dm-fnc="logout" data-theme="d">Log Out and Delete Data</a>
-			
+
 			<h2>Tools</h2>
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-saved-items">Reload All Saved Items</a>
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-items">Reload All Unread Items</a>
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-favicons">Refresh Favicons</a>
-			<a data-role="button" data-icon="recycle" href="#page-importexport">Import/Export Settings</a>
+			<a data-role="button" data-icon="recycle" href="#page-importexport">Import or Export Settings</a>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="save-settings">Save Settings</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="check"><a href="" class="dm-button" data-dm-fnc="save-settings">Save Settings</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
 
-	</div><!-- / Settings -->
+	</div>
+	<!-- / Settings -->
 
 	<!-- Single Entry -->
 	<div data-role="page" id="page-single" data-title="Single Item" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
-			<h1 id="dm-feed-title">Feed-Name</h1>
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
+			<a class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</a>
+			<h1 id="dm-single-feed-title">Feed-Name</h1>
 			<a class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-plus" data-dm-fnc="toggle-save-item" data-dm-save-item-id="dm-single-btn-save" id="dm-single-btn-save">Save</a>
 		</div>
+		
 		<div data-role="main" class="ui-content">
-			<h2><a href="" id="dm-single-title" target="_blank">Title</a></h2>
+			<h2 class="ui-bar ui-bar-a ui-corner-all"><a href="" id="dm-single-title" data-role="none" target="_blank">Title</a></h2>
+			
+			<!--<div class="dm-test"></div>-->
+			<div class="ui-body ui-body-a ui-corner-all" id="dm-single-content-container">
 			<div id="dm-single-content"></div>
+			</div>
 			<div class="dm-single-below-content">posted on
 				<a id="dm-single-feedname" href="" class="dm-hot-links dm-button" data-dm-fnc="show-feed" data-dm-show-feed="">(Feed-Name)</a>
 			</div>
-			
+
 			<div id="dm-single-meta" class="dm-single-below-content"></div>
 			<div id="dm-single-sharing-buttons"></div>
 			<div id="dm-single-passive-sharing-buttons"></div>
 			<a data-role="button" target="_blank" data-theme="b" data-icon="grid" href="" data-iconpos="left" id="dm-single-url">Open URL</a>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
+			
 		</div>
-
-	</div><!-- / Single Item -->
+	</div>
+	<!-- / Single Item -->
 
 	<!-- All feeds -->
 	<div data-role="page" id="page-all-feeds" data-title="All Feeds" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-all-feeds-title">All Feeds</h1>
 		</div>
@@ -566,39 +649,43 @@
 			<div id="dm-all-feeds-content"></div>
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
 		</div>
-	</div><!-- / All feeds -->
-	
+	</div>
+	<!-- / All feeds -->
+
 	<div data-role="page" id="page-login" data-title="Login" class="dm-page" data-theme="a">
 		<div data-role="main" class="ui-content">
 
-			<h1>Login to Delirious</h1>
+			<h1>Login to Delirious<span style="color:red">°</span></h1>
 
 			<label for="dm-login-url">Fever<span style="color:red">°</span>-URL:</label>
-			<input name="dm-login-url" id="dm-login-url" placeholder="https://www.host.example/path/to/fever/" value="" type="url" />
+			<input name="dm-login-url" id="dm-login-url" placeholder="https://www.host.example/path/to/fever/" value="" type="url">
 
 			<label for="dm-login-e-mail">E-Mail / Username:</label>
-			<input name="dm-login-e-mail" id="dm-login-e-mail" placeholder="user@example.com" value="" type="email" />
+			<input name="dm-login-e-mail" id="dm-login-e-mail" placeholder="user@example.com" value="" type="email">
 
 			<label for="dm-login-password">Password:</label>
-			<input name="dm-login-password" id="dm-login-password" placeholder="" value="" type="password" />
+			<input name="dm-login-password" id="dm-login-password" placeholder="" value="" type="password">
 
 			<a href="" data-role="button" class="dm-button" data-dm-fnc="login">Login</a>
-			
-			<label>
+
+			<!--<label>
 			<input type="checkbox" checked="checked"> Remember Password
-			</label>
+			</label>-->
 		</div>
 	</div>
-	
+
 	<div data-role="page" id="page-support" data-title="Help and Support" class="dm-page" data-theme="a">
 
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 
 			<h1>Help, Credits and Copyrights <span style="color:red">&copy;</span></h1>
@@ -609,7 +696,7 @@
 			<p>If you encounter bugs, miss features or have a comment about Delirious<span style="color:red">°</span>, go to <a href="https://github.com/simply-hg/delirious" target="_blank">Delirious<span style="color:red">°</span> on github.com</a> and post your questions there. If you want to help out on features, bugs or documentation, you are welcome to contribute to Delirious<span style="color:red">°</span> on github.com in any way you find fitting. If you want to make your own adjustments to Delirious<span style="color:red">°</span> I suggest to fork it on github. That way your features may flow back into Delirious<span style="color:red">°</span>.</p>
 			<p>News, comments and announcements about Delirious<span style="color:red">°</span> are posted to my webpage.</p>
 			<p>You like social networks? If so, you can like Delirious<span style="color:red">°</span> and tell your friends about it on Google+. Have question about fever-js? You can send me a tweet to <a href="https://twitter.com/simplyhg" target="_blank">@simplyhg</a> on twitter.</p>
-			
+
 			<h2>Delirious<span style="color:red">°</span> License</h2>
 			<p>Delirious<span style="color:red">°</span> is provided as is without any guarantees or warranties. It is licensed under MIT-style terms. If you redistribute or modify it, please leave this license in place. If you use it in your project I'd be happy to hear about it. Also, I kindly ask you, to put up a link to the homepage of Delirious<span style="color:red">°</span> (<a href="http://www.simply-hg.de/delirious/" target="_blank">simply-hg.de/delirious//</a>) in case you use it as a base of your own work. Thank you very much.</p>
 
@@ -631,107 +718,180 @@
 			<p>MD5 hashing is done with help from an implementation found on <a href="http://www.webtoolkit.info/javascript-md5.html" target="_blank">webtoolkit.info</a>. Some css code for the single item view is also from there, known as <a href="http://www.webtoolkit.info/css-clearfix.html" target="_blank">clearfix</a>. You can find <a href="http://www.webtoolkit.info/license" target="_blank">their license</a> online. </p>
 			<p>Delirious<span style="color:red">°</span> releases will be compressed by <a href="http://www.jscompress.com/" target="_blank">jscompress.com</a>. </p>
 			<p>Some nicer looking parts of the settings screen have been adapted from <a href="http://roughlybrilliant.com/jquery_mobile_best_practices" target="_blank">Roughly Brilliant</a>.</sp>
-		
-			<div class="dm-bottom-menu">
-				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
-				</ul>
-			</div>
+
+				<div class="dm-bottom-menu">
+					<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
+						<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+						</li>
+						<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+						</li>
+						<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+						</li>
+					</ul>
+				</div>
 		</div>
 	</div>
-	
+
 	<!-- Edit Homescreen -->
 	<div data-role="page" id="page-edit-homescreen" data-title="Edit Homescreen" class="dm-page" data-theme="a">
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1 id="dm-edit-hs-header">Edit Homescreen</h1>
 			<a href="" class="dm-button ui-btn-right ui-btn ui-btn-c ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" data-dm-fnc="save-homescreen">Save</a>
 		</div>
 		<div data-role="main" class="ui-content">
-			
+
 			<div class="ui-grid-a ui-responsive" id="dm-edit-widget-place-grid">
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a1" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b1" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a2" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b2" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a3" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b3" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a4" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b4" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a5" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b5" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a6" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b6" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a7" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b7" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a8" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b8" class="dm-widget-container"></div></div>
-				<div class="ui-block-a"><div id="dm-edit-widget-place-a9" class="dm-widget-container"></div></div>
-				<div class="ui-block-b"><div id="dm-edit-widget-place-b9" class="dm-widget-container"></div></div>
-			</div><!-- /grid-c -->
-			
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a1" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b1" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a2" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b2" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a3" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b3" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a4" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b4" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a5" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b5" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a6" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b6" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a7" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b7" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a8" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b8" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-a">
+					<div id="dm-edit-widget-place-a9" class="dm-widget-container"></div>
+				</div>
+				<div class="ui-block-b">
+					<div id="dm-edit-widget-place-b9" class="dm-widget-container"></div>
+				</div>
+			</div>
+			<!-- /grid-c -->
+
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="gear"><a href="" class="dm-button" data-dm-fnc="save-homescreen">Save Homescreen</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="gear"><a href="" class="dm-button" data-dm-fnc="save-homescreen">Save Homescreen</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
-		</div>			
-	</div><!-- / Edit Homescreen -->
-	
-	
+		</div>
+	</div>
+	<!-- / Edit Homescreen -->
+
+
 	<!-- Import/Export -->
 	<div data-role="page" id="page-importexport" data-title="Import/Export" class="dm-page" data-theme="a">
-		<div data-theme="b" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
 			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
 			<h1>Import/Export</h1>
 
 		</div>
 		<div data-role="main" class="ui-content">
-		
+
 			<h2>Import File</h2>
-			
+
 			<input type="file" id="dm-settings-file-import">
-						
-			<h2>Import Settings</h2>
-			Paste your settings-String into this textbox:
+
+			<h2>Import Settings</h2> Paste your settings-String into this textbox:
 			<textarea id="dm-import-settings"></textarea>
-			
+
 			<a href="" class="dm-button" data-role="button" data-dm-fnc="import-settings">Import</a>
-						
-			<h2>Export Settings</h2>
-			Copy this string to transfer your settings	
-			
+
+			<h2>Export Settings</h2> Copy this string to transfer your settings
+
 			<label>
-			<input type="checkbox" checked="checked" id="dm-export-fav" class="dm-export-box"> Favourite Feeds and Groups
+				<input type="checkbox" checked="checked" id="dm-export-fav" class="dm-export-box"> Favourite Feeds and Groups
 			</label>
-				
+
 			<label>
-			<input type="checkbox" checked="checked" id="dm-export-homescreen" class="dm-export-box"> Homescreen Layout
+				<input type="checkbox" checked="checked" id="dm-export-homescreen" class="dm-export-box"> Homescreen Layout
 			</label>
-			
+
 			<label>
-			<input type="checkbox" id="dm-export-settings" class="dm-export-box"> Settings
+				<input type="checkbox" id="dm-export-settings" class="dm-export-box"> Settings
 			</label>
-			
+
 			<a href="" data-role="button" class="dm-button" data-dm-fnc="download-settings">Download As File</a>
-			
+
 			<textarea id="dm-export-settings-box"></textarea>
 
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
-					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a></li>
-					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a></li>
-					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a></li>
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
 				</ul>
 			</div>
-			
-		</div>			
-	</div><!-- / Edit Homescreen -->
-	
+
+		</div>
+	</div>
+	<!-- / Edit Homescreen -->
+	<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+
+	<script src="lib/FileSaver.min.js"></script>
+	<script src="lib/simpleStorage.min.js"></script>
+	<script src="lib/lz-string.min.js"></script>
+	<script src="lib/fitvid.min.js"></script>
+	<script src="lib/md5.min.js"></script>
+
+	<!--<script src="js/functions.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/sync.js"></script>
+	<script src="js/widgets.js"></script>
+	<script src="js/eventhandler.js"></script>-->
+
+	<script src="js/delirious.min.js"></script>
+
+	<script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+	<script>
+		(function (H) {
+			H.className = H.className.replace(/\bno-js\b/, '')
+		})(document.documentElement)
+	</script>
+
 </body>
+
 </html>
