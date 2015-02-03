@@ -124,9 +124,19 @@ function registerEventHandlers() {
 		}*/
 	});
 	
+	$ ( document ).on("vclick", ".dm-popup-button", function(e) {
+		//e.stopPropagation();
+		//e.preventDefault();
+		
+		$('#dm-home-popup').popup("close");
+		
+	});
+	
 	$ ( document ).on("vclick", ".dm-button", function(e) {
-		e.stopPropagation();
-		e.preventDefault();		var button = $(this).data("dm-fnc");
+		//e.stopPropagation();
+		e.preventDefault();
+		
+		var button = $(this).data("dm-fnc");
 		dbgMsg("vclick button: " + button);
 
 		switch (button) {
