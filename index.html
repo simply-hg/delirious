@@ -601,6 +601,8 @@
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-items">Reload All Unread Items</a>
 			<a data-role="button" data-icon="refresh" href="" class="dm-button" data-dm-fnc="refresh-favicons">Refresh Favicons</a>
 			<a data-role="button" data-icon="recycle" href="#page-importexport">Import or Export Settings</a>
+			<a data-role="button" data-icon="heart" href="#page-checkfavs">Favourite Groups and Feeds</a>
+
 			<div class="dm-bottom-menu">
 				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
 					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
@@ -848,7 +850,8 @@
 
 			<input type="file" id="dm-settings-file-import">
 
-			<h2>Import Settings</h2> Paste your settings-String into this textbox:
+			<h2>Import Settings</h2>
+			Paste your settings-String into this textbox:
 			<textarea id="dm-import-settings"></textarea>
 
 			<a href="" class="dm-button" data-role="button" data-dm-fnc="import-settings">Import</a>
@@ -885,6 +888,45 @@
 		</div>
 	</div>
 	<!-- / Edit Homescreen -->
+
+
+	<!-- Import/Export -->
+	<div data-role="page" id="page-checkfavs" data-title="Favourites" class="dm-page" data-theme="a">
+		<div data-theme="b" data-role="header" class="dm-toolbar" data-position="fixed" data-tap-toggle="false">
+			<button class="dm-button ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" data-dm-fnc="back">Back</button>
+			<h1>Favourites</h1>
+
+		</div>
+		<div data-role="main" class="ui-content">
+
+			<h2>Favourite Groups</h2>
+
+			<div id="dm-checkfavs-groups"></div>
+			
+			<a href="#page-groups" data-role="button">Add other Groups</a>
+			
+			<h2>Favourite Feeds</h2>
+
+			<div id="dm-checkfavs-feeds"></div>
+			
+			<a href="#page-all-feeds" data-role="button">Add other Feeds</a>
+			
+			<div class="dm-bottom-menu">
+				<ul data-role="listview" data-theme="a" data-inset="true" data-iconpos="left">
+					<li data-icon="arrow-l"><a href="" class="dm-button" data-dm-fnc="back">Back</a>
+					</li>
+					<li data-icon="arrow-u"><a href="" class="dm-button" data-dm-fnc="to-top">Back to the Top</a>
+					</li>
+					<li data-icon="home"><a href="" class="dm-button" data-dm-fnc="show-home">Go to Homescreen</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<!-- / Edit Homescreen -->
+
+
 	<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
 

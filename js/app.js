@@ -1510,3 +1510,48 @@ function generateExportFile() {
 	saveAs(settings_file, "settings.dm");
 	
 }
+
+function showCheckFavs() {
+	countUnreadItems();
+
+	// First, show Groups
+
+	var content_ShowFavGroups = '';
+	//dbgMsg(fav_groups);
+	$.each(groups, function (index, value) {
+		
+		if ( _.contains(fav_groups, value.id)  ) {
+			var unread = countUnreadInGroup(value.id);
+			
+			var group = _.findWhere(groups, {id: value.id});
+			content_ShowFavGroups += '<li data-theme="a">';
+			content_ShowFavGroups += '<a href="" data-dm-show-group="' + group.id + '" class="dm-button" data-dm-fnc="show-group-selector">' + _.escape(group.title);
+			content_ShowFavGroups += '<span class="ui-li-count">' + unread + '</span></a></li>';
+		}
+	});
+	
+	if (content_ShowFavGroups) {
+		content_ShowFavGroups = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavGroups;
+		content_ShowFavGroups += '</ul>';
+	} else {
+		content_ShowFavGroups = '<p>No favourite groups.</p>';
+	}
+	$('#dm-checkfavs-groups').html(content_ShowFavGroups);
+	// Second Show Fav Feeds
+	
+	var content_ShowFavFeeds = '';
+	$.each(feeds, function (index, value) {
+		if ( _.contains(fav_feeds, value.id) ) {
+			var feed = _.findWhere(feeds, {id: getNumber(value.id)});
+			content_ShowFavFeeds += renderListviewItemFeed(feed, true);
+		}
+	});
+	if (content_ShowFavFeeds) {
+		content_ShowFavFeeds = '<ul data-role="listview" data-theme="a" data-inset="true">' + content_ShowFavFeeds + '</ul>';
+	} else {
+		content_ShowFavFeeds = '<p>No favourite feeds.</p>';
+	}	
+	
+	$('#dm-checkfavs-feeds').html(content_ShowFavFeeds);
+
+}

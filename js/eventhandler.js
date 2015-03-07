@@ -113,6 +113,10 @@ function registerEventHandlers() {
 			case "page-importexport":
 				showImportExport();
 			break;
+
+			case "page-checkfavs":
+				showCheckFavs();
+			break;
 		}
 		$(this).enhanceWithin();
 
