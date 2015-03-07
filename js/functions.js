@@ -48,6 +48,8 @@ function escapeString(str) {
 	str = str.split('&amp;lsquo;').join('&lsquo;');
 	str = str.split('&amp;lsaquo;').join('&lsaquo;');
 	str = str.split('&amp;rsaquo;').join('&rsaquo;');
+	str = str.split('&amp;laquo;').join('&laquo;');
+	str = str.split('&amp;raquo;').join('&raquo;');
 	str = str.split('&amp;euro;').join('&euro;');
 	str = str.split('&amp;nbsp;').join('&nbsp;');
 	str = str.split('&amp;shy;').join('&shy;');

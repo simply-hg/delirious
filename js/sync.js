@@ -352,7 +352,7 @@ function saveItem(id) {
 			item.url = "";
 			saved_items.push(item);
 		
-			storeLoadedSavedItems()
+			storeLoadedSavedItems();
 			showHideLoader("start");
 			$.post(dm_url + "?api", { api_key: dm_key, mark: "item", as: "saved", id: $.trim(_.escape(id))  }).done(function(data) {
 				showHideLoader("stop");

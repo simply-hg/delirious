@@ -755,14 +755,18 @@ function showFeed(id) {
 
 function showSingleItem(id) {
 	var item = _.findWhere(items, {id: getNumber(id)});
-
+	dbgMsg("item after items:");
+	dbgMsg(item);
 	/*if ( !item ) {
 		item = _.findWhere(saved_items, {id: id});
-	}*/
+	}
 	
 	if ( !item ) {
 		item = _.findWhere(session_read_items, {id: id});
-	}
+	}*/
+	
+	dbgMsg("item after session_read_items:");
+	dbgMsg(item);
 	
 	if ( !item ) {
 		showHideLoader("start");
@@ -781,7 +785,9 @@ function showSingleItem(id) {
 }
 
 function renderSingleItem(data) {
-	//dbgMsg(data);
+	dbgMsg(data);
+	markItemsRead(data.id.toString());
+
 	$("#dm-single-content").empty();
 	if ( getOption("html_content") === "raw") {
 		try {
@@ -790,6 +796,33 @@ function renderSingleItem(data) {
 			$(content).find("img").removeAttr("onload");
 					
 			$("#dm-single-content").append(content);
+			$("#dm-single-content a").attr("target", "_blank");
+			
+			$('#dm-single-content img').each( function (index) {
+					
+					$("#dm-single-content img").attr("height", "");
+					$("#dm-single-content img").attr("width", "");
+					$(this).on('load', function(e) {
+						if ($(this).prop('naturalWidth') >= 320 ) {
+							$(this).addClass('dm-single-image-wide');
+							dbgMsg("added class image wide");
+						} else {
+							$(this).addClass('dm-single-image-small');
+							dbgMsg("added class image small");
+
+						}
+					});
+							   
+
+			});
+			
+	
+			$("#dm-single-content div").css("width","");
+
+			$("#dm-single-content").fitVids();
+			
+			
+
 		} catch(e) {
 			dbgMsg("error in html of item");
 			
@@ -799,11 +832,7 @@ function renderSingleItem(data) {
 			
 			$("#dm-single-content").html(content);
 		}
-		$("#dm-single-content a").attr("target", "_blank");
-		$("#dm-single-content img").attr("height", "");
-		$("#dm-single-content img").attr("width", "");
 		
-		$("#dm-single-content").fitVids();
 		
 	} else {
 		
@@ -836,7 +865,6 @@ function renderSingleItem(data) {
 	
 	$("#dm-single-btn-save").data("dm-save-item-id", data.id);
 	
-	markItemsRead(data.id.toString());
 	
 	if ( data.is_saved === 1 ) {
 		$("#dm-single-btn-save").text("Unsave");
