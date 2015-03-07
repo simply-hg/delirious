@@ -55,16 +55,44 @@ img.dm-favicon-feed {
 	color:steelblue;
 }
 #dm-single-content img, #dm-single-content object {
-	max-width:85%;
-	margin:5px;
-	padding:0;
-}
-
-#dm-single-content p {
 	max-width:100%;
 	margin:0;
 	padding:0;
 }
+
+#dm-single-content p {
+	margin:0;
+	padding:0;
+	max-width:50em;
+}
+
+#dm-single-content div {
+	width: 100% !important;
+	max-width:50em !important;
+	margin:0;
+	padding:0;
+}
+
+
+#dm-single-content img.dm-single-image-wide {
+	width: 100% !important;
+	max-width:100% !important;
+	margin:0;
+	padding:0;
+}
+
+#dm-single-content img.dm-single-image-small {
+	width: auto;
+	max-width:100% !important;
+	margin:0;
+	padding:0;
+	/*float:right;*/
+}
+
+#dm-single-content img:first-of-type {
+	float:left;
+}
+
 
 /* integrated clearfix by: http://cssmojo.com/latest_new_clearfix_so_far/ */
 #dm-single-content {
